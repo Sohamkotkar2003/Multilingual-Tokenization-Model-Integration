@@ -19,6 +19,7 @@ TOKENIZER_MERGE_PATH = "model/tokenizer_merge.txt"
 
 # Model Configuration
 MODEL_NAME = os.getenv("MODEL_NAME", "bigscience/bloom-560m")  # HF model name fallback (decoder-only)
+# MODEL_NAME = os.getenv("MODEL_NAME", "mbart_finetuned/checkpoint-500")  # HF model name fallback (decoder-only)
 MODEL_PATH = os.getenv("MODEL_PATH", "")  # local checkpoint folder (if used). Empty -> use MODEL_NAME
 
 # Generation params

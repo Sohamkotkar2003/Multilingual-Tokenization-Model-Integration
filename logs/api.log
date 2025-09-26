@@ -1,7 +1,1 @@
-2025-09-26 21:23:23,618 - __main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-26 21:23:27,192 - __mp_main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-26 21:23:27,257 - app - INFO - === API Starting - Logging Config Applied ===
-2025-09-26 21:23:27,261 - app - INFO - 🚀 API Startup
-2025-09-26 21:23:27,268 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
-2025-09-26 21:23:31,603 - app - INFO - ✅ Model loaded: bigscience/bloom-560m
-2025-09-26 21:35:43,389 - app - INFO - 🔌 API Shutdown
+2025-09-26 21:44:09,178 - app - INFO - 🔌 API Shutdown

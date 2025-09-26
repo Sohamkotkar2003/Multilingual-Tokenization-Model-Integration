@@ -90,7 +90,7 @@ def load_models():
         hf_tokenizer = AutoTokenizer.from_pretrained(model_source)
         model = AutoModelForCausalLM.from_pretrained(
             model_source,
-            torch_dtype=torch.float16 if torch.cuda.is_available() and settings.USE_FP16_IF_GPU else torch.float32
+            dtype=torch.float16 if torch.cuda.is_available() and settings.USE_FP16_IF_GPU else torch.float32
         )
         model.eval()
         if torch.cuda.is_available():
