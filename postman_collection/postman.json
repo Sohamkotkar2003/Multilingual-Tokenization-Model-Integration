@@ -1,733 +1,710 @@
 {
-	"info": {
-		"_postman_id": "12345678-1234-5678-9012-123456789abc",
-		"name": "Multilingual Tokenization & Inference API",
-		"description": "Complete API collection for Hindi, Sanskrit, Marathi, and English tokenization and text generation",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "12345678"
-	},
-	"item": [
-		{
-			"name": "Health & Status",
-			"item": [
-				{
-					"name": "Health Check",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								""
-							]
-						},
-						"description": "Check if the API is running and get basic status information"
-					},
-					"response": []
-				},
-				{
-					"name": "Model Information",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/model-info",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"model-info"
-							]
-						},
-						"description": "Get detailed information about loaded models and tokenizers"
-					},
-					"response": []
-				},
-				{
-					"name": "API Configuration",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/config",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"config"
-							]
-						},
-						"description": "Get current API configuration including model, tokenizer, and language settings"
-					},
-					"response": []
-				}
-			],
-			"description": "Endpoints for checking API health and configuration"
-		},
-		{
-			"name": "Language Detection",
-			"item": [
-				{
-					"name": "Detect English Text",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"text\": \"Hello, how are you today? This is a sample English text for language detection.\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/language-detect",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"language-detect"
-							]
-						},
-						"description": "Detect language for English text"
-					},
-					"response": []
-				},
-				{
-					"name": "Detect Hindi Text",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"text\": \"नमस्ते, आज आप कैसे हैं? यह हिंदी भाषा की पहचान के लिए एक नमूना पाठ है।\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/language-detect",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"language-detect"
-							]
-						},
-						"description": "Detect language for Hindi text"
-					},
-					"response": []
-				},
-				{
-					"name": "Detect Sanskrit Text",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"text\": \"श्रीगणेशाय नमः। यह संस्कृत भाषा का श्लोक है। सर्वे भवन्तु सुखिनः सर्वे सन्तु निरामयाः।\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/language-detect",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"language-detect"
-							]
-						},
-						"description": "Detect language for Sanskrit text with keywords"
-					},
-					"response": []
-				},
-				{
-					"name": "Detect Marathi Text",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"text\": \"नमस्कार, आज तुम्ही कसे आहात? हा महाराष्ट्रातील मराठी भाषेचा नमुना आहे।\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/language-detect",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"language-detect"
-							]
-						},
-						"description": "Detect language for Marathi text with regional keywords"
-					},
-					"response": []
-				},
-				{
-					"name": "Detect Mixed Language Text",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"text\": \"Hello नमस्ते, how are you आज कैसे हैं? This is mixed language text.\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/language-detect",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"language-detect"
-							]
-						},
-						"description": "Detect language for mixed English-Hindi text"
-					},
-					"response": []
-				}
-			],
-			"description": "Test language detection capabilities for different languages"
-		},
-		{
-			"name": "Tokenization",
-			"item": [
-				{
-					"name": "Tokenize English Text",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"text\": \"The quick brown fox jumps over the lazy dog. This is a comprehensive English sentence for tokenization testing.\",\n    \"language\": \"english\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/tokenize",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"tokenize"
-							]
-						},
-						"description": "Tokenize English text with explicit language specification"
-					},
-					"response": []
-				},
-				{
-					"name": "Tokenize Hindi Text (Auto-detect)",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"text\": \"भारत एक महान देश है। यहाँ अनेक भाषाएँ बोली जाती हैं और विविधता में एकता देखी जाती है।\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/tokenize",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"tokenize"
-							]
-						},
-						"description": "Tokenize Hindi text with automatic language detection"
-					},
-					"response": []
-				},
-				{
-					"name": "Tokenize Sanskrit Text",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"text\": \"वसुधैव कुटुम्बकम्। सत्यमेव जयते। यह संस्कृत के प्रसिद्ध श्लोक हैं।\",\n    \"language\": \"sanskrit\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/tokenize",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"tokenize"
-							]
-						},
-						"description": "Tokenize Sanskrit text with famous slokas"
-					},
-					"response": []
-				},
-				{
-					"name": "Tokenize Marathi Text",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"text\": \"महाराष्ट्र हा एक सुंदर राज्य आहे. येथे मराठी भाषा बोलली जाते आणि समृद्ध संस्कृती आहे.\",\n    \"language\": \"marathi\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/tokenize",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"tokenize"
-							]
-						},
-						"description": "Tokenize Marathi text about Maharashtra"
-					},
-					"response": []
-				},
-				{
-					"name": "Tokenize Long Text",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"text\": \"Natural Language Processing is a fascinating field that combines linguistics, computer science, and artificial intelligence. It enables computers to understand, interpret, and generate human language in a valuable way. Modern NLP applications include machine translation, sentiment analysis, chatbots, and text summarization. Deep learning has revolutionized this field with transformer architectures like BERT and GPT.\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/tokenize",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"tokenize"
-							]
-						},
-						"description": "Tokenize longer English text to test performance"
-					},
-					"response": []
-				}
-			],
-			"description": "Test tokenization functionality for different languages and text lengths"
-		},
-		{
-			"name": "Text Generation",
-			"item": [
-				{
-					"name": "Generate English Text",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"text\": \"Once upon a time in a faraway kingdom\",\n    \"language\": \"english\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/generate",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"generate"
-							]
-						},
-						"description": "Generate continuation for English story prompt"
-					},
-					"response": []
-				},
-				{
-					"name": "Generate Hindi Text",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"text\": \"एक समय की बात है, एक राजा था जो\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/generate",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"generate"
-							]
-						},
-						"description": "Generate continuation for Hindi story prompt with auto-detection"
-					},
-					"response": []
-				},
-				{
-					"name": "Generate Sanskrit Text",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"text\": \"धर्मो रक्षति रक्षितः\",\n    \"language\": \"sanskrit\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/generate",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"generate"
-							]
-						},
-						"description": "Generate text based on Sanskrit dharma sloka"
-					},
-					"response": []
-				},
-				{
-					"name": "Generate Marathi Text",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"text\": \"एकदा एका गावात एक शेतकरी राहत होता\",\n    \"language\": \"marathi\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/generate",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"generate"
-							]
-						},
-						"description": "Generate continuation for Marathi farmer story"
-					},
-					"response": []
-				},
-				{
-					"name": "Generate Technical Text",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"text\": \"Machine learning algorithms are designed to\",\n    \"language\": \"english\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/generate",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"generate"
-							]
-						},
-						"description": "Generate technical content about machine learning"
-					},
-					"response": []
-				}
-			],
-			"description": "Test text generation capabilities for different languages and contexts"
-		},
-		{
-			"name": "Error Cases",
-			"item": [
-				{
-					"name": "Empty Text Request",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"text\": \"\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/tokenize",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"tokenize"
-							]
-						},
-						"description": "Test handling of empty text input"
-					},
-					"response": []
-				},
-				{
-					"name": "Invalid Language Code",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"text\": \"Hello world\",\n    \"language\": \"invalid_language\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/tokenize",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"tokenize"
-							]
-						},
-						"description": "Test handling of unsupported language codes"
-					},
-					"response": []
-				},
-				{
-					"name": "Malformed JSON Request",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"text\": \"Hello world\",\n    \"language\": \"english\"\n    // Missing closing brace\n"
-						},
-						"url": {
-							"raw": "{{base_url}}/tokenize",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"tokenize"
-							]
-						},
-						"description": "Test handling of malformed JSON requests"
-					},
-					"response": []
-				},
-				{
-					"name": "Missing Text Field",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"language\": \"english\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/language-detect",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"language-detect"
-							]
-						},
-						"description": "Test handling of requests with missing required fields"
-					},
-					"response": []
-				}
-			],
-			"description": "Test error handling and edge cases"
-		}
-	],
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		}
-	],
-	"variable": [
-		{
-			"key": "base_url",
-			"value": "http://127.0.0.1:8000",
-			"type": "string",
-			"description": "Base URL for the Multilingual API"
-		},
-		{
-			"key": "api_version",
-			"value": "1.0.0",
-			"type": "string",
-			"description": "Current API version"
-		}
-	]
+  "info": {
+    "_postman_id": "12345678-1234-5678-9012-123456789abc",
+    "name": "Multilingual Tokenization & Inference API",
+    "description": "Complete API collection for Hindi, Sanskrit, Marathi, and English tokenization, language detection, and text generation",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "12345678"
+  },
+  "item": [
+    {
+      "name": "Health & Status",
+      "description": "Endpoints for checking API health and configuration",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                ""
+              ]
+            },
+            "description": "Check if the API is running and get basic status information"
+          },
+          "response": []
+        },
+        {
+          "name": "API Configuration",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/config",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "config"
+              ]
+            },
+            "description": "Get current API configuration including model, tokenizer, and language settings"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Language Detection",
+      "item": [
+        {
+          "name": "Detect English Text",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"Hello, how are you today? This is a sample English text for language detection.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/language-detect",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "language-detect"
+              ]
+            },
+            "description": "Detect language for English text"
+          },
+          "response": []
+        },
+        {
+          "name": "Detect Hindi Text",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"नमस्ते, आज आप कैसे हैं? यह हिंदी भाषा की पहचान के लिए एक नमूना पाठ है।\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/language-detect",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "language-detect"
+              ]
+            },
+            "description": "Detect language for Hindi text"
+          },
+          "response": []
+        },
+        {
+          "name": "Detect Sanskrit Text",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"श्रीगणेशाय नमः। यह संस्कृत भाषा का श्लोक है। सर्वे भवन्तु सुखिनः सर्वे सन्तु निरामयाः।\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/language-detect",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "language-detect"
+              ]
+            },
+            "description": "Detect language for Sanskrit text with keywords"
+          },
+          "response": []
+        },
+        {
+          "name": "Detect Marathi Text",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"नमस्कार, आज तुम्ही कसे आहात? हा महाराष्ट्रातील मराठी भाषेचा नमुना आहे।\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/language-detect",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "language-detect"
+              ]
+            },
+            "description": "Detect language for Marathi text with regional keywords"
+          },
+          "response": []
+        },
+        {
+          "name": "Detect Mixed Language Text",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"Hello नमस्ते, how are you आज कैसे हैं? This is mixed language text.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/language-detect",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "language-detect"
+              ]
+            },
+            "description": "Detect language for mixed English-Hindi text"
+          },
+          "response": []
+        }
+      ],
+      "description": "Test language detection capabilities for different languages"
+    },
+    {
+      "name": "Tokenization",
+      "item": [
+        {
+          "name": "Tokenize English Text",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"The quick brown fox jumps over the lazy dog. This is a comprehensive English sentence for tokenization testing.\",\n    \"language\": \"english\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/tokenize",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tokenize"
+              ]
+            },
+            "description": "Tokenize English text with explicit language specification"
+          },
+          "response": []
+        },
+        {
+          "name": "Tokenize Hindi Text (Auto-detect)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"भारत एक महान देश है। यहाँ अनेक भाषाएँ बोली जाती हैं और विविधता में एकता देखी जाती है।\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/tokenize",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tokenize"
+              ]
+            },
+            "description": "Tokenize Hindi text with automatic language detection"
+          },
+          "response": []
+        },
+        {
+          "name": "Tokenize Sanskrit Text",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"वसुधैव कुटुम्बकम्। सत्यमेव जयते। यह संस्कृत के प्रसिद्ध श्लोक हैं।\",\n    \"language\": \"sanskrit\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/tokenize",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tokenize"
+              ]
+            },
+            "description": "Tokenize Sanskrit text with famous slokas"
+          },
+          "response": []
+        },
+        {
+          "name": "Tokenize Marathi Text",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"महाराष्ट्र हा एक सुंदर राज्य आहे. येथे मराठी भाषा बोलली जाते आणि समृद्ध संस्कृती आहे.\",\n    \"language\": \"marathi\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/tokenize",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tokenize"
+              ]
+            },
+            "description": "Tokenize Marathi text about Maharashtra"
+          },
+          "response": []
+        },
+        {
+          "name": "Tokenize Long Text",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"Natural Language Processing is a fascinating field that combines linguistics, computer science, and artificial intelligence. It enables computers to understand, interpret, and generate human language in a valuable way. Modern NLP applications include machine translation, sentiment analysis, chatbots, and text summarization. Deep learning has revolutionized this field with transformer architectures like BERT and GPT.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/tokenize",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tokenize"
+              ]
+            },
+            "description": "Tokenize longer English text to test performance"
+          },
+          "response": []
+        }
+      ],
+      "description": "Test tokenization functionality for different languages and text lengths"
+    },
+    {
+      "name": "Text Generation",
+      "item": [
+        {
+          "name": "Generate English Text",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"Once upon a time in a faraway kingdom\",\n    \"language\": \"english\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/generate",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "generate"
+              ]
+            },
+            "description": "Generate continuation for English story prompt"
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Hindi Text",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"एक समय की बात है, एक राजा था जो\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/generate",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "generate"
+              ]
+            },
+            "description": "Generate continuation for Hindi story prompt with auto-detection"
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Sanskrit Text",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"धर्मो रक्षति रक्षितः\",\n    \"language\": \"sanskrit\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/generate",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "generate"
+              ]
+            },
+            "description": "Generate text based on Sanskrit dharma sloka"
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Marathi Text",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"एकदा एका गावात एक शेतकरी राहत होता\",\n    \"language\": \"marathi\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/generate",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "generate"
+              ]
+            },
+            "description": "Generate continuation for Marathi farmer story"
+          },
+          "response": []
+        },
+        {
+          "name": "Generate Technical Text",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"Machine learning algorithms are designed to\",\n    \"language\": \"english\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/generate",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "generate"
+              ]
+            },
+            "description": "Generate technical content about machine learning"
+          },
+          "response": []
+        }
+      ],
+      "description": "Test text generation capabilities for different languages and contexts"
+    },
+    {
+      "name": "Error Cases",
+      "item": [
+        {
+          "name": "Empty Text Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/tokenize",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tokenize"
+              ]
+            },
+            "description": "Test handling of empty text input"
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Language Code",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"Hello world\",\n    \"language\": \"invalid_language\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/tokenize",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tokenize"
+              ]
+            },
+            "description": "Test handling of unsupported language codes"
+          },
+          "response": []
+        },
+        {
+          "name": "Malformed JSON Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"text\": \"Hello world\",\n    \"language\": \"english\"\n    // Missing closing brace\n"
+            },
+            "url": {
+              "raw": "{{base_url}}/tokenize",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "tokenize"
+              ]
+            },
+            "description": "Test handling of malformed JSON requests"
+          },
+          "response": []
+        },
+        {
+          "name": "Missing Text Field",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"language\": \"english\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/language-detect",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "language-detect"
+              ]
+            },
+            "description": "Test handling of requests with missing required fields"
+          },
+          "response": []
+        }
+      ],
+      "description": "Test error handling and edge cases"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000",
+      "type": "string",
+      "description": "Base URL for the Multilingual API"
+    },
+    {
+      "key": "api_version",
+      "value": "1.0.1",
+      "type": "string",
+      "description": "Current API version"
+    }
+  ]
 }
