@@ -4,3 +4,4 @@ __pycache__/
 .vscode/
 mbart_finetuned/
 data/
+core/logs/

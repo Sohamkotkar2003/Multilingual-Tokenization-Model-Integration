@@ -16,13 +16,14 @@ API_VERSION = "1.0.0"
 DEBUG_MODE = True
 
 # Model and Tokenizer Paths
-TOKENIZER_MODEL_PATH = BASE_DIR / "multi_tokenizer.model"
-TOKENIZER_VOCAB_PATH = BASE_DIR / "multi_tokenizer.vocab"
-TOKENIZER_MERGE_PATH = BASE_DIR / "multi_tokenizer_merge.txt"
+TOKENIZER_MODEL_PATH = "model/multi_tokenizer.model"
+TOKENIZER_VOCAB_PATH = "model/multi_tokenizer.vocab"
+TOKENIZER_MERGE_PATH = "model/tokenizer_merge.txt"
 
 # Model Configuration
 MODEL_NAME = "gpt2"  # Replace with your actual model name
-MODEL_PATH = BASE_DIR / "models" / "multilingual_model"  # Path to your trained model
+MODEL_PATH = "mbart_finetuned/checkpoint-500" 
+MODEL_TYPE = "AutoModelForCausalLM"
 MAX_GENERATION_LENGTH = 100
 NUM_RETURN_SEQUENCES = 1
 TEMPERATURE = 0.7
@@ -47,11 +48,11 @@ LANGUAGE_KEYWORDS = {
 }
 
 # Training Configuration (for future use)
-TRAINING_DATA_PATH = BASE_DIR / "data" / "training"
-VALIDATION_DATA_PATH = BASE_DIR / "data" / "validation"
+TRAINING_DATA_PATH = "data/training"
+VALIDATION_DATA_PATH = "data/validation"
 CORPUS_FILES = {
     "hindi": "hindi_corpus.txt",
-    "sanskrit": "sanskrit_corpus.txt", 
+    "sanskrit": "sanskrit_corpus.txt",
     "marathi": "marathi_corpus.txt",
     "english": "english_corpus.txt"
 }
@@ -68,22 +69,32 @@ FASTTEXT_MODEL_PATH = BASE_DIR / "models" / "lid.176.bin"
 FASTTEXT_DETECTION_THRESHOLD = 0.7
 
 # Logging Configuration
-LOG_LEVEL = "INFO"
+LOG_LEVEL = "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
 LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 LOG_FILE = BASE_DIR / "logs" / "api.log"
+
+# Enhanced logging format with more detail
+DETAILED_LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(funcName)s() - %(message)s"
 
 # Create necessary directories
 DIRECTORIES_TO_CREATE = [
     BASE_DIR / "models",
     BASE_DIR / "data" / "training",
-    BASE_DIR / "data" / "validation", 
+    BASE_DIR / "data" / "validation",
     BASE_DIR / "logs"
 ]
 
 def create_directories():
     """Create necessary directories if they don't exist"""
+    created_dirs = []
     for directory in DIRECTORIES_TO_CREATE:
-        directory.mkdir(parents=True, exist_ok=True)
+        if not directory.exists():
+            directory.mkdir(parents=True, exist_ok=True)
+            created_dirs.append(str(directory))
+            print(f"✅ Created directory: {directory}")
+        else:
+            print(f"📁 Directory exists: {directory}")
+    return created_dirs
 
 def get_model_config():
     """Get model configuration dictionary"""
@@ -118,12 +129,60 @@ def get_api_config():
         "debug": DEBUG_MODE
     }
 
+def get_logging_config():
+    """Get logging configuration dictionary"""
+    return {
+        "level": LOG_LEVEL,
+        "format": LOG_FORMAT,
+        "detailed_format": DETAILED_LOG_FORMAT,
+        "log_file": str(LOG_FILE),
+        "log_file_exists": LOG_FILE.exists() if LOG_FILE else False
+    }
+
+def print_startup_info():
+    """Print startup information to console"""
+    print("\n" + "=" * 80)
+    print(f"🚀 {API_TITLE} v{API_VERSION}")
+    print("=" * 80)
+    print(f"📍 Host: {API_HOST}:{API_PORT}")
+    print(f"🔧 Debug Mode: {DEBUG_MODE}")
+    print(f"📊 Log Level: {LOG_LEVEL}")
+    print(f"📝 Log File: {LOG_FILE}")
+    print(f"🌐 Languages: {', '.join(SUPPORTED_LANGUAGES)}")
+    print(f"🤖 Model Path: {MODEL_PATH}")
+    print(f"📚 Tokenizer: {TOKENIZER_MODEL_PATH}")
+    print("=" * 80)
+
 # Environment-specific overrides
-if os.getenv("ENVIRONMENT") == "production":
+ENV = os.getenv("ENVIRONMENT", "development").lower()
+
+if ENV == "production":
     DEBUG_MODE = False
     API_HOST = "0.0.0.0"
     LOG_LEVEL = "WARNING"
-
-if os.getenv("ENVIRONMENT") == "development":
+    print("🔒 Production environment detected")
+elif ENV == "development":
     DEBUG_MODE = True
     LOG_LEVEL = "DEBUG"
+    print("🔧 Development environment detected")
+elif ENV == "testing":
+    DEBUG_MODE = True
+    LOG_LEVEL = "DEBUG"
+    API_PORT = 8001  # Different port for testing
+    print("🧪 Testing environment detected")
+
+# Override settings from environment variables if present
+API_HOST = os.getenv("API_HOST", API_HOST)
+API_PORT = int(os.getenv("API_PORT", API_PORT))
+LOG_LEVEL = os.getenv("LOG_LEVEL", LOG_LEVEL).upper()
+DEBUG_MODE = os.getenv("DEBUG_MODE", str(DEBUG_MODE)).lower() == "true"
+
+# Validate LOG_LEVEL
+VALID_LOG_LEVELS = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+if LOG_LEVEL not in VALID_LOG_LEVELS:
+    print(f"⚠️  Invalid LOG_LEVEL '{LOG_LEVEL}', defaulting to 'INFO'")
+    LOG_LEVEL = "INFO"
+
+# Print configuration on import (optional, can be disabled)
+if os.getenv("SILENT_START", "false").lower() != "true":
+    print_startup_info()
