@@ -4,6 +4,10 @@ Configuration settings for the Multilingual Tokenization & Inference API
 """
 import os
 
+DEFAULT_MAX_LENGTH = 1024  # Optimal for most generation tasks
+TRAINING_MAX_LENGTH = 1024  # For fine-tuning
+INFERENCE_MAX_LENGTH = 1536  # For inference (can be higher since no gradient computation)
+
 # API Configuration
 API_HOST = "127.0.0.1"
 API_PORT = 8000
@@ -18,12 +22,13 @@ TOKENIZER_VOCAB_PATH = "model/multi_tokenizer.vocab"
 TOKENIZER_MERGE_PATH = "model/tokenizer_merge.txt"
 
 # Model Configuration
+# MODEL_NAME = os.getenv("MODEL_NAME", "AhinsaAI/ahinsa0.5-llama3.2-3B")  # HF model name fallback (decoder-only)
 MODEL_NAME = os.getenv("MODEL_NAME", "bigscience/bloom-560m")  # HF model name fallback (decoder-only)
-# MODEL_NAME = os.getenv("MODEL_NAME", "mbart_finetuned/checkpoint-500")  # HF model name fallback (decoder-only)
 MODEL_PATH = os.getenv("MODEL_PATH", "")  # local checkpoint folder (if used). Empty -> use MODEL_NAME
+# Note: Set MODEL_PATH to "mbart_finetuned" in settings.py after training to use fine-tuned model
 
 # Generation params
-MAX_GENERATION_LENGTH = 128
+MAX_GENERATION_LENGTH = 256
 NUM_RETURN_SEQUENCES = 1
 TEMPERATURE = 0.7
 TOP_P = 0.9
@@ -50,12 +55,12 @@ LANGUAGE_KEYWORDS = {
 TRAINING_DATA_PATH = "data/training"
 VALIDATION_DATA_PATH = "data/validation"
 CORPUS_FILES = {
-    "hindi": "data/training/hindi_corpus.txt",
-    "sanskrit": "data/training/sanskrit_corpus.txt",
-    "marathi": "data/training/marathi_corpus.txt",
-    "english": "data/training/english_corpus.txt"
+    "hindi": "hi_train.txt",
+    "sanskrit": "sa_train.txt",
+    "marathi": "mr_train.txt",
+    "english": "en_train.txt"
 }
-FINE_TUNED_MODEL_PATH = "mbart_finetuned/checkpoint-500"
+FINE_TUNED_MODEL_PATH = "model"
 
 # SentencePiece Training Parameters
 SP_VOCAB_SIZE = 32000
