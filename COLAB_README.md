@@ -19,17 +19,22 @@ This repository contains a standalone script that can be run in Google Colab to 
 2. Set `Hardware accelerator` to `GPU`
 3. Click `Save`
 
-### Step 3: Run the Notebook
+### Step 3: Setup Your Data
+1. Upload your data to Google Drive in the structure shown above
+2. Make sure your files are in the correct folder: `Google Drive/Data/training/` and `Google Drive/Data/validation/`
+
+### Step 4: Run the Notebook
 1. Run each cell in sequence (Shift+Enter)
-2. The script will:
+2. When prompted, authorize Google Drive access
+3. The script will:
    - Install required dependencies
-   - Create sample multilingual data
-   - Load and configure the model
-   - Train the model with LoRA/PEFT
+   - Mount your Google Drive
+   - Load your training data from Google Drive
+   - Configure and train the model with LoRA/PEFT
    - Save and package the trained model
    - Provide download link
 
-### Step 4: Download Your Model
+### Step 5: Download Your Model
 - The trained model will be automatically downloaded as a zip file
 - Extract it to use with your inference scripts
 
@@ -46,13 +51,26 @@ USE_QUANTIZATION = True  # Enable 8-bit quantization
 USE_PEFT = True  # Enable LoRA for efficient training
 ```
 
-## 📊 Sample Data
+## 📊 Data Requirements
 
-The script includes sample data in four languages:
-- **Hindi**: मैं एक भारतीय हूं...
-- **Sanskrit**: सर्वे भवन्तु सुखिनः...
-- **Marathi**: मी एक महाराष्ट्रीय आहे...
-- **English**: I am learning multiple languages...
+The script expects your data to be stored in Google Drive with the following structure:
+
+```
+Google Drive/
+└── Data/
+    ├── training/
+    │   ├── hi_train.txt    (Hindi training data)
+    │   ├── sa_train.txt    (Sanskrit training data)
+    │   ├── mr_train.txt    (Marathi training data)
+    │   └── en_train.txt    (English training data)
+    └── validation/
+        ├── hi_val.txt      (Hindi validation data)
+        ├── sa_val.txt      (Sanskrit validation data)
+        ├── mr_val.txt      (Marathi validation data)
+        └── en_val.txt      (English validation data)
+```
+
+**Note**: If your files have different names, you can modify the file name configuration in the notebook.
 
 ## 🎯 Features
 
@@ -61,7 +79,7 @@ The script includes sample data in four languages:
 - ✅ **8-bit Quantization**: Reduces memory usage during training
 - ✅ **Progress Tracking**: Real-time training progress and loss monitoring
 - ✅ **Automatic Packaging**: Creates downloadable zip file
-- ✅ **Sample Data**: Includes demo data for immediate testing
+- ✅ **Google Drive Integration**: Loads data directly from your Google Drive
 - ✅ **Error Handling**: Graceful handling of memory issues
 
 ## 🔧 Troubleshooting
@@ -84,28 +102,23 @@ If you encounter CUDA out of memory errors:
 - Check your browser's download settings
 - The model is packaged as a zip file for easy download
 
-## 📝 Custom Data
+## 📝 Custom Data Configuration
 
-To use your own data:
+To use your own data with different file names:
 
-1. Replace the sample data creation function
-2. Upload your data files to Colab
-3. Modify the file paths in the data loading function
-4. Ensure your data is in UTF-8 format
+1. Upload your data to Google Drive in the `Data` folder
+2. Modify the `TRAINING_FILES` and `VALIDATION_FILES` dictionaries in the notebook
+3. Ensure your data is in UTF-8 format
+4. Each file should contain one text sample per line
 
-Example data format:
-```
-data/
-├── training/
-│   ├── hindi_train.txt
-│   ├── sanskrit_train.txt
-│   ├── marathi_train.txt
-│   └── english_train.txt
-└── validation/
-    ├── hindi_val.txt
-    ├── sanskrit_val.txt
-    ├── marathi_val.txt
-    └── english_val.txt
+Example for custom file names:
+```python
+TRAINING_FILES = {
+    "hindi": "my_hindi_data.txt",
+    "sanskrit": "my_sanskrit_data.txt", 
+    "marathi": "my_marathi_data.txt",
+    "english": "my_english_data.txt"
+}
 ```
 
 ## 🎉 Next Steps
