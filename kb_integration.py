@@ -32,6 +32,7 @@ class QueryType(Enum):
     EDUCATIONAL = "educational"
     CULTURAL = "cultural"
     TRANSLATION = "translation"
+    TECHNICAL = "technical"
 
 @dataclass
 class KBQuery:
@@ -150,7 +151,17 @@ class KnowledgeBaseClient:
         try:
             # If no KB endpoint configured, use mock response
             if not self.kb_endpoint:
-                logger.warning("No KB endpoint configured, using mock response")
+                logger.info("No KB endpoint configured, using enhanced mock response")
+                return await self._get_mock_response(query, start_time)
+            
+            # Check if KB endpoint is pointing to self (same host/port as current API)
+            # This prevents infinite loops
+            import socket
+            current_host = socket.gethostbyname(socket.gethostname())
+            if (self.kb_endpoint.startswith(f"http://127.0.0.1:") or 
+                self.kb_endpoint.startswith(f"http://localhost:") or
+                self.kb_endpoint.startswith(f"http://{current_host}:")):
+                logger.warning(f"KB endpoint {self.kb_endpoint} appears to point to self, using mock response to prevent loop")
                 return await self._get_mock_response(query, start_time)
             
             # Prepare request payload for multilingual-conversation endpoint
@@ -167,6 +178,7 @@ class KnowledgeBaseClient:
             if not self.session:
                 raise KBIntegrationError("HTTP session not initialized")
             
+            logger.debug(f"Making KB request to: {self.kb_endpoint}/multilingual-conversation")
             async with self.session.post(
                 f"{self.kb_endpoint}/multilingual-conversation",
                 json=payload
@@ -225,38 +237,58 @@ class KnowledgeBaseClient:
         )
 
     async def _get_mock_response(self, query: KBQuery, start_time: float) -> KBResponse:
-        """Generate mock response for testing when KB is not available"""
+        """Generate enhanced mock response for testing when KB is not available"""
         await asyncio.sleep(0.1)  # Simulate network delay
         
-        # Generate contextual mock responses based on query content
+        # Enhanced contextual mock responses based on query content
         mock_responses = {
             "hindi": {
-                "greeting": "नमस्ते! मैं आपकी सहायता के लिए यहां हूं।",
-                "general": f"आपके प्रश्न '{query.text}' के बारे में मुझे खुशी होगी कि मैं आपकी सहायता कर सकूं।",
-                "educational": "यह एक शैक्षिक प्रश्न है। मुझे अधिक जानकारी चाहिए।"
+                "greeting": "नमस्ते! मैं आपकी सहायता के लिए यहां हूं। मैं हिंदी, संस्कृत, मराठी और अंग्रेजी में बात कर सकता हूं।",
+                "general": f"आपके प्रश्न '{query.text}' के बारे में, मैं यह कह सकता हूं कि यह एक बहुभाषी टोकनाइज़ेशन और भाषा मॉडल प्रणाली का हिस्सा है। अधिक विशिष्ट जानकारी के लिए कृपया अपना प्रश्न विस्तार से पूछें।",
+                "educational": "यह एक शैक्षिक प्रश्न है। मैं बहुभाषी भाषा प्रसंस्करण, टोकनाइज़ेशन और प्राकृतिक भाषा समझ के क्षेत्र में सहायता कर सकता हूं।",
+                "technical": "यह तकनीकी प्रश्न है। मैं प्रोग्रामिंग, एपीआई, मशीन लर्निंग और भाषा मॉडल के विषय में सहायता कर सकता हूं।",
+                "factual_geography": "यह एक भूगोल संबंधी प्रश्न है। मैं आपको बता सकता हूं कि भारत की राजधानी नई दिल्ली है। हालांकि, यह एक मॉक प्रतिक्रिया है - सटीक जानकारी के लिए विश्वसनीय स्रोतों से जांच करें।"
             },
             "sanskrit": {
-                "greeting": "नमस्कारः! अहं भवतः सहायतार्थं अत्र अस्मि।",
-                "general": f"भवतः प्रश्नस्य '{query.text}' विषये अहं सहायतां कर्तुं शक्नोमि।",
-                "educational": "एषा शैक्षिका प्रश्ना अस्ति। मह्यं अधिकं ज्ञानं आवश्यकम्।"
+                "greeting": "नमस्कारः! अहं भवतः सहायतार्थं अत्र अस्मि। अहं हिन्दी, संस्कृत, मराठी, आङ्ग्लभाषायां च वक्तुं शक्नोमि।",
+                "general": f"भवतः प्रश्नस्य '{query.text}' विषये, एतत् बहुभाषीय टोकनाइज़ेशन भाषा मॉडल प्रणाली अस्ति इति वक्तुं शक्नोमि। विशिष्टसूचनायै कृपया विस्तृतं प्रश्नं पृच्छतु।",
+                "educational": "एषा शैक्षिका प्रश्ना अस्ति। अहं बहुभाषीय भाषा प्रसंस्करण, टोकनाइज़ेशन, प्राकृतिक भाषा समझ विषयेषु सहायतां कर्तुं शक्नोमि।",
+                "technical": "एषा तकनीकी प्रश्ना अस्ति। अहं प्रोग्रामिंग, एपीआई, मशीन लर्निंग, भाषा मॉडल विषयेषु सहायतां कर्तुं शक्नोमि।",
+                "factual_geography": "एषा भूगोलविषयकः प्रश्नः अस्ति। भारतस्य राजधानी नवदिल्ली इति वक्तुं शक्नोमि। तथापि, एषा मॉक प्रतिक्रिया अस्ति - सटीकजानकार्यर्थं विश्वसनीयस्रोतानां संदर्भः करणीयः।"
             },
             "marathi": {
-                "greeting": "नमस्कार! मी तुमची मदत करण्यासाठी येथे आहे।",
-                "general": f"तुमच्या प्रश्नाबद्दल '{query.text}' मला तुमची मदत करायला आवडेल।",
-                "educational": "हा एक शैक्षणिक प्रश्न आहे. मला अधिक माहिती हवी आहे."
+                "greeting": "नमस्कार! मी तुमची मदत करण्यासाठी येथे आहे। मी हिंदी, संस्कृत, मराठी आणि इंग्रजी भाषेत बोलू शकतो।",
+                "general": f"तुमच्या प्रश्नाबद्दल '{query.text}', ही एक बहुभाषी टोकनाइझेशन आणि भाषा मॉडेल प्रणाली आहे असे मी सांगू शकतो। अधिक विशिष्ट माहितीसाठी कृपया तुमचा प्रश्न तपशीलवार विचारा।",
+                "educational": "हा एक शैक्षणिक प्रश्न आहे। मी बहुभाषी भाषा प्रक्रिया, टोकनाइझेशन आणि नैसर्गिक भाषा समजण्याच्या क्षेत्रात मदत करू शकतो।",
+                "technical": "हा एक तांत्रिक प्रश्न आहे। मी प्रोग्रामिंग, API, मशीन लर्निंग आणि भाषा मॉडेलच्या विषयांत मदत करू शकतो।",
+                "factual_geography": "हा एक भूगोलाचा प्रश्न आहे। मी तुम्हाला सांगू शकतो की भारताची राजधानी नवी दिल्ली आहे। तथापि, ही एक मॉक प्रतिक्रिया आहे - अचूक माहितीसाठी विश्वसनीय स्रोतांकडून तपासा।"
             },
             "english": {
-                "greeting": "Hello! I'm here to help you with your questions.",
-                "general": f"Regarding your question about '{query.text}', I'd be happy to assist you.",
-                "educational": "This appears to be an educational question. I'd need more information to provide a comprehensive answer."
+                "greeting": "Hello! I'm here to help you with your questions. I can communicate in Hindi, Sanskrit, Marathi, and English.",
+                "general": f"I understand you're asking about '{query.text}'. While I'm designed as a multilingual tokenization and language model system, I can provide some general information. However, for accurate factual information, I'd recommend consulting reliable sources or databases.",
+                "educational": "This appears to be an educational question. I can assist you with topics related to multilingual language processing, tokenization, and natural language understanding.",
+                "technical": "This seems to be a technical question. I can help you with programming, APIs, machine learning, and language model topics.",
+                "factual_geography": "This is a geography-related question. I can tell you that the capital of India is New Delhi. However, this is a mock response - for accurate information, please consult reliable sources or databases."
             }
         }
         
-        # Determine response type
-        if any(word in query.text.lower() for word in ["hello", "hi", "namaste", "नमस्ते", "नमस्कार"]):
+        # Determine response type based on query content and type
+        query_lower = query.text.lower()
+        
+        # Determine response type based on query content and type
+        if any(word in query_lower for word in ["hello", "hi", "namaste", "नमस्ते", "नमस्कार"]):
             response_key = "greeting"
         elif query.query_type == QueryType.EDUCATIONAL:
             response_key = "educational"
+        elif query.query_type == QueryType.FACTUAL:
+            # Handle common factual questions with appropriate responses
+            geography_keywords = ["capital", "भारत", "india", "delhi", "mumbai", "country", "city", "राजधानी", "france", "paris", "london", "england"]
+            if any(word in query_lower for word in geography_keywords):
+                response_key = "factual_geography"
+            else:
+                response_key = "general"
+        elif query.query_type == QueryType.TECHNICAL or any(word in query_lower for word in ["api", "code", "programming", "technical", "model", "token", "python", "javascript", "database"]):
+            response_key = "technical"
         else:
             response_key = "general"
         
@@ -266,7 +298,7 @@ class KnowledgeBaseClient:
         return KBResponse(
             answer=mock_answer,
             confidence=0.8,
-            sources=["Mock Knowledge Base"],
+            sources=["Multilingual Tokenization API - Mock Response"],
             language=query.language,
             query_type=query.query_type,
             processing_time=time.time() - start_time
@@ -335,6 +367,11 @@ class QueryClassifier:
                 "परंपरा", "त्योहार", "संस्कृति", "इतिहास", "पुराण",
                 "संस्कृतिः", "उत्सवः", "इतिहासः", "पुराणम्",
                 "परंपरा", "सण", "संस्कृती", "इतिहास"
+            ],
+            QueryType.TECHNICAL: [
+                "api", "code", "programming", "technical", "model", "token", "python", "javascript", "database",
+                "प्रोग्रामिंग", "कोड", "तकनीकी", "मॉडल", "टोकन",
+                "प्रोग्रामिंग", "कोड", "तांत्रिक", "मॉडेल"
             ]
         }
 

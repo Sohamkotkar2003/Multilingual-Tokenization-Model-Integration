@@ -1,141 +1,140 @@
-2025-09-27 03:24:09,272 - __main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 20:45:36,344 - __main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 20:45:39,771 - __mp_main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 20:45:39,806 - app - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 20:45:39,811 - app - INFO - 🚀 API Startup
-2025-09-27 20:45:39,818 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
-2025-09-27 20:45:49,358 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
-2025-09-27 20:51:18,054 - app - INFO - 🔌 API Shutdown
-2025-09-27 20:57:51,045 - app - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 20:59:09,976 - __main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 20:59:13,473 - __mp_main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 20:59:13,507 - app - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 20:59:13,515 - app - INFO - 🚀 API Startup
-2025-09-27 20:59:13,522 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
-2025-09-27 20:59:14,586 - app - INFO - 🔧 Using 4-bit quantization for faster inference
-2025-09-27 20:59:15,807 - accelerate.utils.modeling - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
-2025-09-27 20:59:26,112 - app - INFO - ✅ Model loaded with 4-bit quantization
-2025-09-27 20:59:26,112 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
-2025-09-27 21:07:07,758 - app - INFO - 🔌 API Shutdown
-2025-09-27 21:30:27,619 - __main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:30:34,645 - __mp_main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:30:34,984 - app - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:30:35,019 - app - INFO - 🚀 API Startup
-2025-09-27 21:30:35,028 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
-2025-09-27 21:30:37,670 - app - INFO - 🔧 Using 4-bit quantization for faster inference
-2025-09-27 21:30:40,802 - accelerate.utils.modeling - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
-2025-09-27 21:30:43,232 - app - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:30:55,500 - app - INFO - ✅ Model loaded with 4-bit quantization
-2025-09-27 21:30:55,502 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
-2025-09-27 21:30:58,576 - __main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:31:04,798 - __mp_main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:31:05,023 - app - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:31:05,033 - app - INFO - 🚀 API Startup
-2025-09-27 21:31:05,042 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
-2025-09-27 21:31:06,327 - app - INFO - 🔧 Using 4-bit quantization for faster inference
-2025-09-27 21:31:07,987 - accelerate.utils.modeling - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
-2025-09-27 21:31:21,460 - app - INFO - ✅ Model loaded with 4-bit quantization
-2025-09-27 21:31:21,460 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
-2025-09-27 21:32:33,844 - app - INFO - 🔌 API Shutdown
-2025-09-27 21:32:33,892 - app - INFO - 🔌 API Shutdown
-2025-09-27 21:32:40,199 - __mp_main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:32:40,200 - __mp_main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:32:40,327 - app - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:32:40,338 - app - INFO - 🚀 API Startup
-2025-09-27 21:32:40,339 - app - INFO - 🚀 API Startup
-2025-09-27 21:32:40,345 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
-2025-09-27 21:32:41,393 - app - INFO - 🔧 Using 4-bit quantization for faster inference
-2025-09-27 21:32:41,436 - app - INFO - 🔧 Using 4-bit quantization for faster inference
-2025-09-27 21:32:42,592 - accelerate.utils.modeling - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
-2025-09-27 21:32:42,629 - accelerate.utils.modeling - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
-2025-09-27 21:32:54,205 - app - INFO - ✅ Model loaded with 4-bit quantization
-2025-09-27 21:32:54,205 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
-2025-09-27 21:32:54,285 - app - INFO - ✅ Model loaded with 4-bit quantization
-2025-09-27 21:32:54,285 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
-2025-09-27 21:40:40,248 - __main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:40:43,780 - __mp_main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:40:43,898 - app - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:40:43,909 - app - INFO - 🚀 API Startup
-2025-09-27 21:40:43,919 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
-2025-09-27 21:40:45,549 - app - INFO - 🔧 Using 4-bit quantization for faster inference
-2025-09-27 21:40:46,785 - accelerate.utils.modeling - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
-2025-09-27 21:40:56,837 - app - INFO - ✅ Model loaded with 4-bit quantization
-2025-09-27 21:40:56,837 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
-2025-09-27 21:45:28,883 - kb_integration - WARNING - No KB endpoint configured, using mock response
-2025-09-27 21:46:05,009 - kb_integration - WARNING - No KB endpoint configured, using mock response
-2025-09-27 21:46:45,844 - kb_integration - WARNING - No KB endpoint configured, using mock response
-2025-09-27 21:47:50,126 - kb_integration - WARNING - No KB endpoint configured, using mock response
-2025-09-27 21:49:02,859 - kb_integration - WARNING - No KB endpoint configured, using mock response
-2025-09-27 21:50:25,877 - kb_integration - WARNING - No KB endpoint configured, using mock response
-2025-09-27 21:50:25,989 - kb_integration - WARNING - No KB endpoint configured, using mock response
-2025-09-27 21:50:26,112 - kb_integration - WARNING - No KB endpoint configured, using mock response
-2025-09-27 21:50:26,219 - kb_integration - WARNING - No KB endpoint configured, using mock response
-2025-09-27 21:53:54,691 - kb_integration - WARNING - No KB endpoint configured, using mock response
-2025-09-27 21:53:56,841 - kb_integration - WARNING - No KB endpoint configured, using mock response
-2025-09-27 21:53:56,943 - kb_integration - WARNING - No KB endpoint configured, using mock response
-2025-09-27 21:53:57,068 - kb_integration - WARNING - No KB endpoint configured, using mock response
-2025-09-27 21:53:57,161 - kb_integration - WARNING - No KB endpoint configured, using mock response
-2025-09-27 21:57:00,151 - app - INFO - 🔌 API Shutdown
-2025-09-27 21:57:11,318 - __mp_main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:57:11,503 - app - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:57:11,517 - app - INFO - 🚀 API Startup
-2025-09-27 21:57:11,527 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
-2025-09-27 21:57:12,737 - app - INFO - 🔧 Using 4-bit quantization for faster inference
-2025-09-27 21:57:14,142 - accelerate.utils.modeling - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
-2025-09-27 21:57:27,794 - app - INFO - ✅ Model loaded with 4-bit quantization
-2025-09-27 21:57:27,795 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
-2025-09-27 21:57:27,795 - app - INFO - 🔌 API Shutdown
-2025-09-27 21:58:04,042 - __main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:58:08,573 - __mp_main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:58:08,701 - app - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:58:08,714 - app - INFO - 🚀 API Startup
-2025-09-27 21:58:08,721 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
-2025-09-27 21:58:09,922 - app - INFO - 🔧 Using 4-bit quantization for faster inference
-2025-09-27 21:58:11,333 - accelerate.utils.modeling - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
-2025-09-27 21:58:23,480 - app - INFO - ✅ Model loaded with 4-bit quantization
-2025-09-27 21:58:23,481 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
-2025-09-27 21:58:41,291 - __main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:58:46,002 - __mp_main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:58:46,133 - app - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:58:46,154 - app - INFO - 🚀 API Startup
-2025-09-27 21:58:46,162 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
-2025-09-27 21:58:47,312 - app - INFO - 🔧 Using 4-bit quantization for faster inference
-2025-09-27 21:58:48,593 - accelerate.utils.modeling - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
-2025-09-27 21:58:59,437 - app - INFO - ✅ Model loaded with 4-bit quantization
-2025-09-27 21:58:59,438 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
-2025-09-27 21:59:10,462 - app - INFO - 🔌 API Shutdown
-2025-09-27 21:59:17,434 - __mp_main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:59:17,621 - app - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:59:17,635 - app - INFO - 🚀 API Startup
-2025-09-27 21:59:17,643 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
-2025-09-27 21:59:17,807 - __mp_main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:59:17,923 - app - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 21:59:17,937 - app - INFO - 🚀 API Startup
-2025-09-27 21:59:17,942 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
-2025-09-27 21:59:18,874 - app - INFO - 🔧 Using 4-bit quantization for faster inference
-2025-09-27 21:59:19,063 - app - INFO - 🔧 Using 4-bit quantization for faster inference
-2025-09-27 21:59:20,253 - accelerate.utils.modeling - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
-2025-09-27 21:59:20,439 - accelerate.utils.modeling - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
-2025-09-27 21:59:32,185 - app - INFO - ✅ Model loaded with 4-bit quantization
-2025-09-27 21:59:32,186 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
-2025-09-27 21:59:32,257 - app - INFO - ✅ Model loaded with 4-bit quantization
-2025-09-27 21:59:32,258 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
-2025-09-27 22:00:00,417 - app - INFO - 🔌 API Shutdown
-2025-09-27 22:00:00,449 - app - INFO - 🔌 API Shutdown
-2025-09-27 22:00:07,418 - __mp_main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 22:00:07,419 - __mp_main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 22:00:07,555 - app - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 22:00:07,565 - app - INFO - 🚀 API Startup
-2025-09-27 22:00:07,565 - app - INFO - 🚀 API Startup
-2025-09-27 22:00:07,570 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
-2025-09-27 22:00:07,572 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
-2025-09-27 22:00:08,700 - app - INFO - 🔧 Using 4-bit quantization for faster inference
-2025-09-27 22:00:19,676 - __main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 22:00:23,561 - __mp_main__ - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 22:00:23,680 - app - INFO - === API Starting - Logging Config Applied ===
-2025-09-27 22:00:23,689 - app - INFO - 🚀 API Startup
-2025-09-27 22:00:23,694 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
-2025-09-27 22:00:24,681 - app - INFO - 🔧 Using 4-bit quantization for faster inference
-2025-09-27 22:00:25,842 - accelerate.utils.modeling - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
-2025-09-27 22:00:34,087 - app - INFO - ✅ Model loaded with 4-bit quantization
-2025-09-27 22:00:34,087 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
+2025-09-27 23:54:55,099 - __main__ - INFO - === API Starting - Logging Config Applied ===
+2025-09-27 23:54:55,273 - app - INFO - === API Starting - Logging Config Applied ===
+2025-09-27 23:54:55,285 - app - INFO - 🚀 API Startup
+2025-09-27 23:54:55,293 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
+2025-09-27 23:54:56,486 - app - INFO - 🔧 Using 4-bit quantization for faster inference
+2025-09-27 23:54:58,052 - accelerate.utils.modeling - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+2025-09-27 23:55:12,835 - app - INFO - ✅ Model loaded with 4-bit quantization
+2025-09-27 23:55:12,836 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
+2025-09-27 23:55:34,044 - kb_integration - INFO - No KB endpoint configured, using enhanced mock response
+2025-09-27 23:57:16,026 - kb_integration - INFO - No KB endpoint configured, using enhanced mock response
+2025-09-27 23:57:42,220 - kb_integration - INFO - No KB endpoint configured, using enhanced mock response
+2025-09-27 23:57:49,288 - kb_integration - INFO - No KB endpoint configured, using enhanced mock response
+2025-09-27 23:58:10,334 - kb_integration - INFO - No KB endpoint configured, using enhanced mock response
+2025-09-27 23:58:59,006 - kb_integration - INFO - No KB endpoint configured, using enhanced mock response
+2025-09-28 00:00:14,751 - app - INFO - 🔌 API Shutdown
+2025-09-28 00:00:26,464 - __main__ - INFO - === API Starting - Logging Config Applied ===
+2025-09-28 00:00:26,657 - app - INFO - === API Starting - Logging Config Applied ===
+2025-09-28 00:00:26,670 - app - INFO - 🚀 API Startup
+2025-09-28 00:00:26,679 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
+2025-09-28 00:00:27,978 - app - INFO - 🔧 Using 4-bit quantization for faster inference
+2025-09-28 00:00:29,626 - accelerate.utils.modeling - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+2025-09-28 00:00:51,659 - app - INFO - ✅ Model loaded with 4-bit quantization
+2025-09-28 00:00:51,660 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
+2025-09-28 00:01:32,849 - kb_integration - INFO - No KB endpoint configured, using enhanced mock response
+2025-09-28 00:01:41,090 - kb_integration - INFO - No KB endpoint configured, using enhanced mock response
+2025-09-28 00:01:47,262 - kb_integration - INFO - No KB endpoint configured, using enhanced mock response
+2025-09-28 00:41:35,909 - kb_integration - INFO - No KB endpoint configured, using enhanced mock response
+2025-09-28 01:31:06,604 - kb_integration - INFO - No KB endpoint configured, using enhanced mock response
+2025-09-28 01:32:15,727 - app - INFO - 🔌 API Shutdown
+2025-09-28 01:32:35,416 - __main__ - INFO - === API Starting - Logging Config Applied ===
+2025-09-28 01:32:35,612 - app - INFO - === API Starting - Logging Config Applied ===
+2025-09-28 01:32:35,622 - app - INFO - 🚀 API Startup
+2025-09-28 01:32:35,628 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
+2025-09-28 01:32:36,909 - app - INFO - 🔧 Using 4-bit quantization for faster inference
+2025-09-28 01:32:38,530 - accelerate.utils.modeling - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+2025-09-28 01:32:52,726 - app - INFO - ✅ Model loaded with 4-bit quantization
+2025-09-28 01:32:52,726 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
+2025-09-28 01:33:47,227 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 01:34:00,997 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 01:34:19,782 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 01:34:38,741 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 01:34:59,313 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 01:35:16,300 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 01:35:38,411 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 01:36:01,421 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 01:36:01,528 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 01:36:01,638 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 01:36:01,746 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 01:36:11,106 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 01:36:11,209 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 01:36:11,332 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 01:36:11,428 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 02:15:12,448 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 02:15:23,316 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 02:15:53,558 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 02:17:23,378 - app - INFO - === API Starting - Logging Config Applied ===
+2025-09-28 02:17:23,649 - app - INFO - 🚀 API Startup
+2025-09-28 02:17:23,661 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
+2025-09-28 02:17:25,076 - app - INFO - 🔧 Using 4-bit quantization for faster inference
+2025-09-28 02:17:26,711 - accelerate.utils.modeling - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+2025-09-28 02:17:57,508 - app - INFO - === API Starting - Logging Config Applied ===
+2025-09-28 02:17:57,683 - app - INFO - 🚀 API Startup
+2025-09-28 02:17:57,691 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
+2025-09-28 02:17:59,069 - app - INFO - 🔧 Using 4-bit quantization for faster inference
+2025-09-28 02:18:00,913 - accelerate.utils.modeling - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+2025-09-28 02:18:20,969 - app - INFO - ✅ Model loaded with 4-bit quantization
+2025-09-28 02:18:20,970 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
+2025-09-28 02:18:24,528 - app - INFO - === API Starting - Logging Config Applied ===
+2025-09-28 02:18:24,716 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 02:18:24,822 - app - INFO - Generation skipped - generate_response: True, model: False, tokenizer: False
+2025-09-28 02:18:44,570 - app - INFO - === API Starting - Logging Config Applied ===
+2025-09-28 02:18:44,729 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
+2025-09-28 02:18:46,152 - app - INFO - 🔧 Using 4-bit quantization for faster inference
+2025-09-28 02:18:47,853 - accelerate.utils.modeling - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+2025-09-28 02:19:06,882 - app - INFO - ✅ Model loaded with 4-bit quantization
+2025-09-28 02:19:06,883 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
+2025-09-28 02:19:06,895 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 02:20:23,806 - __main__ - INFO - === API Starting - Logging Config Applied ===
+2025-09-28 02:20:24,045 - app - INFO - === API Starting - Logging Config Applied ===
+2025-09-28 02:20:24,054 - app - INFO - 🚀 API Startup
+2025-09-28 02:20:24,062 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
+2025-09-28 02:20:25,340 - app - INFO - 🔧 Using 4-bit quantization for faster inference
+2025-09-28 02:20:26,982 - accelerate.utils.modeling - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+2025-09-28 02:20:41,647 - app - INFO - ✅ Model loaded with 4-bit quantization
+2025-09-28 02:20:41,648 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
+2025-09-28 02:21:21,186 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 02:21:21,291 - app - INFO - Starting response generation for query: Can you tell me about GenAI?...
+2025-09-28 02:21:21,292 - app - INFO - Generated prompt: Question: Can you tell me about GenAI?
+Knowledge Base Answer: I understand you're asking about 'Can ...
+2025-09-28 02:21:21,294 - app - INFO - Starting model generation with max_new_tokens: 256
+2025-09-28 02:21:42,905 - app - INFO - Full model response: Question: Can you tell me about GenAI?
+Knowledge Base Answer: I understand you're asking about 'Can you tell me about GenAI?'. While I'm designed as a multilingual tokenization and language model syst...
+2025-09-28 02:21:42,905 - app - INFO - Extracted generated response: I can provide some general information about GenAI, which refers to Artificial General Intelligence ...
+2025-09-28 02:22:12,517 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 02:22:12,609 - app - INFO - Starting response generation for query: योग क्या है?...
+2025-09-28 02:22:12,609 - app - INFO - Generated prompt: प्रश्न: योग क्या है?
+ज्ञान आधार का उत्तर: आपके प्रश्न 'योग क्या है?' के बारे में, मैं यह कह सकता हूं...
+2025-09-28 02:22:12,612 - app - INFO - Starting model generation with max_new_tokens: 256
+2025-09-28 02:22:35,074 - app - INFO - Full model response: प्रश्न: योग क्या है?
+ज्ञान आधार का उत्तर: आपके प्रश्न 'योग क्या है?' के बारे में, मैं यह कह सकता हूं कि यह एक बहुभाषी टोकनाइज़ेशन और भाषा मॉडल प्रणाली का हिस्सा है। अधिक विशिष्ट जानकारी के लिए कृपया अ...
+2025-09-28 02:22:35,076 - app - INFO - Extracted generated response: "योग" एक ऐसा शब्द है जिसका अर्थ है "योग" के लिए एक व्यापक शब्द। योग एक प्राचीन भारतीय दर्शन, व्यायाम...
+2025-09-28 02:23:00,966 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 02:23:01,076 - app - INFO - Starting response generation for query: भारताची राजधानी काय आहे?...
+2025-09-28 02:23:01,076 - app - INFO - Generated prompt: प्रश्न: भारताची राजधानी काय आहे?
+ज्ञान आधाराचे उत्तर: हा एक भूगोलाचा प्रश्न आहे। मी तुम्हाला सांगू श...
+2025-09-28 02:23:01,078 - app - INFO - Starting model generation with max_new_tokens: 256
+2025-09-28 02:23:23,028 - app - INFO - Full model response: प्रश्न: भारताची राजधानी काय आहे?
+ज्ञान आधाराचे उत्तर: हा एक भूगोलाचा प्रश्न आहे। मी तुम्हाला सांगू शकतो की भारताची राजधानी नवी दिल्ली आहे। तथापि, ही एक मॉक प्रतिक्रिया आहे - अचूक माहितीसाठी विश्वसनीय ...
+2025-09-28 02:23:23,029 - app - INFO - Extracted generated response: भारताची राजधानी म्हणजे ती देशाची प्रशासकीय केंद्रित राजधानी असलेली शहर. भारताची राजधानी नवी दिल्ली आ...
+2025-09-28 02:23:37,201 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 02:23:37,310 - app - INFO - Starting response generation for query: What is tokenization?...
+2025-09-28 02:23:37,311 - app - INFO - Generated prompt: Question: What is tokenization?
+Knowledge Base Answer: I understand you're asking about 'What is tok...
+2025-09-28 02:23:37,312 - app - INFO - Starting model generation with max_new_tokens: 256
+2025-09-28 02:23:59,789 - app - INFO - Full model response: Question: What is tokenization?
+Knowledge Base Answer: I understand you're asking about 'What is tokenization?'. While I'm designed as a multilingual tokenization and language model system, I can prov...
+2025-09-28 02:23:59,790 - app - INFO - Extracted generated response: u-n-b-r-e-a-k-a-b-l-e. This allows the model to better understand the individual components of the w...
+2025-09-28 02:24:18,185 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 02:24:18,293 - app - INFO - Starting response generation for query: Can you tell me about GenAI?...
+2025-09-28 02:24:18,293 - app - INFO - Generated prompt: Question: Can you tell me about GenAI?
+Knowledge Base Answer: I understand you're asking about 'Can ...
+2025-09-28 02:24:18,296 - app - INFO - Starting model generation with max_new_tokens: 256
+2025-09-28 02:24:30,447 - app - INFO - Full model response: Question: Can you tell me about GenAI?
+Knowledge Base Answer: I understand you're asking about 'Can you tell me about GenAI?'. While I'm designed as a multilingual tokenization and language model syst...
+2025-09-28 02:24:30,448 - app - INFO - Extracted generated response: The provided 'Improved Answer' is based on the knowledge of the AI and Machine Learning Knowledge Ba...
+2025-09-28 02:24:46,316 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 02:24:46,422 - app - INFO - Starting response generation for query: Explain the concept of machine learning...
+2025-09-28 02:24:46,422 - app - INFO - Generated prompt: Question: Explain the concept of machine learning
+Knowledge Base Answer: Hello! I'm here to help you...
+2025-09-28 02:24:46,423 - app - INFO - Starting model generation with max_new_tokens: 256
+2025-09-28 02:25:07,725 - app - INFO - Full model response: Question: Explain the concept of machine learning
+Knowledge Base Answer: Hello! I'm here to help you with your questions. I can communicate in Hindi, Sanskrit, Marathi, and English.
+
+(Source: Multilin...
+2025-09-28 02:25:07,726 - app - INFO - Extracted generated response: हेलो! मैं आपके प्रश्नों के लिए यहाँ हूँ। मैं ह...
+2025-09-28 02:26:27,190 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 02:26:27,294 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 02:26:27,401 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 02:26:27,510 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 02:27:06,738 - app - INFO - 🔌 API Shutdown

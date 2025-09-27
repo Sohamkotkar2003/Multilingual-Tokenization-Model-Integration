@@ -97,9 +97,12 @@ class QARequest(BaseModel):
     user_id: Optional[str] = Field(None, description="User identifier for session tracking")
     session_id: Optional[str] = Field(None, description="Session identifier for conversation context")
     context: Optional[str] = Field(None, description="Additional context for the query")
+    generate_response: bool = Field(True, description="Whether to generate a response using the language model")
+    max_response_length: Optional[int] = Field(256, description="Maximum response length")
 
 class QAResponse(BaseModel):
     answer: str
+    generated_response: Optional[str] = None
     query: str
     language: str
     confidence: float
@@ -159,8 +162,66 @@ async def knowledge_base_qa(request: QARequest):
             session_id=session_id
         )
         
+        generated_response = None
+        
+        # Generate enhanced response using language model if requested
+        if request.generate_response and model and hf_tokenizer:
+            try:
+                logger.info(f"Starting response generation for query: {request.text[:50]}...")
+                # Create prompt combining KB answer with original query
+                if detected_lang == "hindi":
+                    prompt = f"प्रश्न: {request.text}\nज्ञान आधार का उत्तर: {answer}\nबेहतर उत्तर:"
+                elif detected_lang == "sanskrit":
+                    prompt = f"प्रश्नः {request.text}\nज्ञान आधारस्य उत्तरम्: {answer}\nउत्तमं उत्तरम्:"
+                elif detected_lang == "marathi":
+                    prompt = f"प्रश्न: {request.text}\nज्ञान आधाराचे उत्तर: {answer}\nचांगले उत्तर:"
+                else:
+                    prompt = f"Question: {request.text}\nKnowledge Base Answer: {answer}\nImproved Answer:"
+                
+                logger.info(f"Generated prompt: {prompt[:100]}...")
+                
+                # Generate response
+                inputs = hf_tokenizer(prompt, return_tensors="pt")
+                
+                # Move inputs to the same device as the model
+                if hasattr(model, 'device') and model.device.type != 'cpu':
+                    inputs = inputs.to(model.device)
+                elif torch.cuda.is_available():
+                    inputs = inputs.to("cuda")
+                
+                logger.info(f"Starting model generation with max_new_tokens: {min(request.max_response_length or 256, settings.MAX_GENERATION_LENGTH)}")
+                
+                with torch.no_grad():
+                    outputs = model.generate(
+                        **inputs,
+                        max_new_tokens=min(request.max_response_length or 256, settings.MAX_GENERATION_LENGTH),
+                        temperature=settings.TEMPERATURE,
+                        top_p=settings.TOP_P,
+                        do_sample=settings.DO_SAMPLE,
+                        pad_token_id=hf_tokenizer.pad_token_id or hf_tokenizer.eos_token_id,
+                        eos_token_id=hf_tokenizer.eos_token_id
+                    )
+                
+                full_response = hf_tokenizer.decode(outputs[0], skip_special_tokens=True)
+                logger.info(f"Full model response: {full_response[:200]}...")
+                
+                # Extract only the generated part after the prompt
+                if ":" in full_response:
+                    generated_response = full_response.split(":")[-1].strip()
+                else:
+                    generated_response = full_response[len(prompt):].strip()
+                
+                logger.info(f"Extracted generated response: {generated_response[:100]}...")
+                    
+            except Exception as e:
+                logger.error(f"Response generation failed: {e}", exc_info=True)
+                generated_response = None
+        else:
+            logger.info(f"Generation skipped - generate_response: {request.generate_response}, model: {model is not None}, tokenizer: {hf_tokenizer is not None}")
+        
         return QAResponse(
             answer=answer,
+            generated_response=generated_response,
             query=request.text,
             language=detected_lang,
             confidence=metadata.get("kb_confidence", 0.5),
@@ -417,8 +478,9 @@ async def health_check_detailed():
                 },
                 "kb_integration": {
                     "configured": bool(settings.KB_ENDPOINT),
-                    "endpoint": settings.KB_ENDPOINT or "not_configured",
-                    "status": "configured" if settings.KB_ENDPOINT else "mock_mode"
+                    "endpoint": settings.KB_ENDPOINT or "not_configured (using mock responses)",
+                    "status": "configured" if settings.KB_ENDPOINT else "mock_mode",
+                    "note": "KB endpoint not configured - using enhanced mock responses for QA queries"
                 },
                 "vaani_tts": {
                     "configured": bool(settings.VAANI_ENDPOINT),
@@ -643,5 +705,26 @@ async def shutdown_event():
 # Run with uvicorn
 # =============================================================================
 if __name__ == "__main__":
+    import platform
+    
     cfg = settings.get_api_config()
-    uvicorn.run("app:app", host=cfg["host"], port=cfg["port"], reload=cfg["debug"], log_level=settings.LOG_LEVEL.lower())
+    
+    # Windows-specific uvicorn configuration to avoid file descriptor issues
+    if platform.system() == "Windows":
+        uvicorn.run(
+            "app:app", 
+            host=cfg["host"], 
+            port=cfg["port"], 
+            reload=False,  # Disable reload on Windows to avoid file descriptor issues
+            log_level=settings.LOG_LEVEL.lower(),
+            workers=1,  # Single worker to avoid multiprocessing issues
+            loop="asyncio"  # Use asyncio loop explicitly
+        )
+    else:
+        uvicorn.run(
+            "app:app", 
+            host=cfg["host"], 
+            port=cfg["port"], 
+            reload=cfg["debug"], 
+            log_level=settings.LOG_LEVEL.lower()
+        )
