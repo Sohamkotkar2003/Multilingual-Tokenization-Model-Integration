@@ -93,7 +93,6 @@ DETAILED_LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(
 
 # Create necessary directories
 DIRECTORIES_TO_CREATE = [
-    "models",
     "data/training",
     "data/validation",
     "logs",

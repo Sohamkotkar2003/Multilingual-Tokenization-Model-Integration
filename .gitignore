@@ -5,3 +5,4 @@ __pycache__/
 mbart_finetuned/
 data/
 core/logs/
+/cache/
