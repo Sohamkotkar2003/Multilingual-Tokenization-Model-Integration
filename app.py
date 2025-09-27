@@ -6,7 +6,7 @@ import uvicorn
 import os
 from typing import Optional
 import logging
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
 # Import settings
 from core import settings
@@ -72,7 +72,7 @@ class LanguageDetectResponse(BaseModel):
 # Model / Tokenizer Loading
 # =============================================================================
 def load_models():
-    """Load SentencePiece tokenizer and HuggingFace model"""
+    """Load SentencePiece tokenizer and HuggingFace model with optional 4-bit quantization"""
     global sp_tokenizer, model, hf_tokenizer
 
     try:
@@ -88,13 +88,39 @@ def load_models():
         # Load HuggingFace model + tokenizer
         model_source = settings.MODEL_PATH if settings.MODEL_PATH else settings.MODEL_NAME
         hf_tokenizer = AutoTokenizer.from_pretrained(model_source)
-        model = AutoModelForCausalLM.from_pretrained(
-            model_source,
-            dtype=torch.float16 if torch.cuda.is_available() and settings.USE_FP16_IF_GPU else torch.float32
-        )
+        
+        # Configure quantization if enabled
+        quantization_config = None
+        if settings.USE_4BIT_QUANTIZATION and torch.cuda.is_available():
+            try:
+                quantization_config = BitsAndBytesConfig(**settings.QUANTIZATION_CONFIG)
+                logger.info("🔧 Using 4-bit quantization for faster inference")
+            except Exception as e:
+                logger.warning(f"⚠️ Failed to create quantization config: {e}")
+                logger.info("🔄 Falling back to standard model loading")
+                quantization_config = None
+        
+        # Load model with or without quantization
+        model_kwargs = {
+            "torch_dtype": torch.float16 if torch.cuda.is_available() and settings.USE_FP16_IF_GPU else torch.float32,
+        }
+        
+        if quantization_config:
+            model_kwargs["quantization_config"] = quantization_config
+            model_kwargs["device_map"] = "auto"  # Let bitsandbytes handle device placement
+        
+        model = AutoModelForCausalLM.from_pretrained(model_source, **model_kwargs)
         model.eval()
-        if torch.cuda.is_available():
+        
+        # Move to GPU only if not using quantization (quantization handles device placement)
+        if torch.cuda.is_available() and not quantization_config:
             model.to("cuda")
+            logger.info(f"✅ Model loaded on GPU: {torch.cuda.get_device_name()}")
+        elif quantization_config:
+            logger.info("✅ Model loaded with 4-bit quantization")
+        else:
+            logger.info("✅ Model loaded on CPU")
+            
         logger.info(f"✅ Model loaded: {model_source}")
 
     except Exception as e:
@@ -179,7 +205,16 @@ async def generate_text(request: TextRequest):
         detected_lang = settings.DEFAULT_LANGUAGE
 
     try:
-        inputs = hf_tokenizer(request.text, return_tensors="pt").to("cuda" if torch.cuda.is_available() else "cpu")
+        # Tokenize input text
+        inputs = hf_tokenizer(request.text, return_tensors="pt")
+        
+        # Move inputs to the same device as the model
+        # For quantized models, device_map="auto" handles placement automatically
+        if hasattr(model, 'device') and model.device.type != 'cpu':
+            inputs = inputs.to(model.device)
+        elif torch.cuda.is_available():
+            inputs = inputs.to("cuda")
+        
         with torch.no_grad():
             outputs = model.generate(
                 **inputs,
@@ -187,7 +222,8 @@ async def generate_text(request: TextRequest):
                 temperature=settings.TEMPERATURE,
                 top_p=settings.TOP_P,
                 do_sample=settings.DO_SAMPLE,
-                num_return_sequences=settings.NUM_RETURN_SEQUENCES
+                num_return_sequences=settings.NUM_RETURN_SEQUENCES,
+                pad_token_id=hf_tokenizer.eos_token_id  # Ensure proper padding
             )
         generated_text = hf_tokenizer.decode(outputs[0], skip_special_tokens=True)
         return GenerateResponse(language=detected_lang, generated_text=generated_text, input_text=request.text)

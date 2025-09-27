@@ -1,1 +1,19 @@
 2025-09-27 03:24:09,272 - __main__ - INFO - === API Starting - Logging Config Applied ===
+2025-09-27 20:45:36,344 - __main__ - INFO - === API Starting - Logging Config Applied ===
+2025-09-27 20:45:39,771 - __mp_main__ - INFO - === API Starting - Logging Config Applied ===
+2025-09-27 20:45:39,806 - app - INFO - === API Starting - Logging Config Applied ===
+2025-09-27 20:45:39,811 - app - INFO - 🚀 API Startup
+2025-09-27 20:45:39,818 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
+2025-09-27 20:45:49,358 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
+2025-09-27 20:51:18,054 - app - INFO - 🔌 API Shutdown
+2025-09-27 20:57:51,045 - app - INFO - === API Starting - Logging Config Applied ===
+2025-09-27 20:59:09,976 - __main__ - INFO - === API Starting - Logging Config Applied ===
+2025-09-27 20:59:13,473 - __mp_main__ - INFO - === API Starting - Logging Config Applied ===
+2025-09-27 20:59:13,507 - app - INFO - === API Starting - Logging Config Applied ===
+2025-09-27 20:59:13,515 - app - INFO - 🚀 API Startup
+2025-09-27 20:59:13,522 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
+2025-09-27 20:59:14,586 - app - INFO - 🔧 Using 4-bit quantization for faster inference
+2025-09-27 20:59:15,807 - accelerate.utils.modeling - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+2025-09-27 20:59:26,112 - app - INFO - ✅ Model loaded with 4-bit quantization
+2025-09-27 20:59:26,112 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
+2025-09-27 21:07:07,758 - app - INFO - 🔌 API Shutdown

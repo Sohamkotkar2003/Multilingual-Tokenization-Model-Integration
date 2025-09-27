@@ -22,8 +22,8 @@ TOKENIZER_VOCAB_PATH = "model/multi_tokenizer.vocab"
 TOKENIZER_MERGE_PATH = "model/tokenizer_merge.txt"
 
 # Model Configuration
-# MODEL_NAME = os.getenv("MODEL_NAME", "AhinsaAI/ahinsa0.5-llama3.2-3B")  # HF model name fallback (decoder-only)
-MODEL_NAME = os.getenv("MODEL_NAME", "bigscience/bloom-560m")  # HF model name fallback (decoder-only)
+MODEL_NAME = os.getenv("MODEL_NAME", "AhinsaAI/ahinsa0.5-llama3.2-3B")  # HF model name fallback (decoder-only)
+# MODEL_NAME = os.getenv("MODEL_NAME", "bigscience/bloom-560m")  # HF model name fallback (decoder-only)
 MODEL_PATH = os.getenv("MODEL_PATH", "")  # local checkpoint folder (if used). Empty -> use MODEL_NAME
 # Note: Set MODEL_PATH to "mbart_finetuned" in settings.py after training to use fine-tuned model
 
@@ -83,6 +83,15 @@ VAANI_TIMEOUT = float(os.getenv("VAANI_TIMEOUT", 10.0))
 # Device and performance options
 USE_FP16_IF_GPU = True
 
+# Quantization Configuration for Inference
+USE_4BIT_QUANTIZATION = True  # Enable 4-bit quantization for faster inference
+QUANTIZATION_CONFIG = {
+    "load_in_4bit": True,
+    "bnb_4bit_quant_type": "nf4",  # NormalFloat4 quantization
+    "bnb_4bit_compute_dtype": "float16",  # Compute dtype for 4-bit base models
+    "bnb_4bit_use_double_quant": True,  # Use double quantization for better accuracy
+}
+
 # Logging Configuration
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
 LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -120,7 +129,9 @@ def get_model_config():
         "num_return_sequences": NUM_RETURN_SEQUENCES,
         "temperature": TEMPERATURE,
         "top_p": TOP_P,
-        "do_sample": DO_SAMPLE
+        "do_sample": DO_SAMPLE,
+        "use_4bit_quantization": USE_4BIT_QUANTIZATION,
+        "quantization_config": QUANTIZATION_CONFIG
     }
 
 def get_tokenizer_config():
@@ -168,6 +179,7 @@ def print_startup_info():
     print(f"📚 Tokenizer (SentencePiece): {TOKENIZER_MODEL_PATH}")
     if MODEL_PATH:
         print(f"📂 Local model path: {MODEL_PATH}")
+    print(f"⚡ 4-bit Quantization: {'Enabled' if USE_4BIT_QUANTIZATION else 'Disabled'}")
     print("=" * 80)
 
 # Environment-specific overrides
