@@ -74,8 +74,8 @@ FASTTEXT_MODEL_PATH = "models/lid.176.bin"
 FASTTEXT_DETECTION_THRESHOLD = 0.7
 
 # KB and TTS (Vaani) integration endpoints
-KB_ENDPOINT = os.getenv("KB_ENDPOINT", "")
-KB_TIMEOUT = float(os.getenv("KB_TIMEOUT", 5.0))
+KB_ENDPOINT = os.getenv("KB_ENDPOINT", "http://127.0.0.1:8000")
+KB_TIMEOUT = float(os.getenv("KB_TIMEOUT", 10.0))
 
 VAANI_ENDPOINT = os.getenv("VAANI_ENDPOINT", "")
 VAANI_TIMEOUT = float(os.getenv("VAANI_TIMEOUT", 10.0))

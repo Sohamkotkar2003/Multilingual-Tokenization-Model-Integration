@@ -1,18 +1,18 @@
 {
   "info": {
     "_postman_id": "12345678-1234-5678-9012-123456789abc",
-    "name": "Multilingual Tokenization & Inference API",
-    "description": "Complete API collection for Hindi, Sanskrit, Marathi, and English tokenization, language detection, and text generation",
+    "name": "Multilingual Tokenization & Inference API v1.0.1",
+    "description": "Complete API collection for Hindi, Sanskrit, Marathi, and English tokenization, language detection, text generation, and Knowledge Base integration with conversation management",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "12345678"
   },
   "item": [
     {
       "name": "Health & Status",
-      "description": "Endpoints for checking API health and configuration",
+      "description": "Endpoints for checking API health, configuration, and statistics",
       "item": [
         {
-          "name": "Health Check",
+          "name": "Health Check (Root)",
           "request": {
             "method": "GET",
             "header": [
@@ -35,6 +35,29 @@
           "response": []
         },
         {
+          "name": "Detailed Health Check",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "health"
+              ]
+            },
+            "description": "Get detailed health status of all API components including tokenizer, model, KB integration, and TTS"
+          },
+          "response": []
+        },
+        {
           "name": "API Configuration",
           "request": {
             "method": "GET",
@@ -53,7 +76,30 @@
                 "config"
               ]
             },
-            "description": "Get current API configuration including model, tokenizer, and language settings"
+            "description": "Get current API configuration including model, tokenizer, language settings, and endpoint configurations"
+          },
+          "response": []
+        },
+        {
+          "name": "API Statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/stats",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "stats"
+              ]
+            },
+            "description": "Get comprehensive API statistics including KB integration stats, conversation sessions, and endpoint usage"
           },
           "response": []
         }
@@ -61,6 +107,7 @@
     },
     {
       "name": "Language Detection",
+      "description": "Test language detection capabilities for different languages",
       "item": [
         {
           "name": "Detect English Text",
@@ -78,7 +125,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"text\": \"Hello, how are you today? This is a sample English text for language detection.\"\n}"
+              "raw": "{\"text\": \"Hello, how are you today? This is a sample English text for language detection.\"}"
             },
             "url": {
               "raw": "{{base_url}}/language-detect",
@@ -109,7 +156,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"text\": \"नमस्ते, आज आप कैसे हैं? यह हिंदी भाषा की पहचान के लिए एक नमूना पाठ है।\"\n}"
+              "raw": "{\"text\": \"नमस्ते, आज आप कैसे हैं? यह हिंदी भाषा की पहचान के लिए एक नमूना पाठ है।\"}"
             },
             "url": {
               "raw": "{{base_url}}/language-detect",
@@ -140,7 +187,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"text\": \"श्रीगणेशाय नमः। यह संस्कृत भाषा का श्लोक है। सर्वे भवन्तु सुखिनः सर्वे सन्तु निरामयाः।\"\n}"
+              "raw": "{\"text\": \"श्रीगणेशाय नमः। यह संस्कृत भाषा का श्लोक है। सर्वे भवन्तु सुखिनः सर्वे सन्तु निरामयाः।\"}"
             },
             "url": {
               "raw": "{{base_url}}/language-detect",
@@ -171,7 +218,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"text\": \"नमस्कार, आज तुम्ही कसे आहात? हा महाराष्ट्रातील मराठी भाषेचा नमुना आहे।\"\n}"
+              "raw": "{\"text\": \"नमस्कार, आज तुम्ही कसे आहात? हा महाराष्ट्रातील मराठी भाषेचा नमुना आहे।\"}"
             },
             "url": {
               "raw": "{{base_url}}/language-detect",
@@ -185,43 +232,12 @@
             "description": "Detect language for Marathi text with regional keywords"
           },
           "response": []
-        },
-        {
-          "name": "Detect Mixed Language Text",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"text\": \"Hello नमस्ते, how are you आज कैसे हैं? This is mixed language text.\"\n}"
-            },
-            "url": {
-              "raw": "{{base_url}}/language-detect",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "language-detect"
-              ]
-            },
-            "description": "Detect language for mixed English-Hindi text"
-          },
-          "response": []
         }
-      ],
-      "description": "Test language detection capabilities for different languages"
+      ]
     },
     {
       "name": "Tokenization",
+      "description": "Test tokenization functionality for different languages and text lengths",
       "item": [
         {
           "name": "Tokenize English Text",
@@ -239,7 +255,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"text\": \"The quick brown fox jumps over the lazy dog. This is a comprehensive English sentence for tokenization testing.\",\n    \"language\": \"english\"\n}"
+              "raw": "{\"text\": \"The quick brown fox jumps over the lazy dog. This is a comprehensive English sentence for tokenization testing.\", \"language\": \"english\"}"
             },
             "url": {
               "raw": "{{base_url}}/tokenize",
@@ -270,7 +286,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"text\": \"भारत एक महान देश है। यहाँ अनेक भाषाएँ बोली जाती हैं और विविधता में एकता देखी जाती है।\"\n}"
+              "raw": "{\"text\": \"भारत एक महान देश है। यहाँ अनेक भाषाएँ बोली जाती हैं और विविधता में एकता देखी जाती है।\"}"
             },
             "url": {
               "raw": "{{base_url}}/tokenize",
@@ -301,7 +317,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"text\": \"वसुधैव कुटुम्बकम्। सत्यमेव जयते। यह संस्कृत के प्रसिद्ध श्लोक हैं।\",\n    \"language\": \"sanskrit\"\n}"
+              "raw": "{\"text\": \"वसुधैव कुटुम्बकम्। सत्यमेव जयते। यह संस्कृत के प्रसिद्ध श्लोक हैं।\", \"language\": \"sanskrit\"}"
             },
             "url": {
               "raw": "{{base_url}}/tokenize",
@@ -332,7 +348,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"text\": \"महाराष्ट्र हा एक सुंदर राज्य आहे. येथे मराठी भाषा बोलली जाते आणि समृद्ध संस्कृती आहे.\",\n    \"language\": \"marathi\"\n}"
+              "raw": "{\"text\": \"महाराष्ट्र हा एक सुंदर राज्य आहे. येथे मराठी भाषा बोलली जाते आणि समृद्ध संस्कृती आहे।\", \"language\": \"marathi\"}"
             },
             "url": {
               "raw": "{{base_url}}/tokenize",
@@ -346,43 +362,12 @@
             "description": "Tokenize Marathi text about Maharashtra"
           },
           "response": []
-        },
-        {
-          "name": "Tokenize Long Text",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"text\": \"Natural Language Processing is a fascinating field that combines linguistics, computer science, and artificial intelligence. It enables computers to understand, interpret, and generate human language in a valuable way. Modern NLP applications include machine translation, sentiment analysis, chatbots, and text summarization. Deep learning has revolutionized this field with transformer architectures like BERT and GPT.\"\n}"
-            },
-            "url": {
-              "raw": "{{base_url}}/tokenize",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "tokenize"
-              ]
-            },
-            "description": "Tokenize longer English text to test performance"
-          },
-          "response": []
         }
-      ],
-      "description": "Test tokenization functionality for different languages and text lengths"
+      ]
     },
     {
       "name": "Text Generation",
+      "description": "Test text generation capabilities for different languages and contexts",
       "item": [
         {
           "name": "Generate English Text",
@@ -400,7 +385,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"text\": \"Once upon a time in a faraway kingdom\",\n    \"language\": \"english\"\n}"
+              "raw": "{\"text\": \"Once upon a time in a faraway kingdom\", \"language\": \"english\"}"
             },
             "url": {
               "raw": "{{base_url}}/generate",
@@ -431,7 +416,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"text\": \"एक समय की बात है, एक राजा था जो\"\n}"
+              "raw": "{\"text\": \"एक समय की बात है, एक राजा था जो\"}"
             },
             "url": {
               "raw": "{{base_url}}/generate",
@@ -462,7 +447,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"text\": \"धर्मो रक्षति रक्षितः\",\n    \"language\": \"sanskrit\"\n}"
+              "raw": "{\"text\": \"धर्मो रक्षति रक्षितः\", \"language\": \"sanskrit\"}"
             },
             "url": {
               "raw": "{{base_url}}/generate",
@@ -493,7 +478,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"text\": \"एकदा एका गावात एक शेतकरी राहत होता\",\n    \"language\": \"marathi\"\n}"
+              "raw": "{\"text\": \"एकदा एका गावात एक शेतकरी राहत होता\", \"language\": \"marathi\"}"
             },
             "url": {
               "raw": "{{base_url}}/generate",
@@ -507,9 +492,15 @@
             "description": "Generate continuation for Marathi farmer story"
           },
           "response": []
-        },
+        }
+      ]
+    },
+    {
+      "name": "Knowledge Base Integration",
+      "description": "Test Knowledge Base Q&A functionality with multilingual support",
+      "item": [
         {
-          "name": "Generate Technical Text",
+          "name": "English Q&A",
           "request": {
             "method": "POST",
             "header": [
@@ -524,26 +515,514 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"text\": \"Machine learning algorithms are designed to\",\n    \"language\": \"english\"\n}"
+              "raw": "{\"text\": \"What is the capital of India?\", \"language\": \"english\", \"user_id\": \"user123\", \"session_id\": \"session001\"}"
             },
             "url": {
-              "raw": "{{base_url}}/generate",
+              "raw": "{{base_url}}/qa",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
-                "generate"
+                "qa"
               ]
             },
-            "description": "Generate technical content about machine learning"
+            "description": "Ask a factual question in English"
+          },
+          "response": []
+        },
+        {
+          "name": "Hindi Q&A",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"text\": \"भारत की राजधानी क्या है?\", \"language\": \"hindi\", \"user_id\": \"user123\", \"session_id\": \"session001\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/qa",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "qa"
+              ]
+            },
+            "description": "Ask a factual question in Hindi"
+          },
+          "response": []
+        },
+        {
+          "name": "Sanskrit Q&A",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"text\": \"भारतस्य राजधानी किम् अस्ति?\", \"language\": \"sanskrit\", \"user_id\": \"user123\", \"session_id\": \"session001\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/qa",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "qa"
+              ]
+            },
+            "description": "Ask a factual question in Sanskrit"
+          },
+          "response": []
+        },
+        {
+          "name": "Marathi Q&A",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"text\": \"भारताची राजधानी काय आहे?\", \"language\": \"marathi\", \"user_id\": \"user123\", \"session_id\": \"session001\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/qa",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "qa"
+              ]
+            },
+            "description": "Ask a factual question in Marathi"
+          },
+          "response": []
+        },
+        {
+          "name": "Conversational Q&A",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"text\": \"Hello, how are you today?\", \"language\": \"english\", \"user_id\": \"user123\", \"session_id\": \"session001\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/qa",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "qa"
+              ]
+            },
+            "description": "Test conversational Q&A"
+          },
+          "response": []
+        },
+        {
+          "name": "Educational Q&A",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"text\": \"Explain the concept of machine learning\", \"language\": \"english\", \"user_id\": \"user123\", \"session_id\": \"session001\", \"context\": \"User is learning about AI and technology\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/qa",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "qa"
+              ]
+            },
+            "description": "Test educational Q&A with context"
           },
           "response": []
         }
-      ],
-      "description": "Test text generation capabilities for different languages and contexts"
+      ]
+    },
+    {
+      "name": "Multilingual Conversation",
+      "description": "Test complete multilingual conversation pipeline with KB integration and response generation",
+      "item": [
+        {
+          "name": "English Conversation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"text\": \"Tell me about artificial intelligence\", \"language\": \"english\", \"user_id\": \"user123\", \"session_id\": \"conv_session_001\", \"generate_response\": true, \"max_response_length\": 256}"
+            },
+            "url": {
+              "raw": "{{base_url}}/multilingual-conversation",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "multilingual-conversation"
+              ]
+            },
+            "description": "Start an English conversation with KB integration and response generation"
+          },
+          "response": []
+        },
+        {
+          "name": "Hindi Conversation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"text\": \"मुझे कृत्रिम बुद्धिमत्ता के बारे में बताइए\", \"language\": \"hindi\", \"user_id\": \"user123\", \"session_id\": \"conv_session_001\", \"generate_response\": true, \"max_response_length\": 256}"
+            },
+            "url": {
+              "raw": "{{base_url}}/multilingual-conversation",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "multilingual-conversation"
+              ]
+            },
+            "description": "Continue conversation in Hindi"
+          },
+          "response": []
+        },
+        {
+          "name": "Sanskrit Conversation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"text\": \"कृत्रिमबुद्धिमत्तायाः विषये व्याख्यातुं शक्नोति भवान्?\", \"language\": \"sanskrit\", \"user_id\": \"user123\", \"session_id\": \"conv_session_001\", \"generate_response\": true, \"max_response_length\": 256}"
+            },
+            "url": {
+              "raw": "{{base_url}}/multilingual-conversation",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "multilingual-conversation"
+              ]
+            },
+            "description": "Continue conversation in Sanskrit"
+          },
+          "response": []
+        },
+        {
+          "name": "Marathi Conversation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"text\": \"मला कृत्रिम बुद्धिमत्ता बद्दल सांगा\", \"language\": \"marathi\", \"user_id\": \"user123\", \"session_id\": \"conv_session_001\", \"generate_response\": true, \"max_response_length\": 256}"
+            },
+            "url": {
+              "raw": "{{base_url}}/multilingual-conversation",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "multilingual-conversation"
+              ]
+            },
+            "description": "Continue conversation in Marathi"
+          },
+          "response": []
+        },
+        {
+          "name": "KB Only (No Generation)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"text\": \"What is machine learning?\", \"language\": \"english\", \"user_id\": \"user123\", \"session_id\": \"conv_session_002\", \"generate_response\": false}"
+            },
+            "url": {
+              "raw": "{{base_url}}/multilingual-conversation",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "multilingual-conversation"
+              ]
+            },
+            "description": "Test KB integration without response generation"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Language Switching Test",
+      "description": "Test mid-conversation language switching capability",
+      "item": [
+        {
+          "name": "Language Switching Test",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"text\": \"Tell me about India\", \"language\": \"english\", \"user_id\": \"user123\", \"session_id\": \"switch_test_001\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/test-language-switching",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "test-language-switching"
+              ]
+            },
+            "description": "Test automatic language switching across multiple languages in a single request"
+          },
+          "response": []
+        },
+        {
+          "name": "Language Switching - Hindi Start",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"text\": \"भारत के बारे में बताइए\", \"language\": \"hindi\", \"user_id\": \"user123\", \"session_id\": \"switch_test_002\"}"
+            },
+            "url": {
+              "raw": "{{base_url}}/test-language-switching",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "test-language-switching"
+              ]
+            },
+            "description": "Test language switching starting with Hindi"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Conversation Management",
+      "description": "Manage conversation history and sessions",
+      "item": [
+        {
+          "name": "Get Conversation History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/conversation/{{session_id}}/history",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "conversation",
+                "{{session_id}}",
+                "history"
+              ]
+            },
+            "description": "Retrieve conversation history for a specific session"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Conversation History - conv_session_001",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/conversation/conv_session_001/history",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "conversation",
+                "conv_session_001",
+                "history"
+              ]
+            },
+            "description": "Retrieve conversation history for conv_session_001"
+          },
+          "response": []
+        },
+        {
+          "name": "Clear Conversation History",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/conversation/{{session_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "conversation",
+                "{{session_id}}"
+              ]
+            },
+            "description": "Clear conversation history for a specific session"
+          },
+          "response": []
+        },
+        {
+          "name": "Clear Conversation History - conv_session_001",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/conversation/conv_session_001",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "conversation",
+                "conv_session_001"
+              ]
+            },
+            "description": "Clear conversation history for conv_session_001"
+          },
+          "response": []
+        }
+      ]
     },
     {
       "name": "Error Cases",
+      "description": "Test error handling and edge cases",
       "item": [
         {
           "name": "Empty Text Request",
@@ -561,7 +1040,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"text\": \"\"\n}"
+              "raw": "{\"text\": \"\"}"
             },
             "url": {
               "raw": "{{base_url}}/tokenize",
@@ -592,7 +1071,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"text\": \"Hello world\",\n    \"language\": \"invalid_language\"\n}"
+              "raw": "{\"text\": \"Hello world\", \"language\": \"invalid_language\"}"
             },
             "url": {
               "raw": "{{base_url}}/tokenize",
@@ -604,37 +1083,6 @@
               ]
             },
             "description": "Test handling of unsupported language codes"
-          },
-          "response": []
-        },
-        {
-          "name": "Malformed JSON Request",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"text\": \"Hello world\",\n    \"language\": \"english\"\n    // Missing closing brace\n"
-            },
-            "url": {
-              "raw": "{{base_url}}/tokenize",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "tokenize"
-              ]
-            },
-            "description": "Test handling of malformed JSON requests"
           },
           "response": []
         },
@@ -654,7 +1102,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"language\": \"english\"\n}"
+              "raw": "{\"language\": \"english\"}"
             },
             "url": {
               "raw": "{{base_url}}/language-detect",
@@ -668,9 +1116,33 @@
             "description": "Test handling of requests with missing required fields"
           },
           "response": []
+        },
+        {
+          "name": "Non-existent Session History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/conversation/non_existent_session/history",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "conversation",
+                "non_existent_session",
+                "history"
+              ]
+            },
+            "description": "Test handling of requests for non-existent conversation sessions"
+          },
+          "response": []
         }
-      ],
-      "description": "Test error handling and edge cases"
+      ]
     }
   ],
   "event": [
@@ -679,7 +1151,10 @@
       "script": {
         "type": "text/javascript",
         "exec": [
-          ""
+          "// Set default session ID if not provided",
+          "if (!pm.environment.get('session_id')) {",
+          "    pm.environment.set('session_id', 'default_session_' + Date.now());",
+          "}"
         ]
       }
     },
@@ -688,7 +1163,21 @@
       "script": {
         "type": "text/javascript",
         "exec": [
-          ""
+          "// Basic response validation",
+          "pm.test('Status code is successful', function () {",
+          "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+          "});",
+          "",
+          "pm.test('Response time is acceptable', function () {",
+          "    pm.expect(pm.response.responseTime).to.be.below(10000);",
+          "});",
+          "",
+          "pm.test('Response has JSON body', function () {",
+          "    pm.response.to.be.json;",
+          "});",
+          "",
+          "// Log response for debugging",
+          "console.log('Response:', pm.response.json());"
         ]
       }
     }
@@ -705,6 +1194,18 @@
       "value": "1.0.1",
       "type": "string",
       "description": "Current API version"
+    },
+    {
+      "key": "session_id",
+      "value": "test_session_001",
+      "type": "string",
+      "description": "Default session ID for testing conversations"
+    },
+    {
+      "key": "user_id",
+      "value": "test_user_001",
+      "type": "string",
+      "description": "Default user ID for testing"
     }
   ]
 }
