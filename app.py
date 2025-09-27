@@ -439,11 +439,69 @@ async def test_language_switching(request: QARequest):
                 session_id=session_id
             )
             
+            generated_response = None
+            
+            # Generate enhanced response using language model if requested
+            if request.generate_response and model and hf_tokenizer:
+                try:
+                    logger.info(f"Starting response generation for language switching query: {test_query['text'][:50]}...")
+                    # Create prompt combining KB answer with original query
+                    if detected_lang == "hindi":
+                        prompt = f"प्रश्न: {test_query['text']}\nज्ञान आधार का उत्तर: {answer}\nबेहतर उत्तर:"
+                    elif detected_lang == "sanskrit":
+                        prompt = f"प्रश्नः {test_query['text']}\nज्ञान आधारस्य उत्तरम्: {answer}\nउत्तमं उत्तरम्:"
+                    elif detected_lang == "marathi":
+                        prompt = f"प्रश्न: {test_query['text']}\nज्ञान आधाराचे उत्तर: {answer}\nचांगले उत्तर:"
+                    else:
+                        prompt = f"Question: {test_query['text']}\nKnowledge Base Answer: {answer}\nImproved Answer:"
+                    
+                    logger.info(f"Generated prompt for {detected_lang}: {prompt[:100]}...")
+                    
+                    # Generate response
+                    inputs = hf_tokenizer(prompt, return_tensors="pt")
+                    
+                    # Move inputs to the same device as the model
+                    if hasattr(model, 'device') and model.device.type != 'cpu':
+                        inputs = inputs.to(model.device)
+                    elif torch.cuda.is_available():
+                        inputs = inputs.to("cuda")
+                    
+                    logger.info(f"Starting model generation for {detected_lang} with max_new_tokens: {min(request.max_response_length or 256, settings.MAX_GENERATION_LENGTH)}")
+                    
+                    with torch.no_grad():
+                        outputs = model.generate(
+                            **inputs,
+                            max_new_tokens=min(request.max_response_length or 256, settings.MAX_GENERATION_LENGTH),
+                            temperature=settings.TEMPERATURE,
+                            top_p=settings.TOP_P,
+                            do_sample=settings.DO_SAMPLE,
+                            pad_token_id=hf_tokenizer.pad_token_id or hf_tokenizer.eos_token_id,
+                            eos_token_id=hf_tokenizer.eos_token_id
+                        )
+                    
+                    full_response = hf_tokenizer.decode(outputs[0], skip_special_tokens=True)
+                    logger.info(f"Full model response for {detected_lang}: {full_response[:200]}...")
+                    
+                    # Extract only the generated part after the prompt
+                    if ":" in full_response:
+                        generated_response = full_response.split(":")[-1].strip()
+                    else:
+                        generated_response = full_response[len(prompt):].strip()
+                    
+                    logger.info(f"Extracted generated response for {detected_lang}: {generated_response[:100]}...")
+                        
+                except Exception as e:
+                    logger.error(f"Response generation failed for {detected_lang}: {e}", exc_info=True)
+                    generated_response = None
+            else:
+                logger.info(f"Generation skipped for {detected_lang} - generate_response: {request.generate_response}, model: {model is not None}, tokenizer: {hf_tokenizer is not None}")
+            
             results.append({
                 "query": test_query["text"],
                 "expected_language": test_query["lang"],
                 "detected_language": detected_lang,
                 "answer": answer,
+                "generated_response": generated_response,
                 "confidence": metadata.get("kb_confidence", 0.0)
             })
         

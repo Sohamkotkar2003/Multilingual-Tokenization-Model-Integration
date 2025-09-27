@@ -138,3 +138,53 @@ Knowledge Base Answer: Hello! I'm here to help you with your questions. I can co
 2025-09-28 02:26:27,401 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
 2025-09-28 02:26:27,510 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
 2025-09-28 02:27:06,738 - app - INFO - 🔌 API Shutdown
+2025-09-28 02:30:37,378 - app - INFO - === API Starting - Logging Config Applied ===
+2025-09-28 02:30:37,616 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
+2025-09-28 02:30:39,486 - app - INFO - 🔧 Using 4-bit quantization for faster inference
+2025-09-28 02:30:41,479 - accelerate.utils.modeling - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+2025-09-28 02:31:04,711 - app - INFO - ✅ Model loaded with 4-bit quantization
+2025-09-28 02:31:04,713 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
+2025-09-28 02:31:04,731 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 02:31:33,854 - __main__ - INFO - === API Starting - Logging Config Applied ===
+2025-09-28 02:31:34,078 - app - INFO - === API Starting - Logging Config Applied ===
+2025-09-28 02:31:34,090 - app - INFO - 🚀 API Startup
+2025-09-28 02:31:34,100 - app - INFO - ✅ SentencePiece tokenizer loaded from model/multi_tokenizer.model
+2025-09-28 02:31:35,332 - app - INFO - 🔧 Using 4-bit quantization for faster inference
+2025-09-28 02:31:36,929 - accelerate.utils.modeling - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+2025-09-28 02:31:52,405 - app - INFO - ✅ Model loaded with 4-bit quantization
+2025-09-28 02:31:52,407 - app - INFO - ✅ Model loaded: AhinsaAI/ahinsa0.5-llama3.2-3B
+2025-09-28 02:32:14,038 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 02:32:14,147 - app - INFO - Starting response generation for language switching query: Tell me about India...
+2025-09-28 02:32:14,147 - app - INFO - Generated prompt for english: Question: Tell me about India
+Knowledge Base Answer: I understand you're asking about 'Tell me about...
+2025-09-28 02:32:14,219 - app - INFO - Starting model generation for english with max_new_tokens: 256
+2025-09-28 02:32:36,379 - app - INFO - Full model response for english: Question: Tell me about India
+Knowledge Base Answer: I understand you're asking about 'Tell me about India'. While I'm designed as a multilingual tokenization and language model system, I can provide ...
+2025-09-28 02:32:36,380 - app - INFO - Extracted generated response for english: Government of India, Encyclopedia Britannica, and other reliable sources)
+
+Please note that this is ...
+2025-09-28 02:32:36,381 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 02:32:36,482 - app - INFO - Starting response generation for language switching query: Please explain in English...
+2025-09-28 02:32:36,483 - app - INFO - Generated prompt for english: Question: Please explain in English
+Knowledge Base Answer: This appears to be an educational questio...
+2025-09-28 02:32:36,489 - app - INFO - Starting model generation for english with max_new_tokens: 256
+2025-09-28 02:32:56,571 - app - INFO - Full model response for english: Question: Please explain in English
+Knowledge Base Answer: This appears to be an educational question. I can assist you with topics related to multilingual language processing, tokenization, and natur...
+2025-09-28 02:32:56,571 - app - INFO - Extracted generated response for english: I can explain the concepts of multilingual tokenization and its application in natural language proc...
+2025-09-28 02:32:56,573 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 02:32:56,677 - app - INFO - Starting response generation for language switching query: हिंदी में बताइए...
+2025-09-28 02:32:56,677 - app - INFO - Generated prompt for hindi: प्रश्न: हिंदी में बताइए
+ज्ञान आधार का उत्तर: आपके प्रश्न 'हिंदी में बताइए' के बारे में, मैं यह कह सक...
+2025-09-28 02:32:56,685 - app - INFO - Starting model generation for hindi with max_new_tokens: 256
+2025-09-28 02:33:17,008 - app - INFO - Full model response for hindi: प्रश्न: हिंदी में बताइए
+ज्ञान आधार का उत्तर: आपके प्रश्न 'हिंदी में बताइए' के बारे में, मैं यह कह सकता हूं कि यह एक बहुभाषी टोकनाइज़ेशन और भाषा मॉडल प्रणाली का हिस्सा है। अधिक विशिष्ट जानकारी के लिए क...
+2025-09-28 02:33:17,008 - app - INFO - Extracted generated response for hindi: मैं समझता हूं कि आप एक विस्तृत उत्तर चाहते हैं। 'हिंदी में बताइए' वाक्यांश के संदर्भ में, मैं आपको ब...
+2025-09-28 02:33:17,010 - kb_integration - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-09-28 02:33:17,111 - app - INFO - Starting response generation for language switching query: मराठीत सांगा...
+2025-09-28 02:33:17,111 - app - INFO - Generated prompt for hindi: प्रश्न: मराठीत सांगा
+ज्ञान आधार का उत्तर: आपके प्रश्न 'मराठीत सांगा' के बारे में, मैं यह कह सकता हूं...
+2025-09-28 02:33:17,113 - app - INFO - Starting model generation for hindi with max_new_tokens: 256
+2025-09-28 02:33:37,499 - app - INFO - Full model response for hindi: प्रश्न: मराठीत सांगा
+ज्ञान आधार का उत्तर: आपके प्रश्न 'मराठीत सांगा' के बारे में, मैं यह कह सकता हूं कि यह एक बहुभाषी टोकनाइज़ेशन और भाषा मॉडल प्रणाली का हिस्सा है। अधिक विशिष्ट जानकारी के लिए कृपया अ...
+2025-09-28 02:33:37,499 - app - INFO - Extracted generated response for hindi: 'मराठीत सांगा' के बारे में, मैं यह कह सकता हूं कि यह एक टोकनाइज़ेशन और भाषा मॉडल प्रणाली का हिस्सा ह...
+2025-09-28 02:35:02,638 - app - INFO - 🔌 API Shutdown
