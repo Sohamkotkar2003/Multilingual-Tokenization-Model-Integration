@@ -9,7 +9,10 @@ import logging
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
 # Import settings
-from core import settings
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
+from config import settings
 
 # =============================================================================
 # Logging Setup
@@ -88,7 +91,7 @@ from pydantic import BaseModel, Field
 from typing import Optional, Dict, Any
 
 # Import the KB integration module
-from kb_integration import process_qa_query, get_kb_stats, QueryType
+from src.services.knowledge_base import process_qa_query, get_kb_stats, QueryType
 
 # Additional request/response models for KB integration
 class QARequest(BaseModel):
@@ -328,7 +331,7 @@ async def multilingual_conversation(request: MultilingualConversationRequest):
 async def get_conversation_history(session_id: str):
     """Get conversation history for a session"""
     try:
-        from kb_integration import qa_orchestrator
+        from src.services.knowledge_base import qa_orchestrator
         
         if session_id in qa_orchestrator.conversation_history:
             history = qa_orchestrator.conversation_history[session_id]
@@ -363,7 +366,7 @@ async def get_conversation_history(session_id: str):
 async def clear_conversation_history(session_id: str):
     """Clear conversation history for a session"""
     try:
-        from kb_integration import qa_orchestrator
+        from src.services.knowledge_base import qa_orchestrator
         
         if session_id in qa_orchestrator.conversation_history:
             del qa_orchestrator.conversation_history[session_id]

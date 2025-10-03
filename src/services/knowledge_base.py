@@ -21,7 +21,10 @@ from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass
 from enum import Enum
 import hashlib
-from core import settings
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
+from config import settings
 
 logger = logging.getLogger(__name__)
 

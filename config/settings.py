@@ -115,9 +115,9 @@ def create_directories():
         if not os.path.exists(directory):
             os.makedirs(directory, exist_ok=True)
             created_dirs.append(directory)
-            print(f"✅ Created directory: {directory}")
+            print(f"[OK] Created directory: {directory}")
         else:
-            print(f"📁 Directory exists: {directory}")
+            print(f"[EXISTS] Directory exists: {directory}")
     return created_dirs
 
 def get_model_config():
@@ -168,18 +168,18 @@ def get_logging_config():
 def print_startup_info():
     """Print startup information to console"""
     print("\n" + "=" * 80)
-    print(f"🚀 {API_TITLE} v{API_VERSION}")
+    print(f"[START] {API_TITLE} v{API_VERSION}")
     print("=" * 80)
-    print(f"📍 Host: {API_HOST}:{API_PORT}")
-    print(f"🔧 Debug Mode: {DEBUG_MODE}")
-    print(f"📊 Log Level: {LOG_LEVEL}")
-    print(f"📝 Log File: {LOG_FILE}")
-    print(f"🌐 Languages: {', '.join(SUPPORTED_LANGUAGES)}")
-    print(f"🤖 Model name (fallback): {MODEL_NAME}")
-    print(f"📚 Tokenizer (SentencePiece): {TOKENIZER_MODEL_PATH}")
+    print(f"[CONFIG] Host: {API_HOST}:{API_PORT}")
+    print(f"[CONFIG] Debug Mode: {DEBUG_MODE}")
+    print(f"[CONFIG] Log Level: {LOG_LEVEL}")
+    print(f"[CONFIG] Log File: {LOG_FILE}")
+    print(f"[CONFIG] Languages: {', '.join(SUPPORTED_LANGUAGES)}")
+    print(f"[CONFIG] Model name (fallback): {MODEL_NAME}")
+    print(f"[CONFIG] Tokenizer (SentencePiece): {TOKENIZER_MODEL_PATH}")
     if MODEL_PATH:
-        print(f"📂 Local model path: {MODEL_PATH}")
-    print(f"⚡ 4-bit Quantization: {'Enabled' if USE_4BIT_QUANTIZATION else 'Disabled'}")
+        print(f"[CONFIG] Local model path: {MODEL_PATH}")
+    print(f"[CONFIG] 4-bit Quantization: {'Enabled' if USE_4BIT_QUANTIZATION else 'Disabled'}")
     print("=" * 80)
 
 # Environment-specific overrides
@@ -189,16 +189,16 @@ if ENV == "production":
     DEBUG_MODE = False
     API_HOST = "0.0.0.0"
     LOG_LEVEL = "WARNING"
-    print("🔒 Production environment detected")
+    print("[ENV] Production environment detected")
 elif ENV == "development":
     DEBUG_MODE = True
     LOG_LEVEL = LOG_LEVEL or "DEBUG"
-    print("🔧 Development environment detected")
+    print("[ENV] Development environment detected")
 elif ENV == "testing":
     DEBUG_MODE = True
     LOG_LEVEL = "DEBUG"
     API_PORT = 8001
-    print("🧪 Testing environment detected")
+    print("[ENV] Testing environment detected")
 
 # Override settings from environment variables if present
 API_HOST = os.getenv("API_HOST", API_HOST)

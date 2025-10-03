@@ -34,7 +34,10 @@ from datasets import Dataset
 from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments, DataCollatorForLanguageModeling, BitsAndBytesConfig
 from peft import LoraConfig, get_peft_model, TaskType
 import torch
-from core import settings
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
+from config import settings
 
 # Set environment variable for CUDA memory management (only if supported)
 import platform
