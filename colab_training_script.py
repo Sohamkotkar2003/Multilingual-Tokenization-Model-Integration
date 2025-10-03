@@ -28,9 +28,9 @@ Requirements:
 # =============================================================================
 
 # Install required packages
-!pip install -q torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-!pip install -q transformers datasets accelerate peft bitsandbytes
-!pip install -q sentencepiece langdetect
+# !pip install -q torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+# !pip install -q transformers datasets accelerate peft bitsandbytes
+# !pip install -q sentencepiece langdetect
 
 # Verify installation
 import torch

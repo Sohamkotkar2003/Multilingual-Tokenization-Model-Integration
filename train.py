@@ -307,6 +307,9 @@ def main():
         low_cpu_mem_usage=True,
         torch_dtype=torch.float16 if quantization_config else torch.float32,
     )
+
+    for name, module in model.named_modules():
+        print(name)
     
     # Check GPU usage and ensure model is on GPU
     check_gpu_usage()
@@ -333,13 +336,13 @@ def main():
     if USE_PEFT:
         # Configure LoRA
         lora_config = LoraConfig(
-            task_type=TaskType.CAUSAL_LM,
-            inference_mode=False,
-            r=16,  # Rank of adaptation
-            lora_alpha=32,  # LoRA scaling parameter
-            lora_dropout=0.1,  # LoRA dropout
-            target_modules=["query_key_value", "dense", "dense_h_to_4h", "dense_4h_to_h"],  # BLOOM-specific modules
-        )
+        task_type=TaskType.CAUSAL_LM,
+        inference_mode=False,
+        r=16,
+        lora_alpha=32,
+        lora_dropout=0.1,
+        target_modules=["q_proj", "v_proj"],  # Correct modules for this model
+    )
         
         # Apply LoRA to the model
         model = get_peft_model(model, lora_config)
