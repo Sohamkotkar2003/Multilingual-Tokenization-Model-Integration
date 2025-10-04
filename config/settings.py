@@ -23,6 +23,7 @@ TOKENIZER_MERGE_PATH = "model/tokenizer_merge.txt"
 
 # Model Configuration
 MODEL_NAME = os.getenv("MODEL_NAME", "AhinsaAI/ahinsa0.5-llama3.2-3B")  # HF model name fallback (decoder-only)
+# MODEL_NAME = os.getenv("MODEL_NAME", "finetuned_generation_model/checkpoint-114")  # HF model name fallback (decoder-only)
 # MODEL_NAME = os.getenv("MODEL_NAME", "bigscience/bloom-560m")  # HF model name fallback (decoder-only)
 MODEL_PATH = os.getenv("MODEL_PATH", "")  # local checkpoint folder (if used). Empty -> use MODEL_NAME
 # Note: Set MODEL_PATH to "mbart_finetuned" in settings.py after training to use fine-tuned model
@@ -69,9 +70,9 @@ DEVANAGARI_RATIO_THRESHOLD = 0.5
 
 # Language-specific keywords for detection
 LANGUAGE_KEYWORDS = {
-    "sanskrit": ["संस्कृत", "श्लोक", "मन्त्र", "वेद", "उपनिषद्", "गीता", "धर्मो", "अस्ति", "भवति"],
-    "marathi": ["महाराष्ट्र", "आहे", "आहेत", "होते", "होता", "म्हणजे", "काय", "कसे", "एकदा", "मी", "तू"],
-    "hindi": ["है", "हैं", "था", "थी", "होगा", "होगी", "क्या", "कैसे", "यह", "वह", "एक", "मैं", "तुम"],
+    "sanskrit": ["संस्कृत", "श्लोक", "मन्त्र", "वेद", "उपनिषद्", "गीता", "धर्मो", "अस्ति", "भवति", "भवान्", "कथं", "वर्तते", "नमस्कारः", "सः", "सा", "तत्", "यत्", "किम्", "कुत्र", "कदा", "कथम्", "केन", "कस्य", "कस्मै", "कस्मात्", "कस्याम्", "कस्मिन्"],
+    "marathi": ["महाराष्ट्र", "आहे", "आहेत", "होते", "होता", "म्हणजे", "काय", "कसे", "एकदा", "मी", "तू", "तुम्ही", "आहात", "म्हणतात", "करतात", "जातात", "येतात", "घेतात", "देतात"],
+    "hindi": ["है", "हैं", "था", "थी", "होगा", "होगी", "क्या", "कैसे", "यह", "वह", "एक", "मैं", "तुम", "आप", "कैसे", "कैसा", "कैसी", "कहाँ", "कब", "क्यों", "कौन", "किसने", "किसको", "किससे"],
     "tamil": ["தமிழ்", "ஆகும்", "இருக்கிறது", "செய்கிறது", "என்ன", "எப்படி", "நான்", "நீ"],
     "telugu": ["తెలుగు", "అవుతుంది", "ఉంది", "చేస్తుంది", "ఏమి", "ఎలా", "నేను", "నువ్వు"],
     "kannada": ["ಕನ್ನಡ", "ಆಗುತ್ತದೆ", "ಇದೆ", "ಮಾಡುತ್ತದೆ", "ಏನು", "ಹೇಗೆ", "ನಾನು", "ನೀನು"],
@@ -82,7 +83,7 @@ LANGUAGE_KEYWORDS = {
     "malayalam": ["മലയാളം", "ആണ്", "ഉണ്ട്", "ചെയ്യുന്നു", "എന്ത്", "എങ്ങനെ", "ഞാൻ", "നീ"],
     "assamese": ["অসমীয়া", "হয়", "আছে", "কৰে", "কি", "কেনেকৈ", "মই", "তুমি"],
     "urdu": ["اردو", "ہے", "ہے", "کرتا", "کیا", "کیسے", "میں", "تم"],
-    "nepali": ["नेपाली", "छ", "छ", "गर्छ", "के", "कसरी", "म", "तिमी"],
+    "nepali": ["नेपाली", "छ", "छ", "गर्छ", "के", "कसरी", "म", "तिमी", "हो", "हुन्छ", "गर्नुहुन्छ", "कसरी", "कहाँ", "कब", "किन", "कसो", "मैले", "तिमीले", "हामीले", "उहाँले"],
     "kashmiri": ["کٲشُر", "چھ", "چھ", "کران", "کیا", "کیوی", "می", "تہ"],
     "konkani": ["कोंकणी", "आसा", "आसा", "करता", "काय", "कशें", "हांव", "तुमी"],
     "manipuri": ["মৈতৈলোন", "দৈ", "দৈ", "নরবা", "কী", "কীদা", "ঈ", "নুং"],
@@ -147,9 +148,9 @@ VAANI_TIMEOUT = float(os.getenv("VAANI_TIMEOUT", 120.0))
 USE_FP16_IF_GPU = True
 
 # Quantization Configuration for Inference
-USE_4BIT_QUANTIZATION = True  # Enable 4-bit quantization for faster inference
+USE_4BIT_QUANTIZATION = False  # Disable 4-bit quantization to avoid memory issues
 QUANTIZATION_CONFIG = {
-    "load_in_4bit": True,
+    "load_in_4bit": False,
     "bnb_4bit_quant_type": "nf4",  # NormalFloat4 quantization
     "bnb_4bit_compute_dtype": "float16",  # Compute dtype for 4-bit base models
     "bnb_4bit_use_double_quant": True,  # Use double quantization for better accuracy

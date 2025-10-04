@@ -24,7 +24,7 @@ import unicodedata
 import sentencepiece as spm
 from typing import List, Dict
 import tempfile
-from core import settings
+from config import settings
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -44,6 +44,8 @@ class MultilingualTokenizerTrainer:
         """
         Apply proper Unicode normalization for Devanagari text
         This ensures consistent handling of ligatures and combining characters
+        Note: We do NFC normalization in Python since SentencePiece NFC normalization
+        has compatibility issues on Windows
         """
         # Apply NFC normalization to combine base characters with diacritics
         normalized = unicodedata.normalize('NFC', text)
@@ -199,11 +201,18 @@ Science and innovation drive development.
         # Output paths
         model_prefix = os.path.join(settings.FINE_TUNED_MODEL_PATH, "multi_tokenizer")
         
+        # Calculate adaptive vocabulary size based on training data
+        # SentencePiece requires vocab_size <= unique_characters + some_buffer
+        # For small datasets, we need to be more conservative
+        adaptive_vocab_size = min(settings.SP_VOCAB_SIZE, max(1000, self.stats["total_sentences"] * 50))
+        
+        logger.info(f"Using adaptive vocabulary size: {adaptive_vocab_size} (based on {self.stats['total_sentences']} sentences)")
+        
         # SentencePiece training arguments
         spm_args = [
             f'--input={training_file}',
             f'--model_prefix={model_prefix}',
-            f'--vocab_size={settings.SP_VOCAB_SIZE}',
+            f'--vocab_size={adaptive_vocab_size}',
             f'--model_type={settings.SP_MODEL_TYPE}',
             f'--character_coverage={settings.SP_CHARACTER_COVERAGE}',
             f'--input_sentence_size={min(settings.SP_INPUT_SENTENCE_SIZE, self.stats["total_sentences"])}',
@@ -215,8 +224,7 @@ Science and innovation drive development.
             '--allow_whitespace_only_pieces=true',
             '--split_digits=false',  # Keep numbers intact
             '--byte_fallback=true',  # Handle unknown characters gracefully
-            # Devanagari-specific settings
-            '--normalization_rule_name=nfc',  # Use NFC normalization
+            # Devanagari-specific settings - removed problematic NFC normalization
             '--remove_extra_whitespaces=true',
             '--add_dummy_prefix=false',  # Don't add dummy prefix for better multilingual support
         ]
@@ -301,7 +309,16 @@ Science and innovation drive development.
         logger.info(f"BOS: {sp.bos_id()} -> {sp.id_to_piece(sp.bos_id())}")
         logger.info(f"EOS: {sp.eos_id()} -> {sp.id_to_piece(sp.eos_id())}")
         logger.info(f"UNK: {sp.unk_id()} -> {sp.id_to_piece(sp.unk_id())}")
-        logger.info(f"PAD: {sp.pad_id()} -> {sp.id_to_piece(sp.pad_id())}")
+        
+        # PAD token might not be defined in all SentencePiece models
+        try:
+            pad_id = sp.pad_id()
+            if pad_id >= 0:  # Valid PAD ID
+                logger.info(f"PAD: {pad_id} -> {sp.id_to_piece(pad_id)}")
+            else:
+                logger.info("PAD: Not defined in this model")
+        except (IndexError, ValueError):
+            logger.info("PAD: Not defined in this model")
 
     def cleanup(self):
         """Clean up temporary files"""

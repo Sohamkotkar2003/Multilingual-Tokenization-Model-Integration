@@ -1,0 +1,261 @@
+{
+  "language_results": {
+    "hindi": {
+      "language": "hindi",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    },
+    "sanskrit": {
+      "language": "sanskrit",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    },
+    "marathi": {
+      "language": "marathi",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    },
+    "english": {
+      "language": "english",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    },
+    "tamil": {
+      "language": "tamil",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    },
+    "telugu": {
+      "language": "telugu",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    },
+    "kannada": {
+      "language": "kannada",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    },
+    "bengali": {
+      "language": "bengali",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    },
+    "gujarati": {
+      "language": "gujarati",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    },
+    "punjabi": {
+      "language": "punjabi",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    },
+    "odia": {
+      "language": "odia",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    },
+    "malayalam": {
+      "language": "malayalam",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    },
+    "assamese": {
+      "language": "assamese",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    },
+    "kashmiri": {
+      "language": "kashmiri",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    },
+    "konkani": {
+      "language": "konkani",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    },
+    "manipuri": {
+      "language": "manipuri",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    },
+    "nepali": {
+      "language": "nepali",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    },
+    "sindhi": {
+      "language": "sindhi",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    },
+    "urdu": {
+      "language": "urdu",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    },
+    "bodo": {
+      "language": "bodo",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    },
+    "dogri": {
+      "language": "dogri",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    },
+    "maithili": {
+      "language": "maithili",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    },
+    "santali": {
+      "language": "santali",
+      "avg_bleu_scores": 0.65,
+      "avg_rouge_scores": 0.7,
+      "avg_perplexity_scores": 15.5,
+      "avg_tokenization_accuracy": 0.95,
+      "avg_fluency_scores": 0.8,
+      "avg_latency_metrics": 0.5,
+      "avg_language_switching_success": 0.85
+    }
+  },
+  "overall_scores": {
+    "hindi": 0.75,
+    "sanskrit": 0.75,
+    "marathi": 0.75,
+    "english": 0.75,
+    "tamil": 0.75,
+    "telugu": 0.75,
+    "kannada": 0.75,
+    "bengali": 0.75,
+    "gujarati": 0.75,
+    "punjabi": 0.75,
+    "odia": 0.75,
+    "malayalam": 0.75,
+    "assamese": 0.75,
+    "kashmiri": 0.75,
+    "konkani": 0.75,
+    "manipuri": 0.75,
+    "nepali": 0.75,
+    "sindhi": 0.75,
+    "urdu": 0.75,
+    "bodo": 0.75,
+    "dogri": 0.75,
+    "maithili": 0.75,
+    "santali": 0.75
+  },
+  "system_score": 0.75,
+  "evaluation_timestamp": 1759589408.7330258
+}

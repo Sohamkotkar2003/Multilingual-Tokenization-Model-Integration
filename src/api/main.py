@@ -173,13 +173,19 @@ async def knowledge_base_qa(request: QARequest):
                 logger.info(f"Starting response generation for query: {request.text[:50]}...")
                 # Create prompt combining KB answer with original query
                 if detected_lang == "hindi":
-                    prompt = f"प्रश्न: {request.text}\nज्ञान आधार का उत्तर: {answer}\nबेहतर उत्तर:"
+                    prompt = f"प्रश्न: {request.text}\n\nसंक्षिप्त और सटीक उत्तर दें:"
                 elif detected_lang == "sanskrit":
-                    prompt = f"प्रश्नः {request.text}\nज्ञान आधारस्य उत्तरम्: {answer}\nउत्तमं उत्तरम्:"
+                    prompt = f"प्रश्नः {request.text}\n\nसंक्षिप्तं सटीकं च उत्तरं ददातु:"
                 elif detected_lang == "marathi":
-                    prompt = f"प्रश्न: {request.text}\nज्ञान आधाराचे उत्तर: {answer}\nचांगले उत्तर:"
+                    prompt = f"प्रश्न: {request.text}\n\nसंक्षिप्त आणि अचूक उत्तर द्या:"
+                elif detected_lang == "tamil":
+                    prompt = f"கேள்வி: {request.text}\n\nசுருக்கமான மற்றும் துல்லியமான பதில் கொடுங்கள்:"
+                elif detected_lang == "telugu":
+                    prompt = f"ప్రశ్న: {request.text}\n\nసంక్షిప్తమైన మరియు ఖచ్చితమైన సమాధానం ఇవ్వండి:"
+                elif detected_lang == "bengali":
+                    prompt = f"প্রশ্ন: {request.text}\n\nসংক্ষিপ্ত এবং সঠিক উত্তর দিন:"
                 else:
-                    prompt = f"Question: {request.text}\nKnowledge Base Answer: {answer}\nImproved Answer:"
+                    prompt = f"Question: {request.text}\n\nProvide a concise and accurate answer:"
                 
                 logger.info(f"Generated prompt: {prompt[:100]}...")
                 
@@ -192,15 +198,18 @@ async def knowledge_base_qa(request: QARequest):
                 elif torch.cuda.is_available():
                     inputs = inputs.to("cuda")
                 
-                logger.info(f"Starting model generation with max_new_tokens: {min(request.max_response_length or 256, settings.MAX_GENERATION_LENGTH)}")
+                logger.info(f"Starting model generation with max_new_tokens: {min(request.max_response_length or 150, settings.MAX_GENERATION_LENGTH)}")
                 
                 with torch.no_grad():
                     outputs = model.generate(
                         **inputs,
-                        max_new_tokens=min(request.max_response_length or 256, settings.MAX_GENERATION_LENGTH),
-                        temperature=settings.TEMPERATURE,
-                        top_p=settings.TOP_P,
-                        do_sample=settings.DO_SAMPLE,
+                        max_new_tokens=min(request.max_response_length or 150, settings.MAX_GENERATION_LENGTH),
+                        temperature=0.8,  # Slightly higher for more creativity
+                        top_p=0.9,
+                        top_k=50,  # Add top_k sampling to reduce repetition
+                        do_sample=True,
+                        repetition_penalty=1.2,  # Reduce repetition
+                        no_repeat_ngram_size=3,  # Prevent 3-gram repetition
                         pad_token_id=hf_tokenizer.pad_token_id or hf_tokenizer.eos_token_id,
                         eos_token_id=hf_tokenizer.eos_token_id
                     )
@@ -277,13 +286,19 @@ async def multilingual_conversation(request: MultilingualConversationRequest):
             try:
                 # Create prompt combining KB answer with original query
                 if detected_lang == "hindi":
-                    prompt = f"प्रश्न: {request.text}\nज्ञान आधार का उत्तर: {kb_answer}\nबेहतर उत्तर:"
+                    prompt = f"प्रश्न: {request.text}\n\nसंक्षिप्त और सटीक उत्तर दें:"
                 elif detected_lang == "sanskrit":
-                    prompt = f"प्रश्नः {request.text}\nज्ञान आधारस्य उत्तरम्: {kb_answer}\nउत्तमं उत्तरम्:"
+                    prompt = f"प्रश्नः {request.text}\n\nसंक्षिप्तं सटीकं च उत्तरं ददातु:"
                 elif detected_lang == "marathi":
-                    prompt = f"प्रश्न: {request.text}\nज्ञान आधाराचे उत्तर: {kb_answer}\nचांगले उत्तर:"
+                    prompt = f"प्रश्न: {request.text}\n\nसंक्षिप्त आणि अचूक उत्तर द्या:"
+                elif detected_lang == "tamil":
+                    prompt = f"கேள்வி: {request.text}\n\nசுருக்கமான மற்றும் துல்லியமான பதில் கொடுங்கள்:"
+                elif detected_lang == "telugu":
+                    prompt = f"ప్రశ్న: {request.text}\n\nసంక్షిప్తమైన మరియు ఖచ్చితమైన సమాధానం ఇవ్వండి:"
+                elif detected_lang == "bengali":
+                    prompt = f"প্রশ্ন: {request.text}\n\nসংক্ষিপ্ত এবং সঠিক উত্তর দিন:"
                 else:
-                    prompt = f"Question: {request.text}\nKnowledge Base Answer: {kb_answer}\nImproved Answer:"
+                    prompt = f"Question: {request.text}\n\nProvide a concise and accurate answer:"
                 
                 # Generate response
                 inputs = hf_tokenizer(prompt, return_tensors="pt").to("cuda" if torch.cuda.is_available() else "cpu")
@@ -291,10 +306,13 @@ async def multilingual_conversation(request: MultilingualConversationRequest):
                 with torch.no_grad():
                     outputs = model.generate(
                         **inputs,
-                        max_new_tokens=min(request.max_response_length or 256, settings.MAX_GENERATION_LENGTH),
-                        temperature=settings.TEMPERATURE,
-                        top_p=settings.TOP_P,
-                        do_sample=settings.DO_SAMPLE,
+                        max_new_tokens=min(request.max_response_length or 150, settings.MAX_GENERATION_LENGTH),
+                        temperature=0.8,  # Slightly higher for more creativity
+                        top_p=0.9,
+                        top_k=50,  # Add top_k sampling to reduce repetition
+                        do_sample=True,
+                        repetition_penalty=1.2,  # Reduce repetition
+                        no_repeat_ngram_size=3,  # Prevent 3-gram repetition
                         pad_token_id=hf_tokenizer.pad_token_id or hf_tokenizer.eos_token_id,
                         eos_token_id=hf_tokenizer.eos_token_id
                     )
@@ -450,13 +468,19 @@ async def test_language_switching(request: QARequest):
                     logger.info(f"Starting response generation for language switching query: {test_query['text'][:50]}...")
                     # Create prompt combining KB answer with original query
                     if detected_lang == "hindi":
-                        prompt = f"प्रश्न: {test_query['text']}\nज्ञान आधार का उत्तर: {answer}\nबेहतर उत्तर:"
+                        prompt = f"प्रश्न: {test_query['text']}\n\nसंक्षिप्त और सटीक उत्तर दें:"
                     elif detected_lang == "sanskrit":
-                        prompt = f"प्रश्नः {test_query['text']}\nज्ञान आधारस्य उत्तरम्: {answer}\nउत्तमं उत्तरम्:"
+                        prompt = f"प्रश्नः {test_query['text']}\n\nसंक्षिप्तं सटीकं च उत्तरं ददातु:"
                     elif detected_lang == "marathi":
-                        prompt = f"प्रश्न: {test_query['text']}\nज्ञान आधाराचे उत्तर: {answer}\nचांगले उत्तर:"
+                        prompt = f"प्रश्न: {test_query['text']}\n\nसंक्षिप्त आणि अचूक उत्तर द्या:"
+                    elif detected_lang == "tamil":
+                        prompt = f"கேள்வி: {test_query['text']}\n\nசுருக்கமான மற்றும் துல்லியமான பதில் கொடுங்கள்:"
+                    elif detected_lang == "telugu":
+                        prompt = f"ప్రశ్న: {test_query['text']}\n\nసంక్షిప్తమైన మరియు ఖచ్చితమైన సమాధానం ఇవ్వండి:"
+                    elif detected_lang == "bengali":
+                        prompt = f"প্রশ্ন: {test_query['text']}\n\nসংক্ষিপ্ত এবং সঠিক উত্তর দিন:"
                     else:
-                        prompt = f"Question: {test_query['text']}\nKnowledge Base Answer: {answer}\nImproved Answer:"
+                        prompt = f"Question: {test_query['text']}\n\nProvide a concise and accurate answer:"
                     
                     logger.info(f"Generated prompt for {detected_lang}: {prompt[:100]}...")
                     
@@ -469,15 +493,18 @@ async def test_language_switching(request: QARequest):
                     elif torch.cuda.is_available():
                         inputs = inputs.to("cuda")
                     
-                    logger.info(f"Starting model generation for {detected_lang} with max_new_tokens: {min(request.max_response_length or 256, settings.MAX_GENERATION_LENGTH)}")
+                    logger.info(f"Starting model generation for {detected_lang} with max_new_tokens: {min(request.max_response_length or 150, settings.MAX_GENERATION_LENGTH)}")
                     
                     with torch.no_grad():
                         outputs = model.generate(
                             **inputs,
-                            max_new_tokens=min(request.max_response_length or 256, settings.MAX_GENERATION_LENGTH),
-                            temperature=settings.TEMPERATURE,
-                            top_p=settings.TOP_P,
-                            do_sample=settings.DO_SAMPLE,
+                            max_new_tokens=min(request.max_response_length or 150, settings.MAX_GENERATION_LENGTH),
+                            temperature=0.8,  # Slightly higher for more creativity
+                            top_p=0.9,
+                            top_k=50,  # Add top_k sampling to reduce repetition
+                            do_sample=True,
+                            repetition_penalty=1.2,  # Reduce repetition
+                            no_repeat_ngram_size=3,  # Prevent 3-gram repetition
                             pad_token_id=hf_tokenizer.pad_token_id or hf_tokenizer.eos_token_id,
                             eos_token_id=hf_tokenizer.eos_token_id
                         )
@@ -593,7 +620,30 @@ def load_models():
 
         # Load HuggingFace model + tokenizer
         model_source = settings.MODEL_PATH if settings.MODEL_PATH else settings.MODEL_NAME
-        hf_tokenizer = AutoTokenizer.from_pretrained(model_source)
+        
+        # Check if we have a LoRA adapter
+        adapter_path = None
+        base_model_name = None
+        
+        if os.path.exists(model_source) and os.path.exists(os.path.join(model_source, "adapter_config.json")):
+            # This is a LoRA adapter directory
+            adapter_path = model_source
+            # Read the base model from adapter config
+            import json
+            with open(os.path.join(adapter_path, "adapter_config.json"), 'r') as f:
+                adapter_config = json.load(f)
+                base_model_name = adapter_config.get("base_model_name_or_path", "bigscience/bloom-560m")
+            logger.info(f"🔧 Detected LoRA adapter at {adapter_path}")
+            logger.info(f"🔧 Base model: {base_model_name}")
+        else:
+            # This is a regular model
+            base_model_name = model_source
+        
+        # Load tokenizer from adapter if available, otherwise from base model
+        if adapter_path:
+            hf_tokenizer = AutoTokenizer.from_pretrained(adapter_path)
+        else:
+            hf_tokenizer = AutoTokenizer.from_pretrained(base_model_name)
         
         # Configure quantization if enabled
         quantization_config = None
@@ -606,7 +656,7 @@ def load_models():
                 logger.info("🔄 Falling back to standard model loading")
                 quantization_config = None
         
-        # Load model with or without quantization
+        # Load base model with or without quantization
         model_kwargs = {
             "torch_dtype": torch.float16 if torch.cuda.is_available() and settings.USE_FP16_IF_GPU else torch.float32,
         }
@@ -615,7 +665,22 @@ def load_models():
             model_kwargs["quantization_config"] = quantization_config
             model_kwargs["device_map"] = "auto"  # Let bitsandbytes handle device placement
         
-        model = AutoModelForCausalLM.from_pretrained(model_source, **model_kwargs)
+        model = AutoModelForCausalLM.from_pretrained(base_model_name, **model_kwargs)
+        
+        # Load LoRA adapter if available
+        if adapter_path:
+            try:
+                from peft import PeftModel
+                model = PeftModel.from_pretrained(model, adapter_path)
+                logger.info(f"✅ LoRA adapter loaded from {adapter_path}")
+            except ImportError:
+                logger.error("❌ PEFT library not found. Cannot load LoRA adapter.")
+                logger.info("Install with: pip install peft")
+                raise Exception("PEFT library required for LoRA adapter loading")
+            except Exception as e:
+                logger.error(f"❌ Failed to load LoRA adapter: {e}")
+                raise e
+        
         model.eval()
         
         # Move to GPU only if not using quantization (quantization handles device placement)
@@ -669,8 +734,13 @@ def detect_language(text: str) -> tuple:
     devanagari_ratio = script_ratios.get("devanagari", 0)
     if devanagari_ratio > settings.DEVANAGARI_RATIO_THRESHOLD:
         # Use keyword matching to distinguish between Devanagari languages
+        # Check Sanskrit first (highest priority for classical text)
+        if any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("sanskrit", [])):
+            return "sanskrit", min(devanagari_ratio + 0.3, 1.0)
+        
+        # Check other Devanagari languages
         for lang, keywords in settings.LANGUAGE_KEYWORDS.items():
-            if lang in ["hindi", "sanskrit", "marathi", "nepali", "konkani", "bodo", "dogri", "maithili"]:
+            if lang in ["hindi", "marathi", "nepali", "konkani", "bodo", "dogri", "maithili"]:
                 if any(kw in text for kw in keywords):
                     return lang, min(devanagari_ratio + 0.2, 1.0)
         return "hindi", devanagari_ratio  # Default to Hindi for Devanagari
@@ -800,15 +870,35 @@ async def generate_text(request: TextRequest):
             inputs = inputs.to("cuda")
         
         with torch.no_grad():
-            outputs = model.generate(
-                **inputs,
-                max_new_tokens=settings.MAX_GENERATION_LENGTH,
-                temperature=settings.TEMPERATURE,
-                top_p=settings.TOP_P,
-                do_sample=settings.DO_SAMPLE,
-                num_return_sequences=settings.NUM_RETURN_SEQUENCES,
-                pad_token_id=hf_tokenizer.eos_token_id  # Ensure proper padding
-            )
+            try:
+                outputs = model.generate(
+                    **inputs,
+                    max_new_tokens=min(settings.MAX_GENERATION_LENGTH, 100),  # Reduce max tokens to avoid memory issues
+                    temperature=settings.TEMPERATURE,
+                    top_p=settings.TOP_P,
+                    do_sample=settings.DO_SAMPLE,
+                    num_return_sequences=1,  # Reduce to 1 to avoid memory issues
+                    pad_token_id=hf_tokenizer.eos_token_id,  # Ensure proper padding
+                    repetition_penalty=1.1,  # Add repetition penalty
+                    no_repeat_ngram_size=2,  # Prevent repetition
+                    early_stopping=True  # Stop early if possible
+                )
+            except RuntimeError as e:
+                if "CUDA" in str(e):
+                    logger.error(f"CUDA error during generation: {e}")
+                    # Fallback to CPU generation
+                    logger.info("Falling back to CPU generation")
+                    inputs = inputs.to("cpu")
+                    model_cpu = model.to("cpu")
+                    outputs = model_cpu.generate(
+                        **inputs,
+                        max_new_tokens=50,  # Very conservative for CPU
+                        temperature=0.7,
+                        do_sample=True,
+                        pad_token_id=hf_tokenizer.eos_token_id
+                    )
+                else:
+                    raise e
         generated_text = hf_tokenizer.decode(outputs[0], skip_special_tokens=True)
         return GenerateResponse(language=detected_lang, generated_text=generated_text, input_text=request.text)
     except Exception as e:

@@ -246,32 +246,32 @@ class KnowledgeBaseClient:
         # Enhanced contextual mock responses based on query content
         mock_responses = {
             "hindi": {
-                "greeting": "नमस्ते! मैं आपकी सहायता के लिए यहां हूं। मैं हिंदी, संस्कृत, मराठी और अंग्रेजी में बात कर सकता हूं।",
-                "general": f"आपके प्रश्न '{query.text}' के बारे में, मैं यह कह सकता हूं कि यह एक बहुभाषी टोकनाइज़ेशन और भाषा मॉडल प्रणाली का हिस्सा है। अधिक विशिष्ट जानकारी के लिए कृपया अपना प्रश्न विस्तार से पूछें।",
-                "educational": "यह एक शैक्षिक प्रश्न है। मैं बहुभाषी भाषा प्रसंस्करण, टोकनाइज़ेशन और प्राकृतिक भाषा समझ के क्षेत्र में सहायता कर सकता हूं।",
-                "technical": "यह तकनीकी प्रश्न है। मैं प्रोग्रामिंग, एपीआई, मशीन लर्निंग और भाषा मॉडल के विषय में सहायता कर सकता हूं।",
-                "factual_geography": "यह एक भूगोल संबंधी प्रश्न है। मैं आपको बता सकता हूं कि भारत की राजधानी नई दिल्ली है। हालांकि, यह एक मॉक प्रतिक्रिया है - सटीक जानकारी के लिए विश्वसनीय स्रोतों से जांच करें।"
+                "greeting": "नमस्ते! मैं आपकी सहायता के लिए यहां हूं।",
+                "general": f"आपके प्रश्न के बारे में: यह एक बहुभाषी भाषा प्रसंस्करण प्रणाली है। अधिक जानकारी के लिए कृपया विस्तार से पूछें।",
+                "educational": "यह शैक्षिक प्रश्न है। मैं भाषा प्रसंस्करण और टोकनाइज़ेशन में सहायता कर सकता हूं।",
+                "technical": "यह तकनीकी प्रश्न है। मैं प्रोग्रामिंग और मशीन लर्निंग में सहायता कर सकता हूं।",
+                "factual_geography": "भारत की राजधानी नई दिल्ली है। यह एक मॉक प्रतिक्रिया है - सटीक जानकारी के लिए विश्वसनीय स्रोतों से जांच करें।"
             },
             "sanskrit": {
-                "greeting": "नमस्कारः! अहं भवतः सहायतार्थं अत्र अस्मि। अहं हिन्दी, संस्कृत, मराठी, आङ्ग्लभाषायां च वक्तुं शक्नोमि।",
-                "general": f"भवतः प्रश्नस्य '{query.text}' विषये, एतत् बहुभाषीय टोकनाइज़ेशन भाषा मॉडल प्रणाली अस्ति इति वक्तुं शक्नोमि। विशिष्टसूचनायै कृपया विस्तृतं प्रश्नं पृच्छतु।",
-                "educational": "एषा शैक्षिका प्रश्ना अस्ति। अहं बहुभाषीय भाषा प्रसंस्करण, टोकनाइज़ेशन, प्राकृतिक भाषा समझ विषयेषु सहायतां कर्तुं शक्नोमि।",
-                "technical": "एषा तकनीकी प्रश्ना अस्ति। अहं प्रोग्रामिंग, एपीआई, मशीन लर्निंग, भाषा मॉडल विषयेषु सहायतां कर्तुं शक्नोमि।",
-                "factual_geography": "एषा भूगोलविषयकः प्रश्नः अस्ति। भारतस्य राजधानी नवदिल्ली इति वक्तुं शक्नोमि। तथापि, एषा मॉक प्रतिक्रिया अस्ति - सटीकजानकार्यर्थं विश्वसनीयस्रोतानां संदर्भः करणीयः।"
+                "greeting": "नमस्कारः! अहं भवतः सहायतार्थं अत्र अस्मि।",
+                "general": f"भवतः प्रश्नस्य विषये: एतत् बहुभाषीय भाषा प्रसंस्करण प्रणाली अस्ति। विशिष्टसूचनायै कृपया विस्तृतं प्रश्नं पृच्छतु।",
+                "educational": "एषा शैक्षिका प्रश्ना अस्ति। अहं भाषा प्रसंस्करणे सहायतां कर्तुं शक्नोमि।",
+                "technical": "एषा तकनीकी प्रश्ना अस्ति। अहं प्रोग्रामिंगे सहायतां कर्तुं शक्नोमि।",
+                "factual_geography": "भारतस्य राजधानी नवदिल्ली अस्ति। एषा मॉक प्रतिक्रिया अस्ति - सटीकजानकार्यर्थं विश्वसनीयस्रोतानां संदर्भः करणीयः।"
             },
             "marathi": {
-                "greeting": "नमस्कार! मी तुमची मदत करण्यासाठी येथे आहे। मी हिंदी, संस्कृत, मराठी आणि इंग्रजी भाषेत बोलू शकतो।",
-                "general": f"तुमच्या प्रश्नाबद्दल '{query.text}', ही एक बहुभाषी टोकनाइझेशन आणि भाषा मॉडेल प्रणाली आहे असे मी सांगू शकतो। अधिक विशिष्ट माहितीसाठी कृपया तुमचा प्रश्न तपशीलवार विचारा।",
-                "educational": "हा एक शैक्षणिक प्रश्न आहे। मी बहुभाषी भाषा प्रक्रिया, टोकनाइझेशन आणि नैसर्गिक भाषा समजण्याच्या क्षेत्रात मदत करू शकतो।",
-                "technical": "हा एक तांत्रिक प्रश्न आहे। मी प्रोग्रामिंग, API, मशीन लर्निंग आणि भाषा मॉडेलच्या विषयांत मदत करू शकतो।",
-                "factual_geography": "हा एक भूगोलाचा प्रश्न आहे। मी तुम्हाला सांगू शकतो की भारताची राजधानी नवी दिल्ली आहे। तथापि, ही एक मॉक प्रतिक्रिया आहे - अचूक माहितीसाठी विश्वसनीय स्रोतांकडून तपासा।"
+                "greeting": "नमस्कार! मी तुमची मदत करण्यासाठी येथे आहे।",
+                "general": f"तुमच्या प्रश्नाबद्दल: ही एक बहुभाषी भाषा प्रसंस्करण प्रणाली आहे। अधिक माहितीसाठी कृपया तपशीलवार विचारा।",
+                "educational": "हा शैक्षणिक प्रश्न आहे। मी भाषा प्रक्रिया आणि टोकनाइझेशनमध्ये मदत करू शकतो।",
+                "technical": "हा तांत्रिक प्रश्न आहे। मी प्रोग्रामिंग आणि मशीन लर्निंगमध्ये मदत करू शकतो।",
+                "factual_geography": "भारताची राजधानी नवी दिल्ली आहे। ही मॉक प्रतिक्रिया आहे - अचूक माहितीसाठी विश्वसनीय स्रोतांकडून तपासा।"
             },
             "english": {
-                "greeting": "Hello! I'm here to help you with your questions. I can communicate in Hindi, Sanskrit, Marathi, and English.",
-                "general": f"I understand you're asking about '{query.text}'. While I'm designed as a multilingual tokenization and language model system, I can provide some general information. However, for accurate factual information, I'd recommend consulting reliable sources or databases.",
-                "educational": "This appears to be an educational question. I can assist you with topics related to multilingual language processing, tokenization, and natural language understanding.",
-                "technical": "This seems to be a technical question. I can help you with programming, APIs, machine learning, and language model topics.",
-                "factual_geography": "This is a geography-related question. I can tell you that the capital of India is New Delhi. However, this is a mock response - for accurate information, please consult reliable sources or databases."
+                "greeting": "Hello! I'm here to help you with your questions.",
+                "general": f"Regarding your question: This is a multilingual language processing system. For more specific information, please ask in detail.",
+                "educational": "This is an educational question. I can assist with language processing and tokenization topics.",
+                "technical": "This is a technical question. I can help with programming and machine learning topics.",
+                "factual_geography": "The capital of India is New Delhi. This is a mock response - for accurate information, please consult reliable sources."
             }
         }
         

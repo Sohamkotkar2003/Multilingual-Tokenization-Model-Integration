@@ -626,7 +626,10 @@ class MultilingualEvaluator:
             results: Evaluation results
             filepath: Output file path
         """
-        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        # Only create directory if filepath contains a directory
+        dir_path = os.path.dirname(filepath)
+        if dir_path:
+            os.makedirs(dir_path, exist_ok=True)
         
         with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(results, f, indent=2, ensure_ascii=False)

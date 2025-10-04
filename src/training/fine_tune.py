@@ -55,7 +55,7 @@ logger = logging.getLogger(__name__)
 
 # Model Configuration
 MODEL_NAME = settings.MODEL_NAME  # Use the same model as app.py
-OUTPUT_DIR = "mbart_finetuned"  # Output directory for fine-tuned model
+OUTPUT_DIR = "finetuned_generation_model"  # Output directory for fine-tuned model
 
 # Training Parameters
 EPOCHS = 3
@@ -344,7 +344,7 @@ def main():
         r=16,
         lora_alpha=32,
         lora_dropout=0.1,
-        target_modules=["q_proj", "v_proj"],  # Correct modules for this model
+        target_modules=["query_key_value", "dense"],  # Correct modules for this model architecture
     )
         
         # Apply LoRA to the model
@@ -544,7 +544,7 @@ def update_settings_for_finetuned_model():
             
             # Replace the MODEL_PATH line
             old_line = 'MODEL_PATH = os.getenv("MODEL_PATH", "")  # local checkpoint folder (if used). Empty -> use MODEL_NAME'
-            new_line = 'MODEL_PATH = os.getenv("MODEL_PATH", "mbart_finetuned")  # local checkpoint folder (if used). Empty -> use MODEL_NAME'
+            new_line = 'MODEL_PATH = os.getenv("MODEL_PATH", "model")  # local checkpoint folder (if used). Empty -> use MODEL_NAME'
             
             if old_line in content:
                 content = content.replace(old_line, new_line)

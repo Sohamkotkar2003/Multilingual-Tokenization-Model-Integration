@@ -6,3 +6,4 @@ mbart_finetuned/
 data/
 core/logs/
 /cache/
+finetuned_generation_model/
