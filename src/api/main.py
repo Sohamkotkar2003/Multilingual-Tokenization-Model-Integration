@@ -639,32 +639,110 @@ def load_models():
 # Language Detection
 # =============================================================================
 def detect_language(text: str) -> tuple:
-    """Detect language based on Unicode ranges + keywords"""
+    """Enhanced language detection for 20+ Indian languages based on Unicode ranges + keywords"""
     logger.debug(f"Detecting language for text: '{text[:50]}...'")
 
-    devanagari_chars = sum(1 for c in text if settings.DEVANAGARI_UNICODE_RANGE[0] <= ord(c) <= settings.DEVANAGARI_UNICODE_RANGE[1])
-    english_chars = sum(1 for c in text if c.isascii() and c.isalpha())
-    total_chars = len([c for c in text if c.isalpha()])
+    # Count characters in each script
+    script_counts = {}
+    total_chars = 0
+    
+    for char in text:
+        if char.isalpha():
+            total_chars += 1
+            for script, (start, end) in settings.UNICODE_RANGES.items():
+                if start <= ord(char) <= end:
+                    script_counts[script] = script_counts.get(script, 0) + 1
+                    break
 
     if total_chars == 0:
         return settings.DEFAULT_LANGUAGE, 0.0
 
-    devanagari_ratio = devanagari_chars / total_chars
-    english_ratio = english_chars / total_chars
-
+    # Calculate ratios for each script
+    script_ratios = {script: count / total_chars for script, count in script_counts.items()}
+    
+    # Check for English first (highest priority)
+    english_ratio = script_ratios.get("latin", 0)
     if english_ratio > settings.ENGLISH_RATIO_THRESHOLD:
         return "english", english_ratio
 
+    # Check for Devanagari-based languages
+    devanagari_ratio = script_ratios.get("devanagari", 0)
     if devanagari_ratio > settings.DEVANAGARI_RATIO_THRESHOLD:
+        # Use keyword matching to distinguish between Devanagari languages
         for lang, keywords in settings.LANGUAGE_KEYWORDS.items():
-            if any(kw in text for kw in keywords):
-                return lang, min(devanagari_ratio + 0.2, 1.0)
-        return "hindi", devanagari_ratio
+            if lang in ["hindi", "sanskrit", "marathi", "nepali", "konkani", "bodo", "dogri", "maithili"]:
+                if any(kw in text for kw in keywords):
+                    return lang, min(devanagari_ratio + 0.2, 1.0)
+        return "hindi", devanagari_ratio  # Default to Hindi for Devanagari
 
-    max_conf = max(devanagari_ratio, english_ratio)
-    if max_conf > settings.LANGUAGE_CONFIDENCE_THRESHOLD:
-        return "mixed", max_conf
-    return settings.DEFAULT_LANGUAGE, max_conf
+    # Check for other scripts
+    for script, ratio in script_ratios.items():
+        if ratio > 0.3:  # Threshold for script detection
+            if script == "tamil":
+                # Check Tamil keywords
+                if any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("tamil", [])):
+                    return "tamil", ratio
+            elif script == "telugu":
+                # Check Telugu keywords
+                if any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("telugu", [])):
+                    return "telugu", ratio
+            elif script == "kannada":
+                # Check Kannada keywords
+                if any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("kannada", [])):
+                    return "kannada", ratio
+            elif script == "bengali":
+                # Check Bengali/Assamese keywords
+                if any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("bengali", [])):
+                    return "bengali", ratio
+                elif any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("assamese", [])):
+                    return "assamese", ratio
+            elif script == "gujarati":
+                # Check Gujarati keywords
+                if any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("gujarati", [])):
+                    return "gujarati", ratio
+            elif script == "punjabi":
+                # Check Punjabi keywords
+                if any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("punjabi", [])):
+                    return "punjabi", ratio
+            elif script == "odia":
+                # Check Odia keywords
+                if any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("odia", [])):
+                    return "odia", ratio
+            elif script == "malayalam":
+                # Check Malayalam keywords
+                if any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("malayalam", [])):
+                    return "malayalam", ratio
+            elif script == "urdu":
+                # Check Urdu keywords
+                if any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("urdu", [])):
+                    return "urdu", ratio
+
+    # Fallback: check all language keywords
+    for lang, keywords in settings.LANGUAGE_KEYWORDS.items():
+        if any(kw in text for kw in keywords):
+            return lang, 0.6  # Medium confidence for keyword match
+
+    # If no script or keyword match, return the most likely script
+    if script_ratios:
+        most_likely_script = max(script_ratios.items(), key=lambda x: x[1])
+        if most_likely_script[1] > settings.LANGUAGE_CONFIDENCE_THRESHOLD:
+            # Map script to default language
+            script_to_lang = {
+                "devanagari": "hindi",
+                "tamil": "tamil",
+                "telugu": "telugu",
+                "kannada": "kannada",
+                "bengali": "bengali",
+                "gujarati": "gujarati",
+                "punjabi": "punjabi",
+                "odia": "odia",
+                "malayalam": "malayalam",
+                "urdu": "urdu",
+                "latin": "english"
+            }
+            return script_to_lang.get(most_likely_script[0], settings.DEFAULT_LANGUAGE), most_likely_script[1]
+
+    return settings.DEFAULT_LANGUAGE, 0.0
 
 # =============================================================================
 # API Endpoints

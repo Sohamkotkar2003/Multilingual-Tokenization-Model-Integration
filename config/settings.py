@@ -17,8 +17,8 @@ API_VERSION = "1.0.1"
 DEBUG_MODE = True
 
 # Model and Tokenizer Paths
-TOKENIZER_MODEL_PATH = "model/multi_tokenizer.model"   # SentencePiece .model (optional)
-TOKENIZER_VOCAB_PATH = "model/multi_tokenizer.vocab"
+TOKENIZER_MODEL_PATH = "model/multilingual_tokenizer.model"   # SentencePiece .model (optional)
+TOKENIZER_VOCAB_PATH = "model/multilingual_tokenizer.vocab"
 TOKENIZER_MERGE_PATH = "model/tokenizer_merge.txt"
 
 # Model Configuration
@@ -34,31 +34,94 @@ TEMPERATURE = 0.7
 TOP_P = 0.9
 DO_SAMPLE = True
 
-# Supported Languages
-SUPPORTED_LANGUAGES = ["hindi", "sanskrit", "marathi", "english"]
+# Supported Languages - Expanded to 20+ Indian languages
+SUPPORTED_LANGUAGES = [
+    # Original 4 languages
+    "hindi", "sanskrit", "marathi", "english",
+    # Additional Indian languages
+    "tamil", "telugu", "kannada", "bengali", "gujarati", "punjabi", 
+    "odia", "malayalam", "assamese", "kashmiri", "konkani", "manipuri",
+    "nepali", "sindhi", "urdu", "bodo", "dogri", "maithili", "santali"
+]
 DEFAULT_LANGUAGE = "english"
 
 # Language Detection Configuration
-DEVANAGARI_UNICODE_RANGE = (0x0900, 0x097F)
+# Unicode ranges for different scripts
+UNICODE_RANGES = {
+    "devanagari": (0x0900, 0x097F),  # Hindi, Sanskrit, Marathi, Nepali, etc.
+    "tamil": (0x0B80, 0x0BFF),       # Tamil
+    "telugu": (0x0C00, 0x0C7F),      # Telugu
+    "kannada": (0x0C80, 0x0CFF),     # Kannada
+    "bengali": (0x0980, 0x09FF),     # Bengali, Assamese
+    "gujarati": (0x0A80, 0x0AFF),    # Gujarati
+    "punjabi": (0x0A00, 0x0A7F),     # Punjabi (Gurmukhi)
+    "odia": (0x0B00, 0x0B7F),        # Odia
+    "malayalam": (0x0D00, 0x0D7F),   # Malayalam
+    "urdu": (0x0600, 0x06FF),        # Urdu (Arabic script)
+    "latin": (0x0000, 0x007F)        # English and other Latin scripts
+}
+
+# Legacy support
+DEVANAGARI_UNICODE_RANGE = UNICODE_RANGES["devanagari"]
 LANGUAGE_CONFIDENCE_THRESHOLD = 0.5
 ENGLISH_RATIO_THRESHOLD = 0.8
 DEVANAGARI_RATIO_THRESHOLD = 0.5
 
 # Language-specific keywords for detection
 LANGUAGE_KEYWORDS = {
-    "sanskrit": ["संस्कृत", "श्लोक", "मन्त्र", "वेद", "उपनिषद्", "गीता", "धर्मो"],
-    "marathi": ["महाराष्ट्र", "आहे", "आहेत", "होते", "होता", "म्हणजे", "काय", "कसे", "एकदा"],
-    "hindi": ["है", "हैं", "था", "थी", "होगा", "होगी", "क्या", "कैसे", "यह", "वह", "एक"]
+    "sanskrit": ["संस्कृत", "श्लोक", "मन्त्र", "वेद", "उपनिषद्", "गीता", "धर्मो", "अस्ति", "भवति"],
+    "marathi": ["महाराष्ट्र", "आहे", "आहेत", "होते", "होता", "म्हणजे", "काय", "कसे", "एकदा", "मी", "तू"],
+    "hindi": ["है", "हैं", "था", "थी", "होगा", "होगी", "क्या", "कैसे", "यह", "वह", "एक", "मैं", "तुम"],
+    "tamil": ["தமிழ்", "ஆகும்", "இருக்கிறது", "செய்கிறது", "என்ன", "எப்படி", "நான்", "நீ"],
+    "telugu": ["తెలుగు", "అవుతుంది", "ఉంది", "చేస్తుంది", "ఏమి", "ఎలా", "నేను", "నువ్వు"],
+    "kannada": ["ಕನ್ನಡ", "ಆಗುತ್ತದೆ", "ಇದೆ", "ಮಾಡುತ್ತದೆ", "ಏನು", "ಹೇಗೆ", "ನಾನು", "ನೀನು"],
+    "bengali": ["বাংলা", "হয়", "আছে", "করে", "কী", "কীভাবে", "আমি", "তুমি"],
+    "gujarati": ["ગુજરાતી", "છે", "છે", "કરે", "શું", "કેવી", "હું", "તું"],
+    "punjabi": ["ਪੰਜਾਬੀ", "ਹੈ", "ਹੈ", "ਕਰਦਾ", "ਕੀ", "ਕਿਵੇਂ", "ਮੈਂ", "ਤੂੰ"],
+    "odia": ["ଓଡ଼ିଆ", "ହୁଏ", "ଅଛି", "କରେ", "କଣ", "କିପରି", "ମୁଁ", "ତୁମେ"],
+    "malayalam": ["മലയാളം", "ആണ്", "ഉണ്ട്", "ചെയ്യുന്നു", "എന്ത്", "എങ്ങനെ", "ഞാൻ", "നീ"],
+    "assamese": ["অসমীয়া", "হয়", "আছে", "কৰে", "কি", "কেনেকৈ", "মই", "তুমি"],
+    "urdu": ["اردو", "ہے", "ہے", "کرتا", "کیا", "کیسے", "میں", "تم"],
+    "nepali": ["नेपाली", "छ", "छ", "गर्छ", "के", "कसरी", "म", "तिमी"],
+    "kashmiri": ["کٲشُر", "چھ", "چھ", "کران", "کیا", "کیوی", "می", "تہ"],
+    "konkani": ["कोंकणी", "आसा", "आसा", "करता", "काय", "कशें", "हांव", "तुमी"],
+    "manipuri": ["মৈতৈলোন", "দৈ", "দৈ", "নরবা", "কী", "কীদা", "ঈ", "নুং"],
+    "sindhi": ["سنڌي", "آهي", "آهي", "ڪري", "ڇا", "ڪيئن", "مان", "تون"],
+    "bodo": ["बड़ो", "जायो", "जायो", "खालाम", "मा", "माब्ला", "आं", "नों"],
+    "dogri": ["डोगरी", "है", "है", "करदा", "की", "कैं", "मैं", "तुसी"],
+    "maithili": ["मैथिली", "अछि", "अछि", "करैत", "कि", "कहाँ", "हम", "तोहर"],
+    "santali": ["ᱥᱟᱱᱛᱟᱲᱤ", "ᱦᱩᱭ", "ᱦᱩᱭ", "ᱠᱚᱨ", "ᱢᱮ", "ᱠᱮᱢᱚᱱ", "ᱟᱢ", "ᱟᱢᱮ"]
 }
 
 # Training / Fine-tuning Configuration
 TRAINING_DATA_PATH = "data/training"
 VALIDATION_DATA_PATH = "data/validation"
 CORPUS_FILES = {
+    # Original 4 languages
     "hindi": "hi_train.txt",
-    "sanskrit": "sa_train.txt",
+    "sanskrit": "sa_train.txt", 
     "marathi": "mr_train.txt",
-    "english": "en_train.txt"
+    "english": "en_train.txt",
+    # Additional Indian languages
+    "tamil": "ta_train.txt",
+    "telugu": "te_train.txt",
+    "kannada": "kn_train.txt",
+    "bengali": "bn_train.txt",
+    "gujarati": "gu_train.txt",
+    "punjabi": "pa_train.txt",
+    "odia": "or_train.txt",
+    "malayalam": "ml_train.txt",
+    "assamese": "as_train.txt",
+    "kashmiri": "ks_train.txt",
+    "konkani": "gom_train.txt",
+    "manipuri": "mni_train.txt",
+    "nepali": "ne_train.txt",
+    "sindhi": "sd_train.txt",
+    "urdu": "ur_train.txt",
+    "bodo": "brx_train.txt",
+    "dogri": "doi_train.txt",
+    "maithili": "mai_train.txt",
+    "santali": "sat_train.txt"
 }
 FINE_TUNED_MODEL_PATH = "model"
 
@@ -78,7 +141,7 @@ KB_ENDPOINT = os.getenv("KB_ENDPOINT", "http://127.0.0.1:8001")  # Custom KB ser
 KB_TIMEOUT = float(os.getenv("KB_TIMEOUT", 120.0))
 
 VAANI_ENDPOINT = os.getenv("VAANI_ENDPOINT", "")
-VAANI_TIMEOUT = float(os.getenv("VAANI_TIMEOUT", 10.0))
+VAANI_TIMEOUT = float(os.getenv("VAANI_TIMEOUT", 120.0))
 
 # Device and performance options
 USE_FP16_IF_GPU = True
