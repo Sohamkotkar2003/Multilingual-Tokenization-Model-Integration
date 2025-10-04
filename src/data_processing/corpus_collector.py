@@ -405,6 +405,22 @@ Peace and harmony are the ultimate goals of human society.
                 except Exception as e:
                     logger.warning(f"Failed to download {lang_code}: {e}")
                     continue
+            
+            # Extract text from downloaded Wikipedia dumps
+            logger.info("Extracting text from Wikipedia dumps...")
+            try:
+                from .wikipedia_extractor import WikipediaExtractor
+                extractor = WikipediaExtractor()
+                all_stats = extractor.extract_all_wikipedia_dumps(max_articles_per_language=5000)
+                extractor.print_extraction_summary(all_stats)
+                
+                # Update collection stats
+                self.collection_stats["languages_collected"].update(extractor.stats["languages_processed"])
+                self.collection_stats["sources_used"].add("wikipedia_extracted")
+                
+            except Exception as e:
+                logger.warning(f"Failed to extract Wikipedia text: {e}")
+                logger.info("Falling back to sample data...")
         
         # Always create sample data as fallback
         logger.info("Creating sample corpus files as fallback...")
