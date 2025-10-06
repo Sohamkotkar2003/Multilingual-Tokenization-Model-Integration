@@ -344,7 +344,7 @@ def main():
         r=16,
         lora_alpha=32,
         lora_dropout=0.1,
-        target_modules=["query_key_value", "dense"],  # Correct modules for this model architecture
+        target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],  # Correct modules for this model architecture
     )
         
         # Apply LoRA to the model

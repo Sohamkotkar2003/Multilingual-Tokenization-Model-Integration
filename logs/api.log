@@ -9364,3 +9364,13 @@ Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
 2025-10-04 22:01:39,000 - watchfiles.main - INFO - 1 change detected
 2025-10-04 22:01:39,000 - watchfiles.main - INFO - 1 change detected
 2025-10-04 22:01:39,405 - watchfiles.main - INFO - 1 change detected
+2025-10-06 23:48:50,392 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-06 23:48:55,783 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-06 23:48:55,930 - src.api.main - INFO - 🚀 API Startup
+2025-10-06 23:48:55,938 - src.api.main - INFO - ✅ SentencePiece tokenizer loaded from model/multilingual_tokenizer.model
+2025-10-06 23:48:55,939 - src.api.main - INFO - 🔧 Detected LoRA adapter at finetuned_generation_model/checkpoint-114
+2025-10-06 23:48:55,939 - src.api.main - INFO - 🔧 Base model: AhinsaAI/ahinsa0.5-llama3.2-3B
+2025-10-06 23:48:59,495 - src.api.main - INFO - ✅ LoRA adapter loaded from finetuned_generation_model/checkpoint-114
+2025-10-06 23:49:09,903 - src.api.main - INFO - ✅ Model loaded on GPU: NVIDIA GeForce RTX 4050 Laptop GPU
+2025-10-06 23:49:09,905 - src.api.main - INFO - ✅ Model loaded: finetuned_generation_model/checkpoint-114
+2025-10-06 23:49:13,821 - src.api.main - INFO - 🔌 API Shutdown
