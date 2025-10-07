@@ -9374,3 +9374,256 @@ Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
 2025-10-06 23:49:09,903 - src.api.main - INFO - ✅ Model loaded on GPU: NVIDIA GeForce RTX 4050 Laptop GPU
 2025-10-06 23:49:09,905 - src.api.main - INFO - ✅ Model loaded: finetuned_generation_model/checkpoint-114
 2025-10-06 23:49:13,821 - src.api.main - INFO - 🔌 API Shutdown
+2025-10-07 18:43:53,583 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-07 18:44:00,281 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-07 18:44:00,432 - src.api.main - INFO - 🚀 API Startup
+2025-10-07 18:44:00,442 - src.api.main - INFO - ✅ SentencePiece tokenizer loaded from model/multilingual_tokenizer.model
+2025-10-07 18:44:00,444 - src.api.main - INFO - 🔧 Detected LoRA adapter at finetuned_generation_model/checkpoint-114
+2025-10-07 18:44:00,444 - src.api.main - INFO - 🔧 Base model: bigscience/bloom-560m
+2025-10-07 18:44:04,794 - src.api.main - INFO - ✅ LoRA adapter loaded from finetuned_generation_model/checkpoint-114
+2025-10-07 18:44:07,215 - src.api.main - INFO - ✅ Model loaded on GPU: NVIDIA GeForce RTX 3060 Laptop GPU
+2025-10-07 18:44:07,215 - src.api.main - INFO - ✅ Model loaded: finetuned_generation_model/checkpoint-114
+2025-10-07 18:45:44,995 - src.api.main - INFO - 🔌 API Shutdown
+2025-10-07 18:45:51,682 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-07 18:45:51,810 - src.api.main - INFO - 🚀 API Startup
+2025-10-07 18:45:51,815 - src.api.main - INFO - ✅ SentencePiece tokenizer loaded from model/multilingual_tokenizer.model
+2025-10-07 18:45:51,816 - src.api.main - INFO - 🔧 Detected LoRA adapter at finetuned_generation_model/checkpoint-114
+2025-10-07 18:45:51,816 - src.api.main - INFO - 🔧 Base model: bigscience/bloom-560m
+2025-10-07 18:45:54,503 - src.api.main - INFO - ✅ LoRA adapter loaded from finetuned_generation_model/checkpoint-114
+2025-10-07 18:45:55,328 - src.api.main - INFO - ✅ Model loaded on GPU: NVIDIA GeForce RTX 3060 Laptop GPU
+2025-10-07 18:45:55,328 - src.api.main - INFO - ✅ Model loaded: finetuned_generation_model/checkpoint-114
+2025-10-07 18:46:27,634 - src.api.main - INFO - 🔌 API Shutdown
+2025-10-07 18:46:39,956 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-07 18:46:45,282 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-07 18:46:45,415 - src.api.main - INFO - 🚀 API Startup
+2025-10-07 18:46:45,420 - src.api.main - INFO - ✅ SentencePiece tokenizer loaded from model/multilingual_tokenizer.model
+2025-10-07 18:46:45,422 - src.api.main - INFO - 🔧 Detected LoRA adapter at finetuned_generation_model/checkpoint-114
+2025-10-07 18:46:45,422 - src.api.main - INFO - 🔧 Base model: bigscience/bloom-560m
+2025-10-07 18:46:48,408 - src.api.main - INFO - ✅ LoRA adapter loaded from finetuned_generation_model/checkpoint-114
+2025-10-07 18:46:49,207 - src.api.main - INFO - ✅ Model loaded on GPU: NVIDIA GeForce RTX 3060 Laptop GPU
+2025-10-07 18:46:49,207 - src.api.main - INFO - ✅ Model loaded: finetuned_generation_model/checkpoint-114
+2025-10-07 18:47:59,632 - src.services.knowledge_base - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-10-07 18:47:59,725 - src.api.main - INFO - Starting response generation for query: भारत की राजधानी क्या है?...
+2025-10-07 18:47:59,726 - src.api.main - INFO - Generated prompt: प्रश्न: भारत की राजधानी क्या है?
+
+संक्षिप्त और सटीक उत्तर दें:...
+2025-10-07 18:47:59,744 - src.api.main - INFO - Starting model generation with max_new_tokens: 256
+2025-10-07 18:48:05,256 - src.api.main - ERROR - Response generation failed: CUDA error: device-side assert triggered
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+Traceback (most recent call last):
+  File "C:\Xeno\Projects\Multilingual-Tokenization-Model-Integration\src\api\main.py", line 207, in knowledge_base_qa
+    outputs = model.generate(
+              ^^^^^^^^^^^^^^^
+  File "C:\Xeno\Projects\Multilingual-Tokenization-Model-Integration\venv\Lib\site-packages\peft\peft_model.py", line 1973, in generate
+    outputs = self.base_model.generate(*args, **kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Xeno\Projects\Multilingual-Tokenization-Model-Integration\venv\Lib\site-packages\torch\utils\_contextlib.py", line 120, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Xeno\Projects\Multilingual-Tokenization-Model-Integration\venv\Lib\site-packages\transformers\generation\utils.py", line 2539, in generate
+    result = self._sample(
+             ^^^^^^^^^^^^^
+  File "C:\Xeno\Projects\Multilingual-Tokenization-Model-Integration\venv\Lib\site-packages\transformers\generation\utils.py", line 2912, in _sample
+    next_tokens = torch.multinomial(probs, num_samples=1).squeeze(1)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.AcceleratorError: CUDA error: device-side assert triggered
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+2025-10-07 18:48:49,994 - src.api.main - INFO - 🔌 API Shutdown
+2025-10-07 18:53:13,743 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-07 18:53:20,502 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-07 18:53:20,670 - src.api.main - INFO - 🚀 API Startup
+2025-10-07 18:53:20,677 - src.api.main - INFO - ✅ SentencePiece tokenizer loaded from model/multilingual_tokenizer.model
+2025-10-07 18:53:20,678 - src.api.main - INFO - 🔧 Detected LoRA adapter at finetuned_generation_model/checkpoint-114
+2025-10-07 18:53:20,678 - src.api.main - INFO - 🔧 Base model: bigscience/bloom-560m
+2025-10-07 18:53:24,079 - src.api.main - INFO - ✅ LoRA adapter loaded from finetuned_generation_model/checkpoint-114
+2025-10-07 18:53:26,563 - src.api.main - INFO - ✅ Model loaded on GPU: NVIDIA GeForce RTX 3060 Laptop GPU
+2025-10-07 18:53:26,563 - src.api.main - INFO - ✅ Model loaded: finetuned_generation_model/checkpoint-114
+2025-10-07 18:53:49,747 - src.services.knowledge_base - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-10-07 18:53:49,847 - src.api.main - INFO - Starting response generation for query: भारत की राजधानी क्या है?...
+2025-10-07 18:53:49,847 - src.api.main - INFO - Generated prompt: प्रश्न: भारत की राजधानी क्या है?
+
+संक्षिप्त और सटीक उत्तर दें:...
+2025-10-07 18:53:49,858 - src.api.main - INFO - Starting model generation with max_new_tokens: 256
+2025-10-07 18:53:54,670 - src.api.main - ERROR - CUDA error during generation: CUDA error: device-side assert triggered
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+2025-10-07 18:53:54,670 - src.api.main - INFO - Falling back to CPU generation with conservative settings
+2025-10-07 18:53:54,684 - src.api.main - ERROR - Response generation failed: CUDA error: device-side assert triggered
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+Traceback (most recent call last):
+  File "C:\Xeno\Projects\Multilingual-Tokenization-Model-Integration\src\api\main.py", line 219, in knowledge_base_qa
+    outputs = model.generate(
+              ^^^^^^^^^^^^^^^
+  File "C:\Xeno\Projects\Multilingual-Tokenization-Model-Integration\venv\Lib\site-packages\peft\peft_model.py", line 1973, in generate
+    outputs = self.base_model.generate(*args, **kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Xeno\Projects\Multilingual-Tokenization-Model-Integration\venv\Lib\site-packages\torch\utils\_contextlib.py", line 120, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Xeno\Projects\Multilingual-Tokenization-Model-Integration\venv\Lib\site-packages\transformers\generation\utils.py", line 2539, in generate
+    result = self._sample(
+             ^^^^^^^^^^^^^
+  File "C:\Xeno\Projects\Multilingual-Tokenization-Model-Integration\venv\Lib\site-packages\transformers\generation\utils.py", line 2912, in _sample
+    next_tokens = torch.multinomial(probs, num_samples=1).squeeze(1)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.AcceleratorError: CUDA error: device-side assert triggered
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Xeno\Projects\Multilingual-Tokenization-Model-Integration\src\api\main.py", line 238, in knowledge_base_qa
+    inputs = inputs.to("cpu")
+             ^^^^^^^^^^^^^^^^
+  File "C:\Xeno\Projects\Multilingual-Tokenization-Model-Integration\venv\Lib\site-packages\transformers\tokenization_utils_base.py", line 809, in to
+    self.data = {
+                ^
+  File "C:\Xeno\Projects\Multilingual-Tokenization-Model-Integration\venv\Lib\site-packages\transformers\tokenization_utils_base.py", line 810, in <dictcomp>
+    k: v.to(device=device, non_blocking=non_blocking) if hasattr(v, "to") and callable(v.to) else v
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.AcceleratorError: CUDA error: device-side assert triggered
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+2025-10-07 18:54:21,693 - src.api.main - INFO - 🔌 API Shutdown
+2025-10-07 18:56:33,503 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-07 18:56:39,326 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-07 18:56:39,473 - src.api.main - INFO - 🚀 API Startup
+2025-10-07 18:56:39,480 - src.api.main - INFO - ✅ SentencePiece tokenizer loaded from model/multilingual_tokenizer.model
+2025-10-07 18:56:39,481 - src.api.main - INFO - 🔧 Detected LoRA adapter at finetuned_generation_model/checkpoint-114
+2025-10-07 18:56:39,481 - src.api.main - INFO - 🔧 Base model: bigscience/bloom-560m
+2025-10-07 18:56:42,647 - src.api.main - INFO - ✅ LoRA adapter loaded from finetuned_generation_model/checkpoint-114
+2025-10-07 18:56:44,410 - src.api.main - INFO - ✅ Model loaded on GPU: NVIDIA GeForce RTX 3060 Laptop GPU
+2025-10-07 18:56:44,410 - src.api.main - INFO - ✅ Model loaded: finetuned_generation_model/checkpoint-114
+2025-10-07 18:56:50,333 - src.services.knowledge_base - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-10-07 18:56:50,450 - src.api.main - INFO - Starting response generation for query: भारत की राजधानी क्या है?...
+2025-10-07 18:56:50,450 - src.api.main - INFO - Generated prompt: प्रश्न: भारत की राजधानी क्या है?
+
+संक्षिप्त और सटीक उत्तर दें:...
+2025-10-07 18:56:50,454 - src.api.main - INFO - Starting model generation with max_new_tokens: 256
+2025-10-07 18:56:55,092 - src.api.main - ERROR - CUDA error during generation: CUDA error: device-side assert triggered
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+2025-10-07 18:56:55,092 - src.api.main - INFO - Attempting CPU fallback with fresh tokenization...
+2025-10-07 18:56:55,097 - src.api.main - ERROR - CPU fallback also failed: CUDA error: device-side assert triggered
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+2025-10-07 18:56:55,097 - src.api.main - WARNING - CUDA generation disabled for this session due to persistent errors
+2025-10-07 18:56:55,099 - src.api.main - WARNING - No outputs generated - using KB answer only
+2025-10-07 18:57:17,583 - src.api.main - INFO - 🔌 API Shutdown
+2025-10-07 18:58:36,042 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-07 18:58:41,604 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-07 18:58:41,752 - src.api.main - INFO - 🚀 API Startup
+2025-10-07 18:58:41,759 - src.api.main - INFO - ✅ SentencePiece tokenizer loaded from model/multilingual_tokenizer.model
+2025-10-07 18:58:41,760 - src.api.main - INFO - 🔧 Detected LoRA adapter at finetuned_generation_model/checkpoint-114
+2025-10-07 18:58:41,760 - src.api.main - INFO - 🔧 Base model: bigscience/bloom-560m
+2025-10-07 18:58:45,005 - src.api.main - INFO - ✅ LoRA adapter loaded from finetuned_generation_model/checkpoint-114
+2025-10-07 18:58:46,558 - src.api.main - INFO - ✅ Model loaded on GPU: NVIDIA GeForce RTX 3060 Laptop GPU
+2025-10-07 18:58:46,558 - src.api.main - INFO - ✅ Model loaded: finetuned_generation_model/checkpoint-114
+2025-10-07 18:59:27,499 - src.services.knowledge_base - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-10-07 18:59:27,600 - src.api.main - INFO - Starting response generation for query: भारत की राजधानी क्या है?...
+2025-10-07 18:59:27,602 - src.api.main - INFO - Generated prompt: प्रश्न: भारत की राजधानी क्या है?
+
+संक्षिप्त और सटीक उत्तर दें:...
+2025-10-07 18:59:27,605 - src.api.main - INFO - Starting model generation with max_new_tokens: 256
+2025-10-07 18:59:32,181 - src.api.main - ERROR - CUDA error during generation: CUDA error: device-side assert triggered
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+2025-10-07 18:59:32,182 - src.api.main - INFO - Attempting CPU fallback with fresh tokenization...
+2025-10-07 18:59:32,186 - src.api.main - ERROR - CPU fallback also failed: CUDA error: device-side assert triggered
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+2025-10-07 18:59:32,187 - src.api.main - WARNING - CUDA generation disabled for this session due to persistent errors
+2025-10-07 18:59:32,187 - src.api.main - WARNING - No outputs generated - using KB answer only
+2025-10-07 19:00:00,783 - src.api.main - INFO - 🔌 API Shutdown
+2025-10-07 19:00:15,372 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-07 19:00:15,572 - src.api.main - INFO - 🚀 API Startup
+2025-10-07 19:00:15,578 - src.api.main - INFO - ✅ SentencePiece tokenizer loaded from model/multilingual_tokenizer.model
+2025-10-07 19:00:15,579 - src.api.main - INFO - 🔧 Detected LoRA adapter at finetuned_generation_model/checkpoint-114
+2025-10-07 19:00:15,579 - src.api.main - INFO - 🔧 Base model: bigscience/bloom-560m
+2025-10-07 19:00:19,300 - src.api.main - INFO - ✅ LoRA adapter loaded from finetuned_generation_model/checkpoint-114
+2025-10-07 19:00:20,883 - src.api.main - INFO - ✅ Model loaded on GPU: NVIDIA GeForce RTX 3060 Laptop GPU
+2025-10-07 19:00:20,884 - src.api.main - INFO - ✅ Model loaded: finetuned_generation_model/checkpoint-114
+2025-10-07 19:00:20,885 - src.api.main - INFO - 🔌 API Shutdown
+2025-10-07 19:00:35,284 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-07 19:00:35,444 - src.api.main - INFO - 🚀 API Startup
+2025-10-07 19:00:35,451 - src.api.main - INFO - ✅ SentencePiece tokenizer loaded from model/multilingual_tokenizer.model
+2025-10-07 19:00:35,451 - src.api.main - INFO - 🔧 Detected LoRA adapter at finetuned_generation_model/checkpoint-114
+2025-10-07 19:00:35,451 - src.api.main - INFO - 🔧 Base model: bigscience/bloom-560m
+2025-10-07 19:00:38,732 - src.api.main - INFO - ✅ LoRA adapter loaded from finetuned_generation_model/checkpoint-114
+2025-10-07 19:00:39,668 - src.api.main - INFO - ✅ Model loaded on GPU: NVIDIA GeForce RTX 3060 Laptop GPU
+2025-10-07 19:00:39,668 - src.api.main - INFO - ✅ Model loaded: finetuned_generation_model/checkpoint-114
+2025-10-07 19:00:44,017 - src.api.main - INFO - 🔌 API Shutdown
+2025-10-07 19:00:52,978 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-07 19:00:53,263 - src.api.main - INFO - 🚀 API Startup
+2025-10-07 19:00:53,274 - src.api.main - INFO - ✅ SentencePiece tokenizer loaded from model/multilingual_tokenizer.model
+2025-10-07 19:00:53,275 - src.api.main - INFO - 🔧 Detected LoRA adapter at finetuned_generation_model/checkpoint-114
+2025-10-07 19:00:53,275 - src.api.main - INFO - 🔧 Base model: bigscience/bloom-560m
+2025-10-07 19:00:56,581 - src.api.main - INFO - ✅ LoRA adapter loaded from finetuned_generation_model/checkpoint-114
+2025-10-07 19:00:57,471 - src.api.main - INFO - ✅ Model loaded on GPU: NVIDIA GeForce RTX 3060 Laptop GPU
+2025-10-07 19:00:57,471 - src.api.main - INFO - ✅ Model loaded: finetuned_generation_model/checkpoint-114
+2025-10-07 19:00:57,473 - src.api.main - INFO - 🔌 API Shutdown
+2025-10-07 19:01:10,571 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-07 19:01:10,716 - src.api.main - INFO - 🚀 API Startup
+2025-10-07 19:01:10,722 - src.api.main - INFO - ✅ SentencePiece tokenizer loaded from model/multilingual_tokenizer.model
+2025-10-07 19:01:10,722 - src.api.main - INFO - 🔧 Detected LoRA adapter at finetuned_generation_model/checkpoint-114
+2025-10-07 19:01:10,723 - src.api.main - INFO - 🔧 Base model: bigscience/bloom-560m
+2025-10-07 19:01:13,618 - src.api.main - INFO - ✅ LoRA adapter loaded from finetuned_generation_model/checkpoint-114
+2025-10-07 19:01:14,442 - src.api.main - INFO - ✅ Model loaded on GPU: NVIDIA GeForce RTX 3060 Laptop GPU
+2025-10-07 19:01:14,443 - src.api.main - INFO - ✅ Model loaded: finetuned_generation_model/checkpoint-114
+2025-10-07 19:01:25,707 - src.api.main - INFO - 🔌 API Shutdown
+2025-10-07 19:02:38,667 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-07 19:02:44,342 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-07 19:02:44,481 - src.api.main - INFO - 🚀 API Startup
+2025-10-07 19:02:44,487 - src.api.main - INFO - ✅ SentencePiece tokenizer loaded from model/multilingual_tokenizer.model
+2025-10-07 19:02:44,489 - src.api.main - INFO - 🔧 Detected LoRA adapter at finetuned_generation_model/checkpoint-114
+2025-10-07 19:02:44,489 - src.api.main - INFO - 🔧 Base model: bigscience/bloom-560m
+2025-10-07 19:02:47,539 - src.api.main - INFO - ✅ LoRA adapter loaded from finetuned_generation_model/checkpoint-114
+2025-10-07 19:02:48,463 - src.api.main - INFO - ✅ Model loaded on GPU: NVIDIA GeForce RTX 3060 Laptop GPU
+2025-10-07 19:02:48,463 - src.api.main - INFO - ✅ Model loaded: finetuned_generation_model/checkpoint-114
+2025-10-07 19:03:01,706 - src.services.knowledge_base - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-10-07 19:03:01,825 - src.api.main - INFO - Starting response generation for query: भारत की राजधानी क्या है?...
+2025-10-07 19:03:01,825 - src.api.main - INFO - Generated prompt: प्रश्न: भारत की राजधानी क्या है?
+
+संक्षिप्त और सटीक उत्तर दें:...
+2025-10-07 19:03:01,828 - src.api.main - INFO - Starting model generation with max_new_tokens: 256
+2025-10-07 19:03:06,337 - src.api.main - ERROR - CUDA error during generation: CUDA error: device-side assert triggered
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+2025-10-07 19:03:06,337 - src.api.main - INFO - Attempting CPU fallback with fresh tokenization...
+2025-10-07 19:03:06,340 - src.api.main - ERROR - CPU fallback also failed: CUDA error: device-side assert triggered
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+2025-10-07 19:03:06,340 - src.api.main - INFO - 🔄 Reloading model in CPU-only mode due to CUDA issues...
+2025-10-07 19:03:06,340 - src.api.main - ERROR - ❌ Failed to reload model in CPU mode: CUDA error: device-side assert triggered
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+2025-10-07 19:03:06,341 - src.api.main - WARNING - No outputs generated - using KB answer only
+2025-10-07 19:03:14,038 - src.api.main - INFO - 🔌 API Shutdown

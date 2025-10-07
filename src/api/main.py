@@ -48,6 +48,8 @@ app = FastAPI(
 sp_tokenizer = None
 model = None
 hf_tokenizer = None  # Hugging Face tokenizer for decoder-only LM
+cuda_generation_disabled = False  # Flag to track CUDA issues
+model_reloaded_cpu = False  # Flag to track if model was reloaded in CPU mode
 
 # =============================================================================
 # Request / Response Schemas
@@ -95,13 +97,16 @@ from src.services.knowledge_base import process_qa_query, get_kb_stats, QueryTyp
 
 # Additional request/response models for KB integration
 class QARequest(BaseModel):
-    text: str = Field(..., description="User query text")
+    text: str = Field(..., description="User query text", alias="query")
     language: Optional[str] = Field(None, description="Override detected language")
     user_id: Optional[str] = Field(None, description="User identifier for session tracking")
     session_id: Optional[str] = Field(None, description="Session identifier for conversation context")
     context: Optional[str] = Field(None, description="Additional context for the query")
     generate_response: bool = Field(True, description="Whether to generate a response using the language model")
     max_response_length: Optional[int] = Field(256, description="Maximum response length")
+    
+    class Config:
+        populate_by_name = True
 
 class QAResponse(BaseModel):
     answer: str
@@ -168,7 +173,10 @@ async def knowledge_base_qa(request: QARequest):
         generated_response = None
         
         # Generate enhanced response using language model if requested
-        if request.generate_response and model and hf_tokenizer:
+        # Skip generation if CUDA issues are detected
+        global cuda_generation_disabled
+        force_cpu_only = os.getenv("FORCE_CPU_GENERATION", "false").lower() == "true"
+        if request.generate_response and model and hf_tokenizer and not force_cpu_only and not cuda_generation_disabled:
             try:
                 logger.info(f"Starting response generation for query: {request.text[:50]}...")
                 # Create prompt combining KB answer with original query
@@ -190,7 +198,18 @@ async def knowledge_base_qa(request: QARequest):
                 logger.info(f"Generated prompt: {prompt[:100]}...")
                 
                 # Generate response
-                inputs = hf_tokenizer(prompt, return_tensors="pt")
+                inputs = hf_tokenizer(prompt, return_tensors="pt", padding=True, truncation=True, max_length=512)
+                
+                # Validate token IDs to prevent CUDA assertion errors
+                input_ids = inputs['input_ids']
+                vocab_size = hf_tokenizer.vocab_size
+                
+                # Check for invalid token IDs
+                if torch.any(input_ids >= vocab_size) or torch.any(input_ids < 0):
+                    logger.warning(f"Invalid token IDs detected. Vocab size: {vocab_size}, Min: {input_ids.min()}, Max: {input_ids.max()}")
+                    # Filter out invalid tokens
+                    input_ids = torch.clamp(input_ids, 0, vocab_size - 1)
+                    inputs['input_ids'] = input_ids
                 
                 # Move inputs to the same device as the model
                 if hasattr(model, 'device') and model.device.type != 'cpu':
@@ -201,35 +220,113 @@ async def knowledge_base_qa(request: QARequest):
                 logger.info(f"Starting model generation with max_new_tokens: {min(request.max_response_length or 150, settings.MAX_GENERATION_LENGTH)}")
                 
                 with torch.no_grad():
-                    outputs = model.generate(
-                        **inputs,
-                        max_new_tokens=min(request.max_response_length or 150, settings.MAX_GENERATION_LENGTH),
-                        temperature=0.8,  # Slightly higher for more creativity
-                        top_p=0.9,
-                        top_k=50,  # Add top_k sampling to reduce repetition
-                        do_sample=True,
-                        repetition_penalty=1.2,  # Reduce repetition
-                        no_repeat_ngram_size=3,  # Prevent 3-gram repetition
-                        pad_token_id=hf_tokenizer.pad_token_id or hf_tokenizer.eos_token_id,
-                        eos_token_id=hf_tokenizer.eos_token_id
-                    )
+                    try:
+                        # Try GPU generation first
+                        outputs = model.generate(
+                            **inputs,
+                            max_new_tokens=min(request.max_response_length or 150, settings.MAX_GENERATION_LENGTH),
+                            temperature=0.7,  # Reduced temperature for stability
+                            top_p=0.9,
+                            top_k=40,  # Reduced top_k for stability
+                            do_sample=True,
+                            repetition_penalty=1.1,  # Reduced repetition penalty
+                            no_repeat_ngram_size=2,  # Reduced n-gram size
+                            pad_token_id=hf_tokenizer.pad_token_id or hf_tokenizer.eos_token_id,
+                            eos_token_id=hf_tokenizer.eos_token_id,
+                            use_cache=True  # Enable KV cache
+                        )
+                    except RuntimeError as e:
+                        if "CUDA" in str(e) or "device-side assert" in str(e):
+                            logger.error(f"CUDA error during generation: {e}")
+                            logger.info("Attempting CPU fallback with fresh tokenization...")
+                            
+                            # Clear CUDA cache and restart with fresh tokenization
+                            try:
+                                torch.cuda.empty_cache()
+                                # Re-tokenize on CPU to avoid CUDA context issues
+                                inputs_cpu = hf_tokenizer(prompt, return_tensors="pt", padding=True, truncation=True, max_length=512)
+                                
+                                # Validate token IDs for CPU inputs
+                                input_ids_cpu = inputs_cpu['input_ids']
+                                vocab_size = hf_tokenizer.vocab_size
+                                
+                                if torch.any(input_ids_cpu >= vocab_size) or torch.any(input_ids_cpu < 0):
+                                    logger.warning(f"Invalid token IDs in CPU fallback. Clamping to valid range.")
+                                    input_ids_cpu = torch.clamp(input_ids_cpu, 0, vocab_size - 1)
+                                    inputs_cpu['input_ids'] = input_ids_cpu
+                                
+                                # Move model to CPU
+                                model_cpu = model.to("cpu")
+                                logger.info("Model moved to CPU for fallback generation")
+                                
+                                outputs = model_cpu.generate(
+                                    **inputs_cpu,
+                                    max_new_tokens=50,  # Very conservative for CPU
+                                    temperature=0.6,
+                                    do_sample=True,
+                                    pad_token_id=hf_tokenizer.pad_token_id or hf_tokenizer.eos_token_id,
+                                    eos_token_id=hf_tokenizer.eos_token_id
+                                )
+                                logger.info("CPU fallback generation successful")
+                                
+                            except Exception as cpu_error:
+                                logger.error(f"CPU fallback also failed: {cpu_error}")
+                                
+                                # Try to reload model in CPU-only mode
+                                if not model_reloaded_cpu:
+                                    try:
+                                        reload_model_cpu_only()
+                                        # Try generation one more time with reloaded model
+                                        if model is not None:
+                                            logger.info("Attempting generation with reloaded CPU model...")
+                                            outputs = model.generate(
+                                                **inputs_cpu,
+                                                max_new_tokens=30,  # Very conservative
+                                                temperature=0.5,
+                                                do_sample=True,
+                                                pad_token_id=hf_tokenizer.pad_token_id or hf_tokenizer.eos_token_id,
+                                                eos_token_id=hf_tokenizer.eos_token_id
+                                            )
+                                            logger.info("Generation successful with reloaded CPU model")
+                                        else:
+                                            outputs = None
+                                    except Exception as reload_error:
+                                        logger.error(f"Model reload and generation failed: {reload_error}")
+                                        # Disable generation for future requests
+                                        cuda_generation_disabled = True
+                                        logger.warning("CUDA generation disabled for this session due to persistent errors")
+                                        outputs = None
+                                else:
+                                    # Already tried reloading, disable generation
+                                    cuda_generation_disabled = True
+                                    logger.warning("CUDA generation disabled for this session due to persistent errors")
+                                    outputs = None
+                        else:
+                            raise e
                 
-                full_response = hf_tokenizer.decode(outputs[0], skip_special_tokens=True)
-                logger.info(f"Full model response: {full_response[:200]}...")
-                
-                # Extract only the generated part after the prompt
-                if ":" in full_response:
-                    generated_response = full_response.split(":")[-1].strip()
+                if outputs is not None:
+                    full_response = hf_tokenizer.decode(outputs[0], skip_special_tokens=True)
+                    logger.info(f"Full model response: {full_response[:200]}...")
+                    
+                    # Extract only the generated part after the prompt
+                    if ":" in full_response:
+                        generated_response = full_response.split(":")[-1].strip()
+                    else:
+                        generated_response = full_response[len(prompt):].strip()
+                    
+                    logger.info(f"Extracted generated response: {generated_response[:100]}...")
                 else:
-                    generated_response = full_response[len(prompt):].strip()
-                
-                logger.info(f"Extracted generated response: {generated_response[:100]}...")
+                    logger.warning("No outputs generated - using KB answer only")
+                    generated_response = None
                     
             except Exception as e:
                 logger.error(f"Response generation failed: {e}", exc_info=True)
                 generated_response = None
         else:
-            logger.info(f"Generation skipped - generate_response: {request.generate_response}, model: {model is not None}, tokenizer: {hf_tokenizer is not None}")
+            if cuda_generation_disabled:
+                logger.info("Generation skipped - CUDA generation disabled due to previous errors")
+            else:
+                logger.info(f"Generation skipped - generate_response: {request.generate_response}, model: {model is not None}, tokenizer: {hf_tokenizer is not None}")
         
         return QAResponse(
             answer=answer,
@@ -301,21 +398,55 @@ async def multilingual_conversation(request: MultilingualConversationRequest):
                     prompt = f"Question: {request.text}\n\nProvide a concise and accurate answer:"
                 
                 # Generate response
-                inputs = hf_tokenizer(prompt, return_tensors="pt").to("cuda" if torch.cuda.is_available() else "cpu")
+                inputs = hf_tokenizer(prompt, return_tensors="pt", padding=True, truncation=True, max_length=512)
+                
+                # Validate token IDs to prevent CUDA assertion errors
+                input_ids = inputs['input_ids']
+                vocab_size = hf_tokenizer.vocab_size
+                
+                # Check for invalid token IDs
+                if torch.any(input_ids >= vocab_size) or torch.any(input_ids < 0):
+                    logger.warning(f"Invalid token IDs detected. Vocab size: {vocab_size}, Min: {input_ids.min()}, Max: {input_ids.max()}")
+                    # Filter out invalid tokens
+                    input_ids = torch.clamp(input_ids, 0, vocab_size - 1)
+                    inputs['input_ids'] = input_ids
+                
+                inputs = inputs.to("cuda" if torch.cuda.is_available() else "cpu")
                 
                 with torch.no_grad():
-                    outputs = model.generate(
-                        **inputs,
-                        max_new_tokens=min(request.max_response_length or 150, settings.MAX_GENERATION_LENGTH),
-                        temperature=0.8,  # Slightly higher for more creativity
-                        top_p=0.9,
-                        top_k=50,  # Add top_k sampling to reduce repetition
-                        do_sample=True,
-                        repetition_penalty=1.2,  # Reduce repetition
-                        no_repeat_ngram_size=3,  # Prevent 3-gram repetition
-                        pad_token_id=hf_tokenizer.pad_token_id or hf_tokenizer.eos_token_id,
-                        eos_token_id=hf_tokenizer.eos_token_id
-                    )
+                    try:
+                        outputs = model.generate(
+                            **inputs,
+                            max_new_tokens=min(request.max_response_length or 150, settings.MAX_GENERATION_LENGTH),
+                            temperature=0.7,  # Reduced temperature for stability
+                            top_p=0.9,
+                            top_k=40,  # Reduced top_k for stability
+                            do_sample=True,
+                            repetition_penalty=1.1,  # Reduced repetition penalty
+                            no_repeat_ngram_size=2,  # Reduced n-gram size
+                            pad_token_id=hf_tokenizer.pad_token_id or hf_tokenizer.eos_token_id,
+                            eos_token_id=hf_tokenizer.eos_token_id,
+                            early_stopping=True,
+                            use_cache=True
+                        )
+                    except RuntimeError as e:
+                        if "CUDA" in str(e) or "device-side assert" in str(e):
+                            logger.error(f"CUDA error during generation: {e}")
+                            # Fallback to CPU generation
+                            logger.info("Falling back to CPU generation with conservative settings")
+                            inputs = inputs.to("cpu")
+                            model_cpu = model.to("cpu")
+                            outputs = model_cpu.generate(
+                                **inputs,
+                                max_new_tokens=50,
+                                temperature=0.6,
+                                do_sample=True,
+                                pad_token_id=hf_tokenizer.pad_token_id or hf_tokenizer.eos_token_id,
+                                eos_token_id=hf_tokenizer.eos_token_id,
+                                early_stopping=True
+                            )
+                        else:
+                            raise e
                 
                 full_response = hf_tokenizer.decode(outputs[0], skip_special_tokens=True)
                 # Extract only the generated part after the prompt
@@ -485,7 +616,18 @@ async def test_language_switching(request: QARequest):
                     logger.info(f"Generated prompt for {detected_lang}: {prompt[:100]}...")
                     
                     # Generate response
-                    inputs = hf_tokenizer(prompt, return_tensors="pt")
+                    inputs = hf_tokenizer(prompt, return_tensors="pt", padding=True, truncation=True, max_length=512)
+                    
+                    # Validate token IDs to prevent CUDA assertion errors
+                    input_ids = inputs['input_ids']
+                    vocab_size = hf_tokenizer.vocab_size
+                    
+                    # Check for invalid token IDs
+                    if torch.any(input_ids >= vocab_size) or torch.any(input_ids < 0):
+                        logger.warning(f"Invalid token IDs detected for {detected_lang}. Vocab size: {vocab_size}, Min: {input_ids.min()}, Max: {input_ids.max()}")
+                        # Filter out invalid tokens
+                        input_ids = torch.clamp(input_ids, 0, vocab_size - 1)
+                        inputs['input_ids'] = input_ids
                     
                     # Move inputs to the same device as the model
                     if hasattr(model, 'device') and model.device.type != 'cpu':
@@ -496,18 +638,39 @@ async def test_language_switching(request: QARequest):
                     logger.info(f"Starting model generation for {detected_lang} with max_new_tokens: {min(request.max_response_length or 150, settings.MAX_GENERATION_LENGTH)}")
                     
                     with torch.no_grad():
-                        outputs = model.generate(
-                            **inputs,
-                            max_new_tokens=min(request.max_response_length or 150, settings.MAX_GENERATION_LENGTH),
-                            temperature=0.8,  # Slightly higher for more creativity
-                            top_p=0.9,
-                            top_k=50,  # Add top_k sampling to reduce repetition
-                            do_sample=True,
-                            repetition_penalty=1.2,  # Reduce repetition
-                            no_repeat_ngram_size=3,  # Prevent 3-gram repetition
-                            pad_token_id=hf_tokenizer.pad_token_id or hf_tokenizer.eos_token_id,
-                            eos_token_id=hf_tokenizer.eos_token_id
-                        )
+                        try:
+                            outputs = model.generate(
+                                **inputs,
+                                max_new_tokens=min(request.max_response_length or 150, settings.MAX_GENERATION_LENGTH),
+                                temperature=0.7,  # Reduced temperature for stability
+                                top_p=0.9,
+                                top_k=40,  # Reduced top_k for stability
+                                do_sample=True,
+                                repetition_penalty=1.1,  # Reduced repetition penalty
+                                no_repeat_ngram_size=2,  # Reduced n-gram size
+                                pad_token_id=hf_tokenizer.pad_token_id or hf_tokenizer.eos_token_id,
+                                eos_token_id=hf_tokenizer.eos_token_id,
+                                early_stopping=True,
+                                use_cache=True
+                            )
+                        except RuntimeError as e:
+                            if "CUDA" in str(e) or "device-side assert" in str(e):
+                                logger.error(f"CUDA error during generation for {detected_lang}: {e}")
+                                # Fallback to CPU generation
+                                logger.info(f"Falling back to CPU generation for {detected_lang} with conservative settings")
+                                inputs = inputs.to("cpu")
+                                model_cpu = model.to("cpu")
+                                outputs = model_cpu.generate(
+                                    **inputs,
+                                    max_new_tokens=50,
+                                    temperature=0.6,
+                                    do_sample=True,
+                                    pad_token_id=hf_tokenizer.pad_token_id or hf_tokenizer.eos_token_id,
+                                    eos_token_id=hf_tokenizer.eos_token_id,
+                                    early_stopping=True
+                                )
+                            else:
+                                raise e
                     
                     full_response = hf_tokenizer.decode(outputs[0], skip_special_tokens=True)
                     logger.info(f"Full model response for {detected_lang}: {full_response[:200]}...")
@@ -604,6 +767,59 @@ async def health_check_detailed():
 # =============================================================================
 # Model / Tokenizer Loading
 # =============================================================================
+def reload_model_cpu_only():
+    """Reload model in CPU-only mode when CUDA fails"""
+    global model, model_reloaded_cpu
+    
+    try:
+        logger.info("🔄 Reloading model in CPU-only mode due to CUDA issues...")
+        
+        # Clear existing model
+        if model is not None:
+            del model
+            torch.cuda.empty_cache()
+        
+        # Reload model with CPU-only configuration
+        model_source = settings.MODEL_PATH if settings.MODEL_PATH else settings.MODEL_NAME
+        
+        # Check if we have a LoRA adapter
+        adapter_path = None
+        base_model_name = None
+        
+        if os.path.exists(model_source) and os.path.exists(os.path.join(model_source, "adapter_config.json")):
+            adapter_path = model_source
+            import json
+            with open(os.path.join(adapter_path, "adapter_config.json"), 'r') as f:
+                adapter_config = json.load(f)
+                base_model_name = adapter_config.get("base_model_name_or_path", "bigscience/bloom-560m")
+        else:
+            base_model_name = model_source
+        
+        # Load base model on CPU only
+        model_kwargs = {
+            "torch_dtype": torch.float32,  # Use float32 for CPU
+            "device_map": "cpu",  # Force CPU
+        }
+        
+        model = AutoModelForCausalLM.from_pretrained(base_model_name, **model_kwargs)
+        
+        # Load LoRA adapter if available
+        if adapter_path:
+            try:
+                from peft import PeftModel
+                model = PeftModel.from_pretrained(model, adapter_path)
+                logger.info(f"✅ LoRA adapter loaded on CPU from {adapter_path}")
+            except Exception as e:
+                logger.error(f"❌ Failed to load LoRA adapter on CPU: {e}")
+        
+        model.eval()
+        model_reloaded_cpu = True
+        logger.info("✅ Model successfully reloaded in CPU-only mode")
+        
+    except Exception as e:
+        logger.error(f"❌ Failed to reload model in CPU mode: {e}")
+        model = None
+
 def load_models():
     """Load SentencePiece tokenizer and HuggingFace model with optional 4-bit quantization"""
     global sp_tokenizer, model, hf_tokenizer
@@ -645,9 +861,12 @@ def load_models():
         else:
             hf_tokenizer = AutoTokenizer.from_pretrained(base_model_name)
         
-        # Configure quantization if enabled
+        # Check if CPU-only mode is forced
+        force_cpu_only = os.getenv("FORCE_CPU_GENERATION", "false").lower() == "true"
+        
+        # Configure quantization if enabled (but not in CPU-only mode)
         quantization_config = None
-        if settings.USE_4BIT_QUANTIZATION and torch.cuda.is_available():
+        if settings.USE_4BIT_QUANTIZATION and torch.cuda.is_available() and not force_cpu_only:
             try:
                 quantization_config = BitsAndBytesConfig(**settings.QUANTIZATION_CONFIG)
                 logger.info("🔧 Using 4-bit quantization for faster inference")
@@ -658,12 +877,15 @@ def load_models():
         
         # Load base model with or without quantization
         model_kwargs = {
-            "torch_dtype": torch.float16 if torch.cuda.is_available() and settings.USE_FP16_IF_GPU else torch.float32,
+            "torch_dtype": torch.float16 if torch.cuda.is_available() and settings.USE_FP16_IF_GPU and not force_cpu_only else torch.float32,
         }
         
         if quantization_config:
             model_kwargs["quantization_config"] = quantization_config
             model_kwargs["device_map"] = "auto"  # Let bitsandbytes handle device placement
+        elif force_cpu_only:
+            model_kwargs["device_map"] = "cpu"  # Force CPU loading
+            logger.info("🔧 Forcing CPU-only model loading")
         
         model = AutoModelForCausalLM.from_pretrained(base_model_name, **model_kwargs)
         
@@ -683,12 +905,14 @@ def load_models():
         
         model.eval()
         
-        # Move to GPU only if not using quantization (quantization handles device placement)
-        if torch.cuda.is_available() and not quantization_config:
+        # Move to GPU only if not using quantization and not forcing CPU-only mode
+        if torch.cuda.is_available() and not quantization_config and not force_cpu_only:
             model.to("cuda")
             logger.info(f"✅ Model loaded on GPU: {torch.cuda.get_device_name()}")
         elif quantization_config:
             logger.info("✅ Model loaded with 4-bit quantization")
+        elif force_cpu_only:
+            logger.info("✅ Model loaded on CPU (forced CPU-only mode)")
         else:
             logger.info("✅ Model loaded on CPU")
             
@@ -860,7 +1084,18 @@ async def generate_text(request: TextRequest):
 
     try:
         # Tokenize input text
-        inputs = hf_tokenizer(request.text, return_tensors="pt")
+        inputs = hf_tokenizer(request.text, return_tensors="pt", padding=True, truncation=True, max_length=512)
+        
+        # Validate token IDs to prevent CUDA assertion errors
+        input_ids = inputs['input_ids']
+        vocab_size = hf_tokenizer.vocab_size
+        
+        # Check for invalid token IDs
+        if torch.any(input_ids >= vocab_size) or torch.any(input_ids < 0):
+            logger.warning(f"Invalid token IDs detected. Vocab size: {vocab_size}, Min: {input_ids.min()}, Max: {input_ids.max()}")
+            # Filter out invalid tokens
+            input_ids = torch.clamp(input_ids, 0, vocab_size - 1)
+            inputs['input_ids'] = input_ids
         
         # Move inputs to the same device as the model
         # For quantized models, device_map="auto" handles placement automatically
@@ -884,7 +1119,7 @@ async def generate_text(request: TextRequest):
                     early_stopping=True  # Stop early if possible
                 )
             except RuntimeError as e:
-                if "CUDA" in str(e):
+                if "CUDA" in str(e) or "device-side assert" in str(e):
                     logger.error(f"CUDA error during generation: {e}")
                     # Fallback to CPU generation
                     logger.info("Falling back to CPU generation")
@@ -906,6 +1141,7 @@ async def generate_text(request: TextRequest):
 
 @app.get("/config")
 async def get_configuration():
+    global cuda_generation_disabled
     return {
         "api": settings.get_api_config(),
         "model": settings.get_model_config(),
@@ -915,7 +1151,30 @@ async def get_configuration():
             "default": settings.DEFAULT_LANGUAGE
         },
         "kb_endpoint": settings.KB_ENDPOINT,
-        "vaani_endpoint": settings.VAANI_ENDPOINT
+        "vaani_endpoint": settings.VAANI_ENDPOINT,
+        "generation": {
+            "cuda_generation_disabled": cuda_generation_disabled,
+            "force_cpu_only": os.getenv("FORCE_CPU_GENERATION", "false").lower() == "true"
+        }
+    }
+
+@app.post("/reset-generation")
+async def reset_generation_status():
+    """Reset CUDA generation status after fixing issues"""
+    global cuda_generation_disabled, model_reloaded_cpu
+    cuda_generation_disabled = False
+    model_reloaded_cpu = False
+    torch.cuda.empty_cache()  # Clear CUDA cache
+    
+    # Reload models normally (with GPU if available)
+    load_models()
+    
+    return {
+        "message": "CUDA generation status reset and models reloaded",
+        "cuda_generation_disabled": False,
+        "model_reloaded_cpu": False,
+        "cuda_cache_cleared": True,
+        "models_reloaded": True
     }
 
 # =============================================================================
