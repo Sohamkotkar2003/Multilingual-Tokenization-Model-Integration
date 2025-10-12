@@ -35,14 +35,12 @@ TEMPERATURE = 0.7
 TOP_P = 0.9
 DO_SAMPLE = True
 
-# Supported Languages - Expanded to 20+ Indian languages
+# Supported Languages - 21 Indian languages
 SUPPORTED_LANGUAGES = [
-    # Original 4 languages
-    "hindi", "sanskrit", "marathi", "english",
-    # Additional Indian languages
-    "tamil", "telugu", "kannada", "bengali", "gujarati", "punjabi", 
-    "odia", "malayalam", "assamese", "kashmiri", "konkani", "manipuri",
-    "nepali", "sindhi", "urdu", "bodo", "dogri", "maithili", "santali"
+    "assamese", "bengali", "bodo", "english", "gujurati", "hindi",
+    "kannada", "kashmiri", "maithili", "malyalam", "marathi", "meitei",
+    "nepali", "odia", "punjabi", "sanskrit", "santali", "sindhi",
+    "tamil", "telugu", "urdu"
 ]
 DEFAULT_LANGUAGE = "english"
 
@@ -59,7 +57,8 @@ UNICODE_RANGES = {
     "odia": (0x0B00, 0x0B7F),        # Odia
     "malayalam": (0x0D00, 0x0D7F),   # Malayalam
     "urdu": (0x0600, 0x06FF),        # Urdu (Arabic script)
-    "latin": (0x0000, 0x007F)        # English and other Latin scripts
+    "latin": (0x0000, 0x007F),       # English and other Latin scripts
+    "meetei_mayek": (0xABC0, 0xABFF) # Meitei (Meetei Mayek script)
 }
 
 # Legacy support
@@ -77,19 +76,17 @@ LANGUAGE_KEYWORDS = {
     "telugu": ["తెలుగు", "అవుతుంది", "ఉంది", "చేస్తుంది", "ఏమి", "ఎలా", "నేను", "నువ్వు"],
     "kannada": ["ಕನ್ನಡ", "ಆಗುತ್ತದೆ", "ಇದೆ", "ಮಾಡುತ್ತದೆ", "ಏನು", "ಹೇಗೆ", "ನಾನು", "ನೀನು"],
     "bengali": ["বাংলা", "হয়", "আছে", "করে", "কী", "কীভাবে", "আমি", "তুমি"],
-    "gujarati": ["ગુજરાતી", "છે", "છે", "કરે", "શું", "કેવી", "હું", "તું"],
+    "gujurati": ["ગુજરાતી", "છે", "છે", "કરે", "શું", "કેવી", "હું", "તું"],
     "punjabi": ["ਪੰਜਾਬੀ", "ਹੈ", "ਹੈ", "ਕਰਦਾ", "ਕੀ", "ਕਿਵੇਂ", "ਮੈਂ", "ਤੂੰ"],
     "odia": ["ଓଡ଼ିଆ", "ହୁଏ", "ଅଛି", "କରେ", "କଣ", "କିପରି", "ମୁଁ", "ତୁମେ"],
-    "malayalam": ["മലയാളം", "ആണ്", "ഉണ്ട്", "ചെയ്യുന്നു", "എന്ത്", "എങ്ങനെ", "ഞാൻ", "നീ"],
+    "malyalam": ["മലയാളം", "ആണ്", "ഉണ്ട്", "ചെയ്യുന്നു", "എന്ത്", "എങ്ങനെ", "ഞാൻ", "നീ"],
     "assamese": ["অসমীয়া", "হয়", "আছে", "কৰে", "কি", "কেনেকৈ", "মই", "তুমি"],
     "urdu": ["اردو", "ہے", "ہے", "کرتا", "کیا", "کیسے", "میں", "تم"],
     "nepali": ["नेपाली", "छ", "छ", "गर्छ", "के", "कसरी", "म", "तिमी", "हो", "हुन्छ", "गर्नुहुन्छ", "कसरी", "कहाँ", "कब", "किन", "कसो", "मैले", "तिमीले", "हामीले", "उहाँले"],
     "kashmiri": ["کٲشُر", "چھ", "چھ", "کران", "کیا", "کیوی", "می", "تہ"],
-    "konkani": ["कोंकणी", "आसा", "आसा", "करता", "काय", "कशें", "हांव", "तुमी"],
-    "manipuri": ["মৈতৈলোন", "দৈ", "দৈ", "নরবা", "কী", "কীদা", "ঈ", "নুং"],
+    "meitei": ["মৈতৈলোন", "দৈ", "দৈ", "নরবা", "কী", "কীদা", "ঈ", "নুং"],
     "sindhi": ["سنڌي", "آهي", "آهي", "ڪري", "ڇا", "ڪيئن", "مان", "تون"],
     "bodo": ["बड़ो", "जायो", "जायो", "खालाम", "मा", "माब्ला", "आं", "नों"],
-    "dogri": ["डोगरी", "है", "है", "करदा", "की", "कैं", "मैं", "तुसी"],
     "maithili": ["मैथिली", "अछि", "अछि", "करैत", "कि", "कहाँ", "हम", "तोहर"],
     "santali": ["ᱥᱟᱱᱛᱟᱲᱤ", "ᱦᱩᱭ", "ᱦᱩᱭ", "ᱠᱚᱨ", "ᱢᱮ", "ᱠᱮᱢᱚᱱ", "ᱟᱢ", "ᱟᱢᱮ"]
 }
@@ -98,31 +95,27 @@ LANGUAGE_KEYWORDS = {
 TRAINING_DATA_PATH = "data/training"
 VALIDATION_DATA_PATH = "data/validation"
 CORPUS_FILES = {
-    # Original 4 languages
-    "hindi": "hi_train.txt",
-    "sanskrit": "sa_train.txt", 
-    "marathi": "mr_train.txt",
+    "assamese": "as_train.txt",
+    "bengali": "bn_train.txt",
+    "bodo": "brx_train.txt",
     "english": "en_train.txt",
-    # Additional Indian languages
+    "gujurati": "gu_train.txt",
+    "hindi": "hi_train.txt",
+    "kannada": "kn_train.txt",
+    "kashmiri": "ks_train.txt",
+    "maithili": "mai_train.txt",
+    "malyalam": "ml_train.txt",
+    "marathi": "mr_train.txt",
+    "meitei": "mni_train.txt",
+    "nepali": "ne_train.txt",
+    "odia": "or_train.txt",
+    "punjabi": "pa_train.txt",
+    "sanskrit": "sa_train.txt",
+    "santali": "sat_train.txt",
+    "sindhi": "sd_train.txt",
     "tamil": "ta_train.txt",
     "telugu": "te_train.txt",
-    "kannada": "kn_train.txt",
-    "bengali": "bn_train.txt",
-    "gujarati": "gu_train.txt",
-    "punjabi": "pa_train.txt",
-    "odia": "or_train.txt",
-    "malayalam": "ml_train.txt",
-    "assamese": "as_train.txt",
-    "kashmiri": "ks_train.txt",
-    "konkani": "gom_train.txt",
-    "manipuri": "mni_train.txt",
-    "nepali": "ne_train.txt",
-    "sindhi": "sd_train.txt",
-    "urdu": "ur_train.txt",
-    "bodo": "brx_train.txt",
-    "dogri": "doi_train.txt",
-    "maithili": "mai_train.txt",
-    "santali": "sat_train.txt"
+    "urdu": "ur_train.txt"
 }
 FINE_TUNED_MODEL_PATH = "model"
 

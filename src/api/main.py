@@ -928,7 +928,7 @@ def load_models():
 # Language Detection
 # =============================================================================
 def detect_language(text: str) -> tuple:
-    """Enhanced language detection for 20+ Indian languages based on Unicode ranges + keywords"""
+    """Enhanced language detection for 21 Indian languages based on Unicode ranges + keywords"""
     logger.debug(f"Detecting language for text: '{text[:50]}...'")
 
     # Count characters in each script
@@ -964,10 +964,43 @@ def detect_language(text: str) -> tuple:
         
         # Check other Devanagari languages
         for lang, keywords in settings.LANGUAGE_KEYWORDS.items():
-            if lang in ["hindi", "marathi", "nepali", "konkani", "bodo", "dogri", "maithili"]:
+            if lang in ["hindi", "marathi", "nepali", "bodo", "maithili"]:
                 if any(kw in text for kw in keywords):
                     return lang, min(devanagari_ratio + 0.2, 1.0)
         return "hindi", devanagari_ratio  # Default to Hindi for Devanagari
+
+    # Check for Bengali/Assamese script (shared script)
+    bengali_ratio = script_ratios.get("bengali", 0)
+    if bengali_ratio > 0.3:
+        # Check Assamese keywords first
+        if any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("assamese", [])):
+            return "assamese", bengali_ratio
+        # Check Bengali keywords
+        elif any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("bengali", [])):
+            return "bengali", bengali_ratio
+        # Check Meitei (can use Bengali script)
+        elif any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("meitei", [])):
+            return "meitei", bengali_ratio
+        return "bengali", bengali_ratio  # Default to Bengali
+
+    # Check for Meetei Mayek script (native Meitei script)
+    meetei_ratio = script_ratios.get("meetei_mayek", 0)
+    if meetei_ratio > 0.3:
+        return "meitei", meetei_ratio
+
+    # Check for Urdu/Arabic script (Urdu, Kashmiri, Sindhi)
+    urdu_ratio = script_ratios.get("urdu", 0)
+    if urdu_ratio > 0.3:
+        # Check Kashmiri keywords
+        if any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("kashmiri", [])):
+            return "kashmiri", urdu_ratio
+        # Check Sindhi keywords
+        elif any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("sindhi", [])):
+            return "sindhi", urdu_ratio
+        # Check Urdu keywords
+        elif any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("urdu", [])):
+            return "urdu", urdu_ratio
+        return "urdu", urdu_ratio  # Default to Urdu for Arabic script
 
     # Check for other scripts
     for script, ratio in script_ratios.items():
@@ -984,16 +1017,10 @@ def detect_language(text: str) -> tuple:
                 # Check Kannada keywords
                 if any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("kannada", [])):
                     return "kannada", ratio
-            elif script == "bengali":
-                # Check Bengali/Assamese keywords
-                if any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("bengali", [])):
-                    return "bengali", ratio
-                elif any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("assamese", [])):
-                    return "assamese", ratio
             elif script == "gujarati":
-                # Check Gujarati keywords
-                if any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("gujarati", [])):
-                    return "gujarati", ratio
+                # Check Gujarati keywords (note: using "gujurati" in LANGUAGE_KEYWORDS)
+                if any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("gujurati", [])):
+                    return "gujurati", ratio
             elif script == "punjabi":
                 # Check Punjabi keywords
                 if any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("punjabi", [])):
@@ -1003,13 +1030,13 @@ def detect_language(text: str) -> tuple:
                 if any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("odia", [])):
                     return "odia", ratio
             elif script == "malayalam":
-                # Check Malayalam keywords
-                if any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("malayalam", [])):
-                    return "malayalam", ratio
-            elif script == "urdu":
-                # Check Urdu keywords
-                if any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("urdu", [])):
-                    return "urdu", ratio
+                # Check Malayalam keywords (note: using "malyalam" in LANGUAGE_KEYWORDS)
+                if any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("malyalam", [])):
+                    return "malyalam", ratio
+
+    # Check for Santali (Ol Chiki script may not be in standard ranges)
+    if any(kw in text for kw in settings.LANGUAGE_KEYWORDS.get("santali", [])):
+        return "santali", 0.6
 
     # Fallback: check all language keywords
     for lang, keywords in settings.LANGUAGE_KEYWORDS.items():
@@ -1027,11 +1054,12 @@ def detect_language(text: str) -> tuple:
                 "telugu": "telugu",
                 "kannada": "kannada",
                 "bengali": "bengali",
-                "gujarati": "gujarati",
+                "gujarati": "gujurati",
                 "punjabi": "punjabi",
                 "odia": "odia",
-                "malayalam": "malayalam",
+                "malayalam": "malyalam",
                 "urdu": "urdu",
+                "meetei_mayek": "meitei",
                 "latin": "english"
             }
             return script_to_lang.get(most_likely_script[0], settings.DEFAULT_LANGUAGE), most_likely_script[1]

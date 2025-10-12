@@ -1,14 +1,14 @@
 """
-Multilingual Tokenizer Training Script for 20+ Indian Languages
+Multilingual Tokenizer Training Script for 21 Indian Languages
 
 This script implements the complete training pipeline as specified in the requirements:
 1. Use MCP pipeline for data preprocessing
-2. Train multilingual tokenizer on combined 20+ language dataset
+2. Train multilingual tokenizer on combined 21 language dataset
 3. Validate tokenization quality across all languages
 4. Prepare for large-scale Gurukul integration
 
 Based on the requirements:
-- Support for 20+ Indian languages
+- Support for 21 Indian languages
 - MCP preprocessing for robust data handling
 - SentencePiece training with proper Unicode normalization
 - Integration with Indigenous NLP + Vaani TTS
@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 
 class MultilingualTokenizerTrainer:
     """
-    Advanced multilingual tokenizer trainer for 20+ Indian languages
+    Advanced multilingual tokenizer trainer for 21 Indian languages
     
     This class implements the complete training pipeline:
     1. Corpus collection and MCP preprocessing
@@ -108,7 +108,7 @@ class MultilingualTokenizerTrainer:
         model_path = f"{model_prefix}.model"
         vocab_path = f"{model_prefix}.vocab"
         
-        # Enhanced SentencePiece training arguments for 20+ languages
+        # Enhanced SentencePiece training arguments for 21 languages
         spm_args = [
             f'--input={processed_file}',
             f'--model_prefix={model_prefix}',
@@ -132,7 +132,7 @@ class MultilingualTokenizerTrainer:
             '--remove_extra_whitespaces=true',
             '--add_dummy_prefix=false',  # Don't add dummy prefix for better multilingual support
             
-            # Enhanced settings for 20+ languages
+            # Enhanced settings for 21 languages
             '--hard_vocab_limit=false',  # Allow flexible vocabulary size
         ]
         
@@ -183,23 +183,29 @@ class MultilingualTokenizerTrainer:
         
         validation_scores = {}
         
-        # Test sentences for each language
+        # Test sentences for all 21 languages
         test_sentences = {
+            "assamese": "নমস্কাৰ, আপুনি কেনেকৈ আছে? মই অসমীয়া শিকি আছোঁ।",
+            "bengali": "নমস্কার, আপনি কেমন আছেন? আমি বাংলা শিখছি।",
+            "bodo": "जायो, नों माब्ला आं? आं बड़ो खालाम लागोन आं।",
+            "english": "Hello, how are you? I am learning English.",
+            "gujurati": "નમસ્કાર, તમે કેમ છો? હું ગુજરાતી શીખી રહ્યો છું।",
             "hindi": "नमस्ते, आप कैसे हैं? मैं हिंदी सीख रहा हूं।",
-            "sanskrit": "नमस्कारः, भवान् कथं वर्तते? अहं संस्कृतं पठामि।",
+            "kannada": "ನಮಸ್ಕಾರ, ನೀವು ಹೇಗಿದ್ದೀರಿ? ನಾನು ಕನ್ನಡ ಕಲಿಯುತ್ತಿದ್ದೇನೆ।",
+            "kashmiri": "السلام علیکم، تہ کیوی چھیو? می کٲشُر کران چھوس۔",
+            "maithili": "प्रणाम, अहाँ कहाँ छी? हम मैथिली सीख रहल छी।",
+            "malyalam": "നമസ്കാരം, നിങ്ങൾ എങ്ങനെയുണ്ട്? ഞാൻ മലയാളം പഠിക്കുന്നു।",
             "marathi": "नमस्कार, तुम्ही कसे आहात? मी मराठी शिकत आहे।",
+            "meitei": "খুরুমজরি, নুং কিদা লৈরিবনো? ঈনা মৈতৈলোন নরবা লৈরিবদি।",
+            "nepali": "नमस्कार, तपाईं कसरी हुनुहुन्छ? म नेपाली सिक्दै छु।",
+            "odia": "ନମସ୍କାର, ଆପଣ କିପରି ଅଛନ୍ତି? ମୁଁ ଓଡ଼ିଆ ଶିଖୁଛି।",
+            "punjabi": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ, ਤੁਸੀਂ ਕਿਵੇਂ ਹੋ? ਮੈਂ ਪੰਜਾਬੀ ਸਿੱਖ ਰਿਹਾ ਹਾਂ।",
+            "sanskrit": "नमस्कारः, भवान् कथं वर्तते? अहं संस्कृतं पठामि।",
+            "santali": "ᱡᱚᱦᱟᱨ, ᱟᱢ ᱠᱮᱢᱚᱱ ᱢᱮᱱᱟᱢ? ᱟᱢ ᱥᱟᱱᱛᱟᱲᱤ ᱪᱮᱫᱟᱜ ᱠᱟᱱᱟᱢ।",
+            "sindhi": "السلام علیڪم، تون ڪيئن آهين؟ مان سنڌي سکي رهيو آهيان۔",
             "tamil": "வணக்கம், நீங்கள் எப்படி இருக்கிறீர்கள்? நான் தமிழ் கற்கிறேன்।",
             "telugu": "నమస్కారం, మీరు ఎలా ఉన్నారు? నేను తెలుగు నేర్చుకుంటున్నాను।",
-            "kannada": "ನಮಸ್ಕಾರ, ನೀವು ಹೇಗಿದ್ದೀರಿ? ನಾನು ಕನ್ನಡ ಕಲಿಯುತ್ತಿದ್ದೇನೆ।",
-            "bengali": "নমস্কার, আপনি কেমন আছেন? আমি বাংলা শিখছি।",
-            "gujarati": "નમસ્કાર, તમે કેમ છો? હું ગુજરાતી શીખી રહ્યો છું।",
-            "punjabi": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ, ਤੁਸੀਂ ਕਿਵੇਂ ਹੋ? ਮੈਂ ਪੰਜਾਬੀ ਸਿੱਖ ਰਿਹਾ ਹਾਂ।",
-            "odia": "ନମସ୍କାର, ଆପଣ କିପରି ଅଛନ୍ତି? ମୁଁ ଓଡ଼ିଆ ଶିଖୁଛି।",
-            "malayalam": "നമസ്കാരം, നിങ്ങൾ എങ്ങനെയുണ്ട്? ഞാൻ മലയാളം പഠിക്കുന്നു।",
-            "assamese": "নমস্কাৰ, আপুনি কেনেকৈ আছা? মই অসমীয়া শিকি আছোঁ।",
-            "urdu": "السلام علیکم، آپ کیسے ہیں؟ میں اردو سیکھ رہا ہوں۔",
-            "nepali": "नमस्कार, तपाईं कसरी हुनुहुन्छ? म नेपाली सिक्दै छु।",
-            "english": "Hello, how are you? I am learning English."
+            "urdu": "السلام علیکم، آپ کیسے ہیں؟ میں اردو سیکھ رہا ہوں۔"
         }
         
         for language, sentence in test_sentences.items():
@@ -268,13 +274,16 @@ class MultilingualTokenizerTrainer:
         sp = spm.SentencePieceProcessor()
         sp.load(model_path)
         
-        # Test mixed-language sentences
+        # Test mixed-language sentences across multiple scripts
         mixed_sentences = [
             "Hello, नमस्ते, வணக்கம் - how are you?",
             "मैं learning Tamil and தமிழ் at the same time",
             "This is a test of multilingual tokenization across scripts",
             "संस्कृत, English, and தமிழ் in one sentence",
-            "Testing 20+ languages: हिंदी, தமிழ், తెలుగు, ಕನ್ನಡ, বাংলা"
+            "Testing 21 languages: हिंदी, தமிழ், తెలుగు, ಕನ್ನಡ, বাংলা",
+            "ਪੰਜਾਬੀ, ગુજરાતી, മലയാളം, ଓଡ଼ିଆ mixing together",
+            "اردو and English in one sentence with نेपाली",
+            "Bodo बड़ो, Santali ᱥᱟᱱᱛᱟᱲᱤ, Meitei মৈতৈলোন together"
         ]
         
         switching_results = {}
@@ -315,7 +324,7 @@ class MultilingualTokenizerTrainer:
     def print_training_summary(self):
         """Print comprehensive training summary"""
         logger.info("\n" + "=" * 80)
-        logger.info("MULTILINGUAL TOKENIZER TRAINING SUMMARY")
+        logger.info("MULTILINGUAL TOKENIZER TRAINING SUMMARY - 21 LANGUAGES")
         logger.info("=" * 80)
         
         logger.info(f"Total sentences processed: {self.stats['total_sentences']:,}")
@@ -333,7 +342,7 @@ class MultilingualTokenizerTrainer:
             logger.info(f"  {script}: {count:,} sentences ({percentage:.1f}%)")
         
         if self.stats['validation_scores']:
-            logger.info(f"\nValidation Results:")
+            logger.info(f"\nValidation Results (21 Languages):")
             logger.info("-" * 50)
             
             for lang, scores in self.stats['validation_scores'].items():
@@ -347,6 +356,9 @@ class MultilingualTokenizerTrainer:
                     logger.info(f"{lang.upper()}: ERROR - {scores['error']}")
         
         logger.info("=" * 80)
+        logger.info("\nSupported Languages (21):")
+        logger.info(", ".join(settings.SUPPORTED_LANGUAGES))
+        logger.info("=" * 80)
     
     def cleanup(self):
         """Clean up temporary files"""
@@ -357,7 +369,7 @@ def main():
     """Main function to run multilingual tokenizer training"""
     import argparse
     
-    parser = argparse.ArgumentParser(description="Train multilingual tokenizer for 20+ Indian languages")
+    parser = argparse.ArgumentParser(description="Train multilingual tokenizer for 21 Indian languages")
     parser.add_argument("--external-data", action="store_true",
                        help="Attempt to download external data sources")
     parser.add_argument("--skip-preprocessing", action="store_true",

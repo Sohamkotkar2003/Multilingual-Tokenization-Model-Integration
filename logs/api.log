@@ -9627,3 +9627,203 @@ Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
 
 2025-10-07 19:03:06,341 - src.api.main - WARNING - No outputs generated - using KB answer only
 2025-10-07 19:03:14,038 - src.api.main - INFO - 🔌 API Shutdown
+2025-10-07 19:04:02,412 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-07 19:04:07,899 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-07 19:04:08,037 - src.api.main - INFO - 🚀 API Startup
+2025-10-07 19:04:08,043 - src.api.main - INFO - ✅ SentencePiece tokenizer loaded from model/multilingual_tokenizer.model
+2025-10-07 19:04:08,044 - src.api.main - INFO - 🔧 Detected LoRA adapter at finetuned_generation_model/checkpoint-114
+2025-10-07 19:04:08,044 - src.api.main - INFO - 🔧 Base model: AhinsaAI/ahinsa0.5-llama3.2-3B
+2025-10-07 19:04:11,423 - src.api.main - INFO - ✅ LoRA adapter loaded from finetuned_generation_model/checkpoint-114
+2025-10-07 19:04:20,572 - src.api.main - INFO - ✅ Model loaded on GPU: NVIDIA GeForce RTX 4050 Laptop GPU
+2025-10-07 19:04:20,573 - src.api.main - INFO - ✅ Model loaded: finetuned_generation_model/checkpoint-114
+2025-10-07 19:04:40,032 - src.services.knowledge_base - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-10-07 19:04:40,146 - src.api.main - INFO - Starting response generation for query: What is the capital of India?...
+2025-10-07 19:04:40,146 - src.api.main - INFO - Generated prompt: Question: What is the capital of India?
+
+Provide a concise and accurate answer:...
+2025-10-07 19:04:40,212 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 25, Max: 128000
+2025-10-07 19:04:40,215 - src.api.main - INFO - Starting model generation with max_new_tokens: 256
+2025-10-07 19:04:44,401 - src.api.main - INFO - Full model response: 锦Question: What is the capital of India?
+
+Provide a concise and accurate answer: Delhi....
+2025-10-07 19:04:44,402 - src.api.main - INFO - Extracted generated response: Delhi....
+2025-10-07 19:06:01,796 - src.services.knowledge_base - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-10-07 19:06:01,907 - src.api.main - INFO - Starting response generation for query: What is the capital of Japan?...
+2025-10-07 19:06:01,909 - src.api.main - INFO - Generated prompt: Question: What is the capital of Japan?
+
+Provide a concise and accurate answer:...
+2025-10-07 19:06:01,910 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 25, Max: 128000
+2025-10-07 19:06:01,912 - src.api.main - INFO - Starting model generation with max_new_tokens: 256
+2025-10-07 19:07:18,643 - src.api.main - INFO - Full model response: 锦Question: What is the capital of Japan?
+
+Provide a concise and accurate answer: Tokyo. 
+
+Explanation: This question requires knowledge about geography, specifically the capitals of countries. The cor...
+2025-10-07 19:07:18,643 - src.api.main - INFO - Extracted generated response: This question requires knowledge about geography, specifically the capitals of countries. The correc...
+2025-10-07 20:15:32,783 - src.services.knowledge_base - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-10-07 20:15:32,892 - src.api.main - INFO - Starting response generation for query: भारत की राजधानी क्या है?...
+2025-10-07 20:15:32,893 - src.api.main - INFO - Generated prompt: प्रश्न: भारत की राजधानी क्या है?
+
+संक्षिप्त और सटीक उत्तर दें:...
+2025-10-07 20:15:32,917 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 25, Max: 128000
+2025-10-07 20:15:32,921 - src.api.main - INFO - Starting model generation with max_new_tokens: 256
+2025-10-07 20:18:25,105 - src.api.main - INFO - Full model response: 锦प्रश्न: भारत की राजधानी क्या है?
+
+संक्षिप्त और सटीक उत्तर दें: नई दिल्ली।
+
+विस्तृत उत्तरणः् ।  भारतीय गणराज्यां अनेकं प्रमुखं राष्ट्रीय, स्थानीय च मुख्यशहराणां निवासस्थलानि सन्ति। इहं एकं लोकप्रियं त...
+2025-10-07 20:18:25,105 - src.api.main - INFO - Extracted generated response: नई दिल्ली।
+
+विस्तृत उत्तरणः् ।  भारतीय गणराज्यां अनेकं प्रमुखं राष्ट्रीय, स्थानीय च मुख्यशहराणां निव...
+2025-10-07 20:19:23,672 - src.api.main - INFO - 🔌 API Shutdown
+2025-10-08 14:56:09,267 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-08 14:56:13,330 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-08 14:56:13,479 - src.api.main - INFO - 🚀 API Startup
+2025-10-08 14:56:13,486 - src.api.main - INFO - ✅ SentencePiece tokenizer loaded from model/multilingual_tokenizer.model
+2025-10-08 14:56:13,487 - src.api.main - INFO - 🔧 Detected LoRA adapter at finetuned_generation_model/checkpoint-114
+2025-10-08 14:56:13,488 - src.api.main - INFO - 🔧 Base model: AhinsaAI/ahinsa0.5-llama3.2-3B
+2025-10-08 14:56:17,419 - src.api.main - INFO - ✅ LoRA adapter loaded from finetuned_generation_model/checkpoint-114
+2025-10-08 14:56:25,165 - src.api.main - INFO - ✅ Model loaded on GPU: NVIDIA GeForce RTX 4050 Laptop GPU
+2025-10-08 14:56:25,167 - src.api.main - INFO - ✅ Model loaded: finetuned_generation_model/checkpoint-114
+2025-10-08 14:56:39,969 - src.services.knowledge_base - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-10-08 14:56:40,080 - src.api.main - INFO - Starting response generation for query: What is the capital of Japan?...
+2025-10-08 14:56:40,080 - src.api.main - INFO - Generated prompt: Question: What is the capital of Japan?
+
+Provide a concise and accurate answer:...
+2025-10-08 14:56:40,110 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 25, Max: 128000
+2025-10-08 14:56:40,115 - src.api.main - INFO - Starting model generation with max_new_tokens: 256
+2025-10-08 14:56:58,409 - src.api.main - INFO - Full model response: 锦Question: What is the capital of Japan?
+
+Provide a concise and accurate answer: Tokyo. 
+
+Explanation: The capital city of the country, Japan. (Source: Wikipedia)...
+2025-10-08 14:56:58,410 - src.api.main - INFO - Extracted generated response: Wikipedia)...
+2025-10-08 14:57:08,938 - src.services.knowledge_base - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-10-08 14:57:09,053 - src.api.main - INFO - Starting response generation for query: What is the capital of Japan?...
+2025-10-08 14:57:09,053 - src.api.main - INFO - Generated prompt: Question: What is the capital of Japan?
+
+Provide a concise and accurate answer:...
+2025-10-08 14:57:09,055 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 25, Max: 128000
+2025-10-08 14:57:09,057 - src.api.main - INFO - Starting model generation with max_new_tokens: 256
+2025-10-08 14:59:10,855 - src.api.main - INFO - Full model response: 锦Question: What is the capital of Japan?
+
+Provide a concise and accurate answer: Tokyo. 
+
+Explanation: The question asks for the name of the city that serves as the administrative center of government...
+2025-10-08 14:59:10,855 - src.api.main - INFO - Extracted generated response: This response is provided to meet the requirement of giving a specific example of an answer to the p...
+2025-10-08 14:59:22,764 - src.services.knowledge_base - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-10-08 14:59:22,866 - src.api.main - INFO - Starting response generation for query: What is the capital of Japan?...
+2025-10-08 14:59:22,868 - src.api.main - INFO - Generated prompt: Question: What is the capital of Japan?
+
+Provide a concise and accurate answer:...
+2025-10-08 14:59:22,869 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 25, Max: 128000
+2025-10-08 14:59:22,873 - src.api.main - INFO - Starting model generation with max_new_tokens: 256
+2025-10-08 15:00:08,605 - src.api.main - INFO - Full model response: 锦Question: What is the capital of Japan?
+
+Provide a concise and accurate answer:Tokyo
+Explanation: Tokyo is indeed the political center and largest city of the country, serving as its capital. It has ...
+2025-10-08 15:00:08,607 - src.api.main - INFO - Extracted generated response: Tokyo is indeed the political center and largest city of the country, serving as its capital. It has...
+2025-10-08 15:01:00,589 - src.api.main - INFO - 🔌 API Shutdown
+2025-10-08 16:48:38,660 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-08 16:48:43,916 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-08 16:48:44,059 - src.api.main - INFO - 🚀 API Startup
+2025-10-08 16:48:44,065 - src.api.main - INFO - ✅ SentencePiece tokenizer loaded from model/multilingual_tokenizer.model
+2025-10-08 16:48:44,066 - src.api.main - INFO - 🔧 Detected LoRA adapter at finetuned_generation_model/checkpoint-114
+2025-10-08 16:48:44,067 - src.api.main - INFO - 🔧 Base model: AhinsaAI/ahinsa0.5-llama3.2-3B
+2025-10-08 16:48:49,742 - src.api.main - INFO - ✅ LoRA adapter loaded from finetuned_generation_model/checkpoint-114
+2025-10-08 16:48:58,215 - src.api.main - INFO - ✅ Model loaded on GPU: NVIDIA GeForce RTX 4050 Laptop GPU
+2025-10-08 16:48:58,216 - src.api.main - INFO - ✅ Model loaded: finetuned_generation_model/checkpoint-114
+2025-10-08 16:49:51,904 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 11, Max: 128000
+2025-10-08 16:52:41,572 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 30, Max: 128000
+2025-10-08 16:54:28,097 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 11, Max: 128000
+2025-10-08 16:56:14,043 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 11, Max: 128000
+2025-10-08 16:57:42,430 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 11, Max: 128000
+2025-10-08 16:59:05,199 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 11, Max: 128000
+2025-10-08 17:00:30,115 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 11, Max: 128000
+2025-10-08 17:02:12,947 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 11, Max: 128000
+2025-10-08 17:04:00,015 - src.services.knowledge_base - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-10-08 17:04:00,124 - src.api.main - INFO - Starting response generation for query: भारत की राजधानी क्या है?...
+2025-10-08 17:04:00,125 - src.api.main - INFO - Generated prompt: प्रश्न: भारत की राजधानी क्या है?
+
+संक्षिप्त और सटीक उत्तर दें:...
+2025-10-08 17:04:00,129 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 25, Max: 128000
+2025-10-08 17:04:00,132 - src.api.main - INFO - Starting model generation with max_new_tokens: 256
+2025-10-08 17:05:34,849 - src.api.main - INFO - Full model response: 锦प्रश्न: भारत की राजधानी क्या है?
+
+संक्षिप्त और सटीक उत्तर दें: अहमदाबाद। इसे 1912 में देश के राष्ट्रीय रूप से मान्यता प्राप्त करने वाला पहला शहर बनाया गया, जो वर्तमान भी है। यह शहर महाराषट्र का गठन क...
+2025-10-08 17:05:34,851 - src.api.main - INFO - Extracted generated response: अहमदाबाद। इसे 1912 में देश के राष्ट्रीय रूप से मान्यता प्राप्त करने वाला पहला शहर बनाया गया, जो वर्त...
+2025-10-08 17:05:49,557 - src.services.knowledge_base - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-10-08 17:05:49,667 - src.api.main - INFO - Starting response generation for query: भारत की राजधानी क्या है?...
+2025-10-08 17:05:49,669 - src.api.main - INFO - Generated prompt: प्रश्न: भारत की राजधानी क्या है?
+
+संक्षिप्त और सटीक उत्तर दें:...
+2025-10-08 17:05:49,671 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 25, Max: 128000
+2025-10-08 17:05:49,674 - src.api.main - INFO - Starting model generation with max_new_tokens: 256
+2025-10-08 17:09:01,850 - src.api.main - INFO - Full model response: 锦प्रश्न: भारत की राजधानी क्या है?
+
+संक्षिप्त और सटीक उत्तर दें: "राजगृह"। पूर्णतायारूप में यह उत्तम विकल्प है। प्रशनकर्ता "भारतकीরाजदाहिनि" या अन्य असमानताओं के लिए विस्तृत उत्तीर्णक्रम नहीं चाहते, जि...
+2025-10-08 17:09:01,852 - src.api.main - INFO - Extracted generated response: "राजगृह"। पूर्णतायारूप में यह उत्तम विकल्प है। प्रशनकर्ता "भारतकीরाजदाहिनि" या अन्य असमानताओं के लिए...
+2025-10-08 17:09:37,844 - src.services.knowledge_base - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-10-08 17:09:37,960 - src.api.main - INFO - Starting response generation for query: What is the capital of Japan?...
+2025-10-08 17:09:37,961 - src.api.main - INFO - Generated prompt: Question: What is the capital of Japan?
+
+Provide a concise and accurate answer:...
+2025-10-08 17:09:37,967 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 25, Max: 128000
+2025-10-08 17:09:37,970 - src.api.main - INFO - Starting model generation with max_new_tokens: 256
+2025-10-08 17:10:36,594 - src.api.main - INFO - Full model response: 锦Question: What is the capital of Japan?
+
+Provide a concise and accurate answer: Tokyo.
+
+Explanation: The capital city of the country known as the Land of Rising Sun. (Note: This answer does not inclu...
+2025-10-08 17:10:36,595 - src.api.main - INFO - Extracted generated response: This answer does not include any extraneous information, it only provides the correct answer to the ...
+2025-10-08 17:10:43,678 - src.services.knowledge_base - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-10-08 17:10:43,772 - src.api.main - INFO - Starting response generation for query: What is the capital of Japan?...
+2025-10-08 17:10:43,772 - src.api.main - INFO - Generated prompt: Question: What is the capital of Japan?
+
+Provide a concise and accurate answer:...
+2025-10-08 17:10:43,774 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 25, Max: 128000
+2025-10-08 17:10:43,775 - src.api.main - INFO - Starting model generation with max_new_tokens: 256
+2025-10-08 17:10:45,767 - src.api.main - INFO - Full model response: 锦Question: What is the capital of Japan?
+
+Provide a concise and accurate answer: Tokyo....
+2025-10-08 17:10:45,770 - src.api.main - INFO - Extracted generated response: Tokyo....
+2025-10-08 17:10:49,523 - src.services.knowledge_base - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-10-08 17:10:49,621 - src.api.main - INFO - Starting response generation for query: What is the capital of Japan?...
+2025-10-08 17:10:49,622 - src.api.main - INFO - Generated prompt: Question: What is the capital of Japan?
+
+Provide a concise and accurate answer:...
+2025-10-08 17:10:49,626 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 25, Max: 128000
+2025-10-08 17:10:49,628 - src.api.main - INFO - Starting model generation with max_new_tokens: 256
+2025-10-08 17:11:21,124 - src.api.main - INFO - Full model response: 锦Question: What is the capital of Japan?
+
+Provide a concise and accurate answer: Tokyo.
+
+Explanation: The capital city of the country, which has a rich history dating back thousands of years. (Source:...
+2025-10-08 17:11:21,127 - src.api.main - INFO - Extracted generated response: various reliable sources including Britannica.com) 
+The best answer is Tokyo....
+2025-10-08 17:11:30,357 - src.services.knowledge_base - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-10-08 17:11:30,472 - src.api.main - INFO - Starting response generation for query: What is the capital of Japan?...
+2025-10-08 17:11:30,473 - src.api.main - INFO - Generated prompt: Question: What is the capital of Japan?
+
+Provide a concise and accurate answer:...
+2025-10-08 17:11:30,476 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 25, Max: 128000
+2025-10-08 17:11:30,478 - src.api.main - INFO - Starting model generation with max_new_tokens: 256
+2025-10-08 17:13:22,241 - src.api.main - INFO - Full model response: 锦Question: What is the capital of Japan?
+
+Provide a concise and accurate answer: Tokyo
+
+Explanation: As of my knowledge cutoff in March 2023, the official name of the city that serves as the seat of g...
+2025-10-08 17:13:22,242 - src.api.main - INFO - Extracted generated response: I've provided the most current information available up until my cut-off date. However, please verif...
+2025-10-08 17:13:45,292 - src.services.knowledge_base - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-10-08 17:13:45,401 - src.api.main - INFO - Starting response generation for query: What is the capital of Japan?...
+2025-10-08 17:13:45,404 - src.api.main - INFO - Generated prompt: Question: What is the capital of Japan?
+
+Provide a concise and accurate answer:...
+2025-10-08 17:13:45,407 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 25, Max: 128000
+2025-10-08 17:13:45,411 - src.api.main - INFO - Starting model generation with max_new_tokens: 256
+2025-10-08 17:14:58,481 - src.api.main - INFO - Full model response: 锦Question: What is the capital of Japan?
+
+Provide a concise and accurate answer: Tokyo.
+
+Explanation: The capital city of the country known as Japan is indeed Tokyo. This fact can be verified through ...
+2025-10-08 17:14:58,482 - src.api.main - INFO - Extracted generated response: The capital city of the country known as Japan is indeed Tokyo. This fact can be verified through va...
