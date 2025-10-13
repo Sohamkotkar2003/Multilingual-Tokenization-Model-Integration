@@ -5,25 +5,32 @@ import logging
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+
 def normalize_unicode(text):
     return unicodedata.normalize('NFC', text)
+
 
 def segment_sentences(text):
     sentences = re.split(r'[।.?!]+\s*', text)
     sentences = [s.strip() for s in sentences if s.strip()]
     return sentences
 
+
 def transliterate_if_needed(sentence):
-    return sentence
+    return sentence  # placeholder – no transliteration needed for Bodo right now
+
 
 def deduplicate(sentences):
     return list(OrderedDict.fromkeys(sentences))
 
+
 def clean_sentence(sentence):
-    allowed_pattern = re.compile(r'[\u0980-\u09FF\s.,?!\d]+')
+    # ✅ FIX: use Devanagari Unicode range (\u0900-\u097F)
+    allowed_pattern = re.compile(r'[\u0900-\u097F\s.,?!\d]+')
     filtered = ''.join(ch for ch in sentence if allowed_pattern.match(ch))
-    filtered = re.sub('\s+', ' ', filtered).strip()
+    filtered = re.sub(r'\s+', ' ', filtered).strip()
     return filtered
+
 
 def process_sentences(sentences, output_path):
     logging.info(f'Processing {len(sentences)} sentences for output: {output_path}')
@@ -39,11 +46,11 @@ def process_sentences(sentences, output_path):
                 f.write(sentence + '\n')
     logging.info(f'Output file {output_path} writing complete.')
 
+
 def process_text_file_split_in_half(input_path):
     logging.info(f'Start processing input file: {input_path}')
 
     total_lines = 0
-    # First count total lines
     with open(input_path, 'r', encoding='utf-8') as f:
         for _ in f:
             total_lines += 1
@@ -76,12 +83,12 @@ def process_text_file_split_in_half(input_path):
                 if batch_number > 2:
                     break
 
-    # Flush remaining sentences in case some left
     if batch_sentences and batch_number <= 2:
         flush_batch(batch_sentences, batch_number)
 
     logging.info(f'Total lines read: {lines_read}')
     logging.info('Half split batch processing complete.')
+
 
 if __name__ == '__main__':
     process_text_file_split_in_half('bd.txt')

@@ -9,8 +9,8 @@ def normalize_unicode(text):
     return unicodedata.normalize('NFC', text)
 
 def segment_sentences(text):
-    # Adjust the punctuation as needed; here using danda (।), period, question mark, exclamation mark
-    sentences = re.split(r'[।.?!]+\s*', text)
+    # Kashmiri uses Arabic full stop (۔), Urdu comma (،), etc., but your dataset likely uses Hindi danda (।), period, question mark, exclamation mark too.
+    sentences = re.split(r'[۔،۔،|۔|۔|۔|۔|۔|۔|۔|۔|۔|۔|۔|۔|।.?!]+\s*', text)
     sentences = [s.strip() for s in sentences if s.strip()]
     return sentences
 
@@ -22,10 +22,10 @@ def deduplicate(sentences):
     return list(OrderedDict.fromkeys(sentences))
 
 def clean_sentence(sentence):
-    # Adjust allowed unicode range as per the script in ks.txt if known; here using Devanagari block as placeholder
-    allowed_pattern = re.compile(r'[\u0900-\u097F\s.,?!\d]+')
+    # Covers Perso-Arabic block for Kashmiri and standard punctuation + numbers
+    allowed_pattern = re.compile(r'[\u0600-\u06FF\s.,?!\d]+')
     filtered = ''.join(ch for ch in sentence if allowed_pattern.match(ch))
-    filtered = re.sub('\s+', ' ', filtered).strip()
+    filtered = re.sub(r'\s+', ' ', filtered).strip()
     return filtered
 
 def process_sentences(sentences, output_path):

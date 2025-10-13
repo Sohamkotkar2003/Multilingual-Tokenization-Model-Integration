@@ -9827,3 +9827,36 @@ Provide a concise and accurate answer: Tokyo.
 
 Explanation: The capital city of the country known as Japan is indeed Tokyo. This fact can be verified through ...
 2025-10-08 17:14:58,482 - src.api.main - INFO - Extracted generated response: The capital city of the country known as Japan is indeed Tokyo. This fact can be verified through va...
+2025-10-12 19:48:39,927 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-12 19:48:43,203 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-12 19:48:43,305 - src.api.main - INFO - 🚀 API Startup
+2025-10-12 19:48:43,310 - src.api.main - INFO - ✅ SentencePiece tokenizer loaded from model/multilingual_tokenizer.model
+2025-10-12 19:48:43,310 - src.api.main - INFO - 🔧 Detected LoRA adapter at finetuned_generation_model/checkpoint-114
+2025-10-12 19:48:43,311 - src.api.main - INFO - 🔧 Base model: AhinsaAI/ahinsa0.5-llama3.2-3B
+2025-10-12 19:48:45,832 - src.api.main - INFO - ✅ LoRA adapter loaded from finetuned_generation_model/checkpoint-114
+2025-10-12 19:48:50,650 - src.api.main - INFO - ✅ Model loaded on GPU: NVIDIA GeForce RTX 4050 Laptop GPU
+2025-10-12 19:48:50,651 - src.api.main - INFO - ✅ Model loaded: finetuned_generation_model/checkpoint-114
+2025-10-12 19:49:58,144 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 11, Max: 128000
+2025-10-12 19:55:39,336 - src.services.knowledge_base - WARNING - KB endpoint http://127.0.0.1:8001 appears to point to self, using mock response to prevent loop
+2025-10-12 19:55:39,450 - src.api.main - INFO - Starting response generation for query: What is the capital of Japan?...
+2025-10-12 19:55:39,450 - src.api.main - INFO - Generated prompt: Question: What is the capital of Japan?
+
+Provide a concise and accurate answer:...
+2025-10-12 19:55:39,452 - src.api.main - WARNING - Invalid token IDs detected. Vocab size: 128000, Min: 25, Max: 128000
+2025-10-12 19:55:39,454 - src.api.main - INFO - Starting model generation with max_new_tokens: 256
+2025-10-12 19:55:43,123 - src.api.main - INFO - Full model response: 锦Question: What is the capital of Japan?
+
+Provide a concise and accurate answer: 
+
+Answer: Tokyo....
+2025-10-12 19:55:43,124 - src.api.main - INFO - Extracted generated response: Tokyo....
+2025-10-12 22:08:35,930 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-12 22:08:41,277 - src.api.main - INFO - === API Starting - Logging Config Applied ===
+2025-10-12 22:08:41,417 - src.api.main - INFO - 🚀 API Startup
+2025-10-12 22:08:41,423 - src.api.main - INFO - ✅ SentencePiece tokenizer loaded from model/multilingual_tokenizer.model
+2025-10-12 22:08:41,423 - src.api.main - INFO - 🔧 Detected LoRA adapter at finetuned_generation_model/checkpoint-114
+2025-10-12 22:08:41,424 - src.api.main - INFO - 🔧 Base model: AhinsaAI/ahinsa0.5-llama3.2-3B
+2025-10-12 22:08:45,802 - src.api.main - INFO - ✅ LoRA adapter loaded from finetuned_generation_model/checkpoint-114
+2025-10-12 22:08:54,322 - src.api.main - INFO - ✅ Model loaded on GPU: NVIDIA GeForce RTX 4050 Laptop GPU
+2025-10-12 22:08:54,323 - src.api.main - INFO - ✅ Model loaded: finetuned_generation_model/checkpoint-114
+2025-10-12 22:12:50,370 - src.api.main - INFO - 🔌 API Shutdown

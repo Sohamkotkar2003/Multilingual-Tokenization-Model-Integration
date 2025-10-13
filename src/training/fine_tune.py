@@ -227,10 +227,28 @@ def load_local_training_data():
     eval_texts = []
     val_files = {
         "hindi": "hi_val.txt",
-        "sanskrit": "sa_val.txt", 
+        "sanskrit": "sa_val.txt",
         "marathi": "mr_val.txt",
-        "english": "en_val.txt"
-    }
+        "english": "en_val.txt",
+        "assamese": "as_val.txt",
+        "bengali": "bn_val.txt",
+        "bodo": "bd_val.txt",
+        "gujurati": "gu_val.txt",
+        "kannada": "kn_val.txt",
+        "kashmiri": "ks_val.txt",
+        "maithili": "mai_val.txt",
+        "malyalam": "ml_val.txt",
+        "meitei": "mni_val.txt",
+        "nepali": "ne_val.txt",
+        "odia": "or_val.txt",
+        "punjabi": "pa_val.txt",
+        "santali": "sat_val.txt",
+        "sindhi": "sd_val.txt",
+        "tamil": "ta_val.txt",
+        "telugu": "te_val.txt",
+        "urdu": "ur_val.txt"
+}
+
     
     for lang, filename in val_files.items():
         filepath = os.path.join(settings.VALIDATION_DATA_PATH, filename)
@@ -419,12 +437,12 @@ def main():
         
         # Tokenize datasets
         logger.info("Tokenizing training dataset...")
-        tokenized_train = train_dataset.map(tokenize_fn, batched=True, remove_columns=["text"])
+        tokenized_train = train_dataset.map(tokenize_fn, batched=True, batch_size=16, remove_columns=["text"])
         
         tokenized_eval = None
         if eval_dataset:
             logger.info("Tokenizing validation dataset...")
-            tokenized_eval = eval_dataset.map(tokenize_fn, batched=True, remove_columns=["text"])
+            tokenized_eval = eval_dataset.map(tokenize_fn, batched=True, batch_size=16, remove_columns=["text"])
         
         # Save to cache for future use
         save_tokenized_cache(tokenized_train, tokenized_eval, cache_key)

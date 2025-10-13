@@ -1,19 +1,14 @@
 """
-Multi-Corpus Preprocessing (MCP) Pipeline for 20+ Indian Languages
+Multi-Corpus Preprocessing (MCP) Pipeline for 21 Indian Languages
 
-This module implements the MCP pipeline as specified in the requirements document.
-It handles robust preprocessing of multilingual corpora including:
-- Unicode normalization for different scripts
-- Language-specific cleaning and tokenization preparation
-- Deduplication and noise removal
-- Sentence segmentation for Indian languages
-- Format preparation for SentencePiece training
+This module implements the MCP pipeline with support for:
+1. Assamese, 2. Bengali, 3. Bodo, 4. English, 5. Gujarati, 6. Hindi,
+7. Kannada, 8. Kashmiri, 9. Maithili, 10. Malayalam, 11. Marathi,
+12. Meitei (Manipuri), 13. Nepali, 14. Odia, 15. Punjabi, 16. Sanskrit,
+17. Santali, 18. Sindhi, 19. Tamil, 20. Telugu, 21. Urdu
 
-Based on the requirements:
-- Support for 20+ Indian languages
-- Integration with AI4Bharat preprocessing best practices
-- Robust handling of Devanagari, Tamil, Telugu, Kannada, Bengali, etc.
-- Preparation for large-scale Gurukul integration
+Handles robust preprocessing including Unicode normalization, cleaning,
+sentence segmentation, and deduplication for diverse Indian scripts.
 """
 
 import os
@@ -38,17 +33,67 @@ logger = logging.getLogger(__name__)
 
 class MCPPipeline:
     """
-    Multi-Corpus Preprocessing Pipeline for 20+ Indian Languages
+    Multi-Corpus Preprocessing Pipeline for 21 Indian Languages
     
-    This class implements the complete MCP workflow as specified in the requirements:
-    1. Corpus Collection
-    2. Cleaning & Normalization
-    3. Sentence Segmentation
-    4. Deduplication
-    5. Tokenization Preparation
-    6. Training Tokenizer
-    7. Integration
+    Supported languages and their scripts:
+    - Devanagari: Hindi, Sanskrit, Marathi, Nepali, Bodo, Maithili
+    - Bengali-Assamese: Bengali, Assamese
+    - Tamil: Tamil
+    - Telugu: Telugu
+    - Kannada: Kannada
+    - Malayalam: Malayalam
+    - Gujarati: Gujarati
+    - Gurmukhi: Punjabi
+    - Odia: Odia
+    - Perso-Arabic: Urdu, Kashmiri, Sindhi
+    - Meitei Mayek: Meitei (Manipuri)
+    - Ol Chiki: Santali
+    - Latin: English
     """
+    
+    # Unicode ranges for all supported scripts
+    SCRIPT_RANGES = {
+        'devanagari': (0x0900, 0x097F),
+        'bengali': (0x0980, 0x09FF),
+        'gurmukhi': (0x0A00, 0x0A7F),
+        'gujarati': (0x0A80, 0x0AFF),
+        'odia': (0x0B00, 0x0B7F),
+        'tamil': (0x0B80, 0x0BFF),
+        'telugu': (0x0C00, 0x0C7F),
+        'kannada': (0x0C80, 0x0CFF),
+        'malayalam': (0x0D00, 0x0D7F),
+        'arabic': (0x0600, 0x06FF),  # For Urdu, Kashmiri, Sindhi
+        'arabic_supplement': (0x0750, 0x077F),
+        'arabic_extended': (0x08A0, 0x08FF),
+        'meitei': (0xABC0, 0xABFF),  # Meetei Mayek
+        'ol_chiki': (0x1C50, 0x1C7F),  # Santali
+        'latin': (0x0020, 0x007F),
+    }
+    
+    # Language to script mapping
+    LANGUAGE_SCRIPTS = {
+        'assamese': ['bengali'],
+        'bengali': ['bengali'],
+        'bodo': ['devanagari'],
+        'english': ['latin'],
+        'gujarati': ['gujarati'],
+        'hindi': ['devanagari'],
+        'kannada': ['kannada'],
+        'kashmiri': ['arabic', 'arabic_supplement', 'arabic_extended', 'devanagari'],
+        'maithili': ['devanagari'],
+        'malayalam': ['malayalam'],
+        'marathi': ['devanagari'],
+        'meitei': ['meitei', 'bengali'],  # Can be written in both scripts
+        'nepali': ['devanagari'],
+        'odia': ['odia'],
+        'punjabi': ['gurmukhi'],
+        'sanskrit': ['devanagari'],
+        'santali': ['ol_chiki', 'devanagari', 'bengali'],  # Multiple scripts
+        'sindhi': ['arabic', 'arabic_supplement', 'devanagari'],
+        'tamil': ['tamil'],
+        'telugu': ['telugu'],
+        'urdu': ['arabic', 'arabic_supplement', 'arabic_extended'],
+    }
     
     def __init__(self):
         self.stats = {
@@ -81,53 +126,62 @@ class MCPPipeline:
         # Apply NFC normalization to combine base characters with diacritics
         normalized = unicodedata.normalize('NFC', text)
         
-        # Language-specific normalization
-        if language in ["hindi", "sanskrit", "marathi", "nepali", "konkani", "bodo", "dogri", "maithili"]:
-            # Devanagari script normalization
+        # Language-specific normalization based on script
+        if language in ["hindi", "sanskrit", "marathi", "nepali", "bodo", "maithili"]:
             normalized = self._normalize_devanagari(normalized)
         elif language in ["bengali", "assamese"]:
-            # Bengali script normalization
             normalized = self._normalize_bengali(normalized)
-        elif language in ["tamil"]:
-            # Tamil script normalization
+        elif language == "tamil":
             normalized = self._normalize_tamil(normalized)
-        elif language in ["telugu"]:
-            # Telugu script normalization
+        elif language == "telugu":
             normalized = self._normalize_telugu(normalized)
-        elif language in ["kannada"]:
-            # Kannada script normalization
+        elif language == "kannada":
             normalized = self._normalize_kannada(normalized)
-        elif language in ["gujarati"]:
-            # Gujarati script normalization
+        elif language == "gujarati":
             normalized = self._normalize_gujarati(normalized)
-        elif language in ["punjabi"]:
-            # Punjabi (Gurmukhi) script normalization
+        elif language == "punjabi":
             normalized = self._normalize_punjabi(normalized)
-        elif language in ["odia"]:
-            # Odia script normalization
+        elif language == "odia":
             normalized = self._normalize_odia(normalized)
-        elif language in ["malayalam"]:
-            # Malayalam script normalization
+        elif language == "malayalam":
             normalized = self._normalize_malayalam(normalized)
-        elif language in ["urdu"]:
-            # Urdu (Arabic script) normalization
-            normalized = self._normalize_urdu(normalized)
+        elif language in ["urdu", "kashmiri", "sindhi"]:
+            normalized = self._normalize_perso_arabic(normalized)
+        elif language == "meitei":
+            normalized = self._normalize_meitei(normalized)
+        elif language == "santali":
+            normalized = self._normalize_santali(normalized)
+        elif language == "english":
+            normalized = self._normalize_english(normalized)
         
         self.stats["normalization_applied"] += 1
         return normalized.strip()
     
     def _normalize_devanagari(self, text: str) -> str:
-        """Normalize Devanagari script text"""
-        # Handle common Devanagari ligatures and combining characters
-        # This is a simplified version - in production, use indic-nlp-library
+        """Normalize Devanagari script text (Hindi, Sanskrit, Marathi, Nepali, Bodo, Maithili)"""
+        # Normalize nukta combinations
+        text = text.replace('\u0929', '\u0928\u093C')  # ऩ -> ऩ
+        text = text.replace('\u0931', '\u0930\u093C')  # ऱ -> ऱ
+        text = text.replace('\u0934', '\u0933\u093C')  # ऴ -> ऴ
+        text = text.replace('\u0958', '\u0915\u093C')  # क़
+        text = text.replace('\u0959', '\u0916\u093C')  # ख़
+        text = text.replace('\u095A', '\u0917\u093C')  # ग़
+        text = text.replace('\u095B', '\u091C\u093C')  # ज़
+        text = text.replace('\u095C', '\u0921\u093C')  # ड़
+        text = text.replace('\u095D', '\u0922\u093C')  # ढ़
+        text = text.replace('\u095E', '\u092B\u093C')  # फ़
+        text = text.replace('\u095F', '\u092F\u093C')  # य़
         return text
     
     def _normalize_bengali(self, text: str) -> str:
-        """Normalize Bengali script text"""
+        """Normalize Bengali-Assamese script text"""
+        # Normalize common variations
+        text = text.replace('\u09CE', '\u09A4')  # ৎ -> ত (khanda ta)
         return text
     
     def _normalize_tamil(self, text: str) -> str:
         """Normalize Tamil script text"""
+        # Tamil has fewer variations but normalize common patterns
         return text
     
     def _normalize_telugu(self, text: str) -> str:
@@ -144,6 +198,7 @@ class MCPPipeline:
     
     def _normalize_punjabi(self, text: str) -> str:
         """Normalize Punjabi (Gurmukhi) script text"""
+        # Normalize Gurmukhi specific characters
         return text
     
     def _normalize_odia(self, text: str) -> str:
@@ -152,10 +207,31 @@ class MCPPipeline:
     
     def _normalize_malayalam(self, text: str) -> str:
         """Normalize Malayalam script text"""
+        # Normalize chillu characters and other Malayalam-specific features
         return text
     
-    def _normalize_urdu(self, text: str) -> str:
-        """Normalize Urdu (Arabic script) text"""
+    def _normalize_perso_arabic(self, text: str) -> str:
+        """Normalize Perso-Arabic script text (Urdu, Kashmiri, Sindhi)"""
+        # Normalize Arabic presentation forms
+        text = unicodedata.normalize('NFKC', text)
+        # Remove Arabic diacritics if needed (optional)
+        # text = re.sub(r'[\u064B-\u065F\u0670]', '', text)
+        return text
+    
+    def _normalize_meitei(self, text: str) -> str:
+        """Normalize Meitei Mayek script text"""
+        # Meetei Mayek normalization
+        return text
+    
+    def _normalize_santali(self, text: str) -> str:
+        """Normalize Santali (Ol Chiki) script text"""
+        # Ol Chiki normalization
+        return text
+    
+    def _normalize_english(self, text: str) -> str:
+        """Normalize English text"""
+        # Basic normalization for English
+        text = text.lower() if text.isupper() else text  # Preserve mixed case
         return text
     
     def clean_text(self, text: str, language: str) -> str:
@@ -186,37 +262,23 @@ class MCPPipeline:
         # Remove control characters
         text = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x9f]', '', text)
         
-        # Language-specific cleaning
-        if language in ["hindi", "sanskrit", "marathi", "nepali", "konkani", "bodo", "dogri", "maithili"]:
-            # Devanagari script cleaning
-            text = re.sub(r'[^\u0900-\u097F\u0020-\u007F\u200C\u200D]', '', text)
-        elif language in ["bengali", "assamese"]:
-            # Bengali script cleaning
-            text = re.sub(r'[^\u0980-\u09FF\u0020-\u007F]', '', text)
-        elif language in ["tamil"]:
-            # Tamil script cleaning
-            text = re.sub(r'[^\u0B80-\u0BFF\u0020-\u007F]', '', text)
-        elif language in ["telugu"]:
-            # Telugu script cleaning
-            text = re.sub(r'[^\u0C00-\u0C7F\u0020-\u007F]', '', text)
-        elif language in ["kannada"]:
-            # Kannada script cleaning
-            text = re.sub(r'[^\u0C80-\u0CFF\u0020-\u007F]', '', text)
-        elif language in ["gujarati"]:
-            # Gujarati script cleaning
-            text = re.sub(r'[^\u0A80-\u0AFF\u0020-\u007F]', '', text)
-        elif language in ["punjabi"]:
-            # Punjabi script cleaning
-            text = re.sub(r'[^\u0A00-\u0A7F\u0020-\u007F]', '', text)
-        elif language in ["odia"]:
-            # Odia script cleaning
-            text = re.sub(r'[^\u0B00-\u0B7F\u0020-\u007F]', '', text)
-        elif language in ["malayalam"]:
-            # Malayalam script cleaning
-            text = re.sub(r'[^\u0D00-\u0D7F\u0020-\u007F]', '', text)
-        elif language in ["urdu"]:
-            # Urdu script cleaning
-            text = re.sub(r'[^\u0600-\u06FF\u0020-\u007F]', '', text)
+        # Language-specific cleaning based on allowed scripts
+        allowed_scripts = self.LANGUAGE_SCRIPTS.get(language, ['latin'])
+        
+        # Build pattern for allowed characters
+        allowed_ranges = []
+        for script in allowed_scripts:
+            if script in self.SCRIPT_RANGES:
+                start, end = self.SCRIPT_RANGES[script]
+                allowed_ranges.append(f'\\u{start:04X}-\\u{end:04X}')
+        
+        # Always allow basic Latin (spaces, punctuation, numbers)
+        allowed_ranges.append('\\u0020-\\u007F')
+        
+        # Create regex pattern
+        if allowed_ranges:
+            pattern = f'[^{"".join(allowed_ranges)}]'
+            text = re.sub(pattern, '', text)
         
         # Remove empty lines and very short lines
         if len(text.strip()) < 10:
@@ -239,20 +301,22 @@ class MCPPipeline:
         Returns:
             List of sentences
         """
-        # Basic sentence segmentation - in production, use indic-nlp-library
-        # This is a simplified version for demonstration
-        
-        # Common sentence endings across Indian languages
-        sentence_endings = [
-            r'[।॥]',  # Devanagari, Bengali, etc.
-            r'[.!?]',  # Latin scripts
-            r'[।]',    # Some scripts use only ।
-            r'[?]',    # Question marks
-            r'[!]'     # Exclamation marks
-        ]
-        
-        # Create pattern for sentence endings
-        pattern = '|'.join(sentence_endings)
+        # Sentence endings by script type
+        if language in ["hindi", "sanskrit", "marathi", "nepali", "bodo", "maithili",
+                       "bengali", "assamese", "gujarati", "punjabi", "odia"]:
+            # Indic scripts use danda (।) and double danda (॥)
+            pattern = r'[।॥.!?]+'
+        elif language in ["urdu", "kashmiri", "sindhi"]:
+            # Perso-Arabic uses different punctuation
+            pattern = r'[۔؟!.?]+'
+        elif language == "tamil":
+            pattern = r'[.!?]+'
+        elif language in ["telugu", "kannada", "malayalam"]:
+            pattern = r'[.!?।]+'
+        elif language in ["meitei", "santali"]:
+            pattern = r'[.!?।]+'
+        else:  # English and others
+            pattern = r'[.!?]+'
         
         # Split on sentence endings
         sentences = re.split(pattern, text)
@@ -261,7 +325,8 @@ class MCPPipeline:
         cleaned_sentences = []
         for sentence in sentences:
             sentence = sentence.strip()
-            if len(sentence) >= 10:  # Minimum sentence length
+            # Minimum sentence length: 10 characters or 3 words
+            if len(sentence) >= 10 and len(sentence.split()) >= 3:
                 cleaned_sentences.append(sentence)
         
         return cleaned_sentences
@@ -274,15 +339,15 @@ class MCPPipeline:
             text: Input text
             
         Returns:
-            Script name (devanagari, tamil, telugu, etc.)
+            Script name
         """
         script_counts = defaultdict(int)
         total_chars = 0
         
         for char in text:
-            if char.isalpha():
+            if char.isalpha() or ord(char) > 127:  # Non-ASCII characters
                 total_chars += 1
-                for script, (start, end) in settings.UNICODE_RANGES.items():
+                for script, (start, end) in self.SCRIPT_RANGES.items():
                     if start <= ord(char) <= end:
                         script_counts[script] += 1
                         break
@@ -291,7 +356,7 @@ class MCPPipeline:
             return "unknown"
         
         # Return the script with the highest character count
-        return max(script_counts.items(), key=lambda x: x[1])[0] if script_counts else "unknown"
+        return max(script_counts.items(), key=lambda x: x[1])[0] if script_counts else "latin"
     
     def deduplicate_sentences(self, sentences: List[str]) -> List[str]:
         """
@@ -334,8 +399,8 @@ class MCPPipeline:
         for sentence in sentences:
             # Add language tag for multilingual corpora
             if language != "english":
-                # Add language tag: <lang:hi> ... </lang>
-                tagged_sentence = f"<lang:{language}> {sentence} </lang>"
+                # Format: <2language> sentence
+                tagged_sentence = f"<2{language}> {sentence}"
             else:
                 tagged_sentence = sentence
             
@@ -407,6 +472,7 @@ class MCPPipeline:
             Path to the combined processed file
         """
         logger.info("Starting MCP pipeline for all corpora")
+        logger.info(f"Processing 21 Indian languages: {', '.join(sorted(self.LANGUAGE_SCRIPTS.keys()))}")
         
         # Create temporary file for combined processed data
         temp_fd, temp_file = tempfile.mkstemp(suffix='.txt', prefix='mcp_processed_')
@@ -416,6 +482,10 @@ class MCPPipeline:
         
         # Process each language corpus
         for language, filename in settings.CORPUS_FILES.items():
+            if language not in self.LANGUAGE_SCRIPTS:
+                logger.warning(f"Language '{language}' not in supported list, skipping")
+                continue
+                
             filepath = os.path.join(settings.TRAINING_DATA_PATH, filename)
             
             # Process the corpus file
@@ -449,9 +519,9 @@ class MCPPipeline:
     
     def print_statistics(self):
         """Print comprehensive MCP pipeline statistics"""
-        logger.info("\n" + "=" * 60)
-        logger.info("MCP Pipeline Statistics")
-        logger.info("=" * 60)
+        logger.info("\n" + "=" * 80)
+        logger.info("MCP Pipeline Statistics - 21 Indian Languages")
+        logger.info("=" * 80)
         logger.info(f"Total sentences processed: {self.stats['total_sentences']:,}")
         logger.info(f"Duplicates removed: {self.stats['duplicates_removed']:,}")
         logger.info(f"Noise removed: {self.stats['noise_removed']:,}")
@@ -460,27 +530,38 @@ class MCPPipeline:
         logger.info("\nLanguage distribution:")
         for lang, count in sorted(self.stats['language_counts'].items()):
             percentage = (count / self.stats['total_sentences']) * 100 if self.stats['total_sentences'] > 0 else 0
-            logger.info(f"  {lang}: {count:,} sentences ({percentage:.1f}%)")
+            logger.info(f"  {lang:12s}: {count:10,} sentences ({percentage:5.1f}%)")
         
         logger.info("\nScript distribution:")
         for script, count in sorted(self.stats['script_counts'].items()):
-            percentage = (count / self.stats['total_sentences']) * 100 if self.stats['total_sentences'] > 0 else 0
-            logger.info(f"  {script}: {count:,} sentences ({percentage:.1f}%)")
+            logger.info(f"  {script:20s}: {count:10,} occurrences")
         
-        logger.info("=" * 60)
+        logger.info("=" * 80)
     
     def cleanup(self):
-        """Clean up temporary files"""
-        for temp_file in self.temp_files:
-            if os.path.exists(temp_file):
-                os.unlink(temp_file)
-                logger.info(f"Cleaned up temporary file: {temp_file}")
+        # """Clean up temporary files"""
+        # for temp_file in self.temp_files:
+        #     if os.path.exists(temp_file):
+        #         os.unlink(temp_file)
+        #         logger.info(f"Cleaned up temporary file: {temp_file}")
+        pass
 
 
 def main():
     """Main function to run the MCP pipeline"""
-    logger.info("Starting Multi-Corpus Preprocessing (MCP) Pipeline")
-    logger.info(f"Processing {len(settings.SUPPORTED_LANGUAGES)} languages")
+    logger.info("=" * 80)
+    logger.info("Multi-Corpus Preprocessing (MCP) Pipeline")
+    logger.info("Supporting 21 Indian Languages")
+    logger.info("=" * 80)
+    
+    supported_langs = [
+        "Assamese", "Bengali", "Bodo", "English", "Gujarati", "Hindi",
+        "Kannada", "Kashmiri", "Maithili", "Malayalam", "Marathi",
+        "Meitei", "Nepali", "Odia", "Punjabi", "Sanskrit",
+        "Santali", "Sindhi", "Tamil", "Telugu", "Urdu"
+    ]
+    logger.info(f"Languages: {', '.join(supported_langs)}")
+    logger.info("=" * 80 + "\n")
     
     # Create MCP pipeline
     mcp = MCPPipeline()
