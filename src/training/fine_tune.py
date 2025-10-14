@@ -86,6 +86,10 @@ def get_cache_key(tokenizer_name, max_length, data_files):
     key_string = f"{tokenizer_name}_{max_length}_{sorted(data_files.items())}"
     return hashlib.md5(key_string.encode()).hexdigest()
 
+def get_cache_path(cache_key, split='train'):
+    """Get the cache file path for a given split"""
+    return os.path.join(TOKENIZED_CACHE_DIR, f"{split}_{cache_key}")
+
 def clear_gpu_memory():
     """Clear GPU memory and run garbage collection"""
     if torch.cuda.is_available():
@@ -110,58 +114,92 @@ def check_gpu_usage():
         return False
 
 def save_tokenized_cache(tokenized_train, tokenized_eval, cache_key):
-    """Save tokenized datasets to cache"""
+    """Save tokenized datasets using Arrow format (memory-efficient)"""
     os.makedirs(TOKENIZED_CACHE_DIR, exist_ok=True)
     
-    train_cache_path = os.path.join(TOKENIZED_CACHE_DIR, f"train_{cache_key}.pkl")
-    eval_cache_path = os.path.join(TOKENIZED_CACHE_DIR, f"eval_{cache_key}.pkl")
+    train_path = get_cache_path(cache_key, 'train')
+    eval_path = get_cache_path(cache_key, 'eval')
     
-    logger.info(f"Saving tokenized training data to cache: {train_cache_path}")
-    with open(train_cache_path, 'wb') as f:
-        pickle.dump(tokenized_train, f)
+    logger.info(f"Saving tokenized training data to cache: {train_path}")
+    try:
+        # Use Arrow format instead of pickle - much more memory efficient
+        tokenized_train.save_to_disk(train_path)
+        logger.info(f"✅ Training data cached successfully ({len(tokenized_train)} examples)")
+    except Exception as e:
+        logger.error(f"Failed to save training cache: {e}")
+        # Clean up partial files if save failed
+        if os.path.exists(train_path):
+            import shutil
+            shutil.rmtree(train_path)
+        raise
     
     if tokenized_eval:
-        logger.info(f"Saving tokenized validation data to cache: {eval_cache_path}")
-        with open(eval_cache_path, 'wb') as f:
-            pickle.dump(tokenized_eval, f)
-    
-    logger.info("✅ Tokenized datasets cached successfully!")
+        logger.info(f"Saving tokenized validation data to cache: {eval_path}")
+        try:
+            tokenized_eval.save_to_disk(eval_path)
+            logger.info(f"✅ Validation data cached successfully ({len(tokenized_eval)} examples)")
+        except Exception as e:
+            logger.error(f"Failed to save validation cache: {e}")
+            if os.path.exists(eval_path):
+                import shutil
+                shutil.rmtree(eval_path)
+            raise
 
 def load_tokenized_cache(cache_key):
-    """Load tokenized datasets from cache"""
-    train_cache_path = os.path.join(TOKENIZED_CACHE_DIR, f"train_{cache_key}.pkl")
-    eval_cache_path = os.path.join(TOKENIZED_CACHE_DIR, f"eval_{cache_key}.pkl")
+    """Load tokenized datasets from Arrow format"""
+    from datasets import load_from_disk
     
-    if not os.path.exists(train_cache_path):
+    train_path = get_cache_path(cache_key, 'train')
+    eval_path = get_cache_path(cache_key, 'eval')
+    
+    if not os.path.exists(train_path):
         return None, None
     
-    logger.info(f"Loading tokenized training data from cache: {train_cache_path}")
-    with open(train_cache_path, 'rb') as f:
-        tokenized_train = pickle.load(f)
+    try:
+        logger.info(f"Loading tokenized training data from cache: {train_path}")
+        tokenized_train = load_from_disk(train_path)
+        logger.info(f"✅ Training data loaded from cache ({len(tokenized_train)} examples)")
+    except Exception as e:
+        logger.error(f"Failed to load training cache: {e}")
+        return None, None
     
     tokenized_eval = None
-    if os.path.exists(eval_cache_path):
-        logger.info(f"Loading tokenized validation data from cache: {eval_cache_path}")
-        with open(eval_cache_path, 'rb') as f:
-            tokenized_eval = pickle.load(f)
+    if os.path.exists(eval_path):
+        try:
+            logger.info(f"Loading tokenized validation data from cache: {eval_path}")
+            tokenized_eval = load_from_disk(eval_path)
+            logger.info(f"✅ Validation data loaded from cache ({len(tokenized_eval)} examples)")
+        except Exception as e:
+            logger.warning(f"Failed to load validation cache: {e}")
+            tokenized_eval = None
     
-    logger.info("✅ Tokenized datasets loaded from cache successfully!")
     return tokenized_train, tokenized_eval
 
 def clear_old_caches():
-    """Clear old cache files to save disk space"""
+    """Clear old cache directories to save disk space"""
     if not os.path.exists(TOKENIZED_CACHE_DIR):
         return
     
-    cache_files = [f for f in os.listdir(TOKENIZED_CACHE_DIR) if f.endswith('.pkl')]
-    if len(cache_files) > 5:  # Keep only 5 most recent caches
-        cache_files.sort(key=lambda x: os.path.getmtime(os.path.join(TOKENIZED_CACHE_DIR, x)))
-        files_to_remove = cache_files[:-5]
+    import shutil
+    from datetime import datetime
+    
+    # Get all cache directories
+    cache_dirs = []
+    for item in os.listdir(TOKENIZED_CACHE_DIR):
+        item_path = os.path.join(TOKENIZED_CACHE_DIR, item)
+        if os.path.isdir(item_path):
+            cache_dirs.append(item_path)
+    
+    if len(cache_dirs) > 5:  # Keep only 5 most recent caches
+        cache_dirs.sort(key=lambda x: os.path.getmtime(x))
+        dirs_to_remove = cache_dirs[:-5]
         
-        for file in files_to_remove:
-            file_path = os.path.join(TOKENIZED_CACHE_DIR, file)
-            os.remove(file_path)
-            logger.info(f"Removed old cache file: {file}")
+        for dir_path in dirs_to_remove:
+            try:
+                shutil.rmtree(dir_path)
+                logger.info(f"Removed old cache directory: {dir_path}")
+            except Exception as e:
+                logger.warning(f"Failed to remove cache directory {dir_path}: {e}")
 
 def clear_all_caches():
     """Clear all cached tokenized data (useful for debugging or when data changes)"""
@@ -169,13 +207,23 @@ def clear_all_caches():
         logger.info("No cache directory found.")
         return
     
-    cache_files = [f for f in os.listdir(TOKENIZED_CACHE_DIR) if f.endswith('.pkl')]
-    for file in cache_files:
-        file_path = os.path.join(TOKENIZED_CACHE_DIR, file)
-        os.remove(file_path)
-        logger.info(f"Removed cache file: {file}")
+    import shutil
     
-    logger.info(f"✅ Cleared {len(cache_files)} cache files")
+    # Remove all cache directories
+    cache_dirs = []
+    for item in os.listdir(TOKENIZED_CACHE_DIR):
+        item_path = os.path.join(TOKENIZED_CACHE_DIR, item)
+        if os.path.isdir(item_path):
+            cache_dirs.append(item_path)
+    
+    for dir_path in cache_dirs:
+        try:
+            shutil.rmtree(dir_path)
+            logger.info(f"Removed cache directory: {dir_path}")
+        except Exception as e:
+            logger.warning(f"Failed to remove {dir_path}: {e}")
+    
+    logger.info(f"✅ Cleared {len(cache_dirs)} cache directories")
 
 def get_safe_max_length(tokenizer, default_max_length=512, task="training"):
     """
@@ -247,8 +295,7 @@ def load_local_training_data():
         "tamil": "ta_val.txt",
         "telugu": "te_val.txt",
         "urdu": "ur_val.txt"
-}
-
+    }
     
     for lang, filename in val_files.items():
         filepath = os.path.join(settings.VALIDATION_DATA_PATH, filename)
@@ -357,17 +404,30 @@ def main():
     if USE_PEFT:
         # Configure LoRA
         lora_config = LoraConfig(
-        task_type=TaskType.CAUSAL_LM,
-        inference_mode=False,
-        r=16,
-        lora_alpha=32,
-        lora_dropout=0.1,
-        target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],  # Correct modules for this model architecture
-    )
-        
+            task_type=TaskType.CAUSAL_LM,
+            inference_mode=False,
+            r=16,
+            lora_alpha=32,
+            lora_dropout=0.1,
+            target_modules=["query_key_value", "dense", "dense_h_to_4h", "dense_4h_to_h"],
+        )
+
         # Apply LoRA to the model
         model = get_peft_model(model, lora_config)
-        logger.info("🔧 Applied LoRA adapters for efficient fine-tuning")
+        logger.info("🔧 Applied LoRA adapters for BLOOM architecture")
+
+        # lora_config = LoraConfig(
+        #     task_type=TaskType.CAUSAL_LM,
+        #     inference_mode=False,
+        #     r=16,
+        #     lora_alpha=32,
+        #     lora_dropout=0.1,
+        #     target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
+        # )
+        
+        # # Apply LoRA to the model
+        # model = get_peft_model(model, lora_config)
+        # logger.info("🔧 Applied LoRA adapters for efficient fine-tuning")
         
         # Print trainable parameters
         model.print_trainable_parameters()
@@ -444,11 +504,14 @@ def main():
             logger.info("Tokenizing validation dataset...")
             tokenized_eval = eval_dataset.map(tokenize_fn, batched=True, batch_size=16, remove_columns=["text"])
         
-        # Save to cache for future use
-        save_tokenized_cache(tokenized_train, tokenized_eval, cache_key)
-        
-        # Clear old caches to save disk space
-        clear_old_caches()
+        # Save to cache for future use (using Arrow format - memory efficient)
+        try:
+            save_tokenized_cache(tokenized_train, tokenized_eval, cache_key)
+            # Clear old caches to save disk space
+            clear_old_caches()
+        except Exception as e:
+            logger.warning(f"Failed to save cache (non-critical): {e}")
+            logger.info("Continuing with training without caching...")
     else:
         logger.info("🚀 Using cached tokenized data - skipping tokenization step!")
     
@@ -489,8 +552,6 @@ def main():
         load_best_model_at_end=True if USE_PEFT else False,
         # Performance optimizations
         remove_unused_columns=True,  # Remove unused columns to save memory
-        # Additional settings to prevent hanging
-        # dataloader_persistent_workers=False,  # May not be supported in all versions
     )
     
     # Initialize trainer

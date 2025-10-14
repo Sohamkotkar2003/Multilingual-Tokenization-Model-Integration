@@ -23,8 +23,8 @@ TOKENIZER_MERGE_PATH = "model/tokenizer_merge.txt"
 
 # Model Configuration
 # MODEL_NAME = os.getenv("MODEL_NAME", "AhinsaAI/ahinsa0.5-llama3.2-3B")  # HF model name fallback (decoder-only)
-MODEL_NAME = os.getenv("MODEL_NAME", "finetuned_generation_model/checkpoint-114")  # HF model name fallback (decoder-only)
-# MODEL_NAME = os.getenv("MODEL_NAME", "bigscience/bloom-560m")  # HF model name fallback (decoder-only)
+# MODEL_NAME = os.getenv("MODEL_NAME", "finetuned_generation_model/checkpoint-114")  # HF model name fallback (decoder-only)
+MODEL_NAME = os.getenv("MODEL_NAME", "bigscience/bloom-560m")  # HF model name fallback (decoder-only)
 MODEL_PATH = os.getenv("MODEL_PATH", "")  # local checkpoint folder (if used). Empty -> use MODEL_NAME
 # Note: Set MODEL_PATH to "mbart_finetuned" in settings.py after training to use fine-tuned model
 
