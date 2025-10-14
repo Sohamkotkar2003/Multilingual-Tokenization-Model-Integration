@@ -58,20 +58,25 @@ MODEL_NAME = settings.MODEL_NAME  # Use the same model as app.py
 OUTPUT_DIR = "finetuned_generation_model"  # Output directory for fine-tuned model
 
 # Training Parameters
-EPOCHS = 3
-BATCH_SIZE = 2  # Use larger batch with quantization
-GRADIENT_ACCUMULATION_STEPS = 2  # Adjust based on batch size
-WARMUP_STEPS = 500
-LEARNING_RATE = 5e-5
+EPOCHS = 1  # Reduced from 3 - one epoch is sufficient with this much data
+BATCH_SIZE = 4  # Increased from 2 - RTX 4050 6GB can handle this with 8-bit + LoRA
+GRADIENT_ACCUMULATION_STEPS = 4  # Increased for larger effective batch size (4*4=16)
+WARMUP_STEPS = 100  # Reduced from 500 - less warmup needed with smaller dataset
+LEARNING_RATE = 2e-4  # Increased for faster convergence with LoRA
 FP16 = False  # Disable FP16 to avoid gradient scaling issues
 GRADIENT_CHECKPOINTING = True  # Enable gradient checkpointing to save memory
 USE_QUANTIZATION = True  # Enable 8-bit quantization for faster training
 USE_PEFT = True  # Enable PEFT with LoRA for efficient fine-tuning
 
+# Data Sampling Configuration (NEW - CRITICAL FOR SPEED!)
+MAX_SAMPLES_PER_LANGUAGE = 5000  # Limit samples per language file (down from unlimited)
+USE_DATA_SAMPLING = True  # Enable sampling to speed up training dramatically
+MAX_STEPS = 1000  # Maximum number of training steps (prevents endless training)
+
 # Logging and Saving
-LOGGING_STEPS = 100
-SAVE_STEPS = 500  # Save every 500 steps
-EVAL_STEPS = 500  # Evaluate every 500 steps
+LOGGING_STEPS = 50  # More frequent logging for better progress tracking
+SAVE_STEPS = 200  # Save more frequently (adjusted for smaller dataset)
+EVAL_STEPS = 200  # Evaluate more frequently
 
 # Data Configuration
 MAX_LENGTH = 512  # Reduced from 1024 to 512 to save memory per sample
@@ -258,6 +263,9 @@ def load_local_training_data():
     
     # Load training data from all language files
     train_texts = []
+    total_lines_available = 0
+    total_lines_used = 0
+    
     for lang, filename in settings.CORPUS_FILES.items():
         filepath = os.path.join(settings.TRAINING_DATA_PATH, filename)
         if os.path.exists(filepath):
@@ -266,10 +274,29 @@ def load_local_training_data():
                 lines = f.readlines()
                 # Filter out empty lines and very short lines
                 filtered_lines = [line.strip() for line in lines if len(line.strip()) > 10]
+                total_lines_available += len(filtered_lines)
+                
+                # Apply sampling if enabled
+                if USE_DATA_SAMPLING and len(filtered_lines) > MAX_SAMPLES_PER_LANGUAGE:
+                    import random
+                    random.seed(42)  # For reproducibility
+                    filtered_lines = random.sample(filtered_lines, MAX_SAMPLES_PER_LANGUAGE)
+                    logger.info(f"📊 Sampled {len(filtered_lines)} from {total_lines_available} {lang} samples")
+                
                 train_texts.extend(filtered_lines)
-                logger.info(f"Loaded {len(filtered_lines)} {lang} training samples")
+                total_lines_used += len(filtered_lines)
+                logger.info(f"✅ Loaded {len(filtered_lines)} {lang} training samples")
         else:
             logger.warning(f"Training file not found: {filepath}")
+    
+    if USE_DATA_SAMPLING:
+        logger.info(f"")
+        logger.info(f"📊 DATA SAMPLING SUMMARY:")
+        logger.info(f"   Total lines available: {total_lines_available:,}")
+        logger.info(f"   Total lines used: {total_lines_used:,}")
+        logger.info(f"   Reduction: {100 * (1 - total_lines_used/total_lines_available):.1f}%")
+        logger.info(f"   This will make training MUCH faster!")
+        logger.info(f"")
     
     # Load validation data
     eval_texts = []
@@ -305,8 +332,16 @@ def load_local_training_data():
                 lines = f.readlines()
                 # Filter out empty lines and very short lines
                 filtered_lines = [line.strip() for line in lines if len(line.strip()) > 10]
+                
+                # Apply sampling to validation data too (use smaller subset)
+                if USE_DATA_SAMPLING and len(filtered_lines) > 500:
+                    import random
+                    random.seed(42)
+                    filtered_lines = random.sample(filtered_lines, 500)
+                    logger.info(f"📊 Sampled {len(filtered_lines)} {lang} validation samples")
+                
                 eval_texts.extend(filtered_lines)
-                logger.info(f"Loaded {len(filtered_lines)} {lang} validation samples")
+                logger.info(f"✅ Loaded {len(filtered_lines)} {lang} validation samples")
         else:
             logger.warning(f"Validation file not found: {filepath}")
     
@@ -340,10 +375,16 @@ def main():
     print(f"🌐 Languages: {', '.join(settings.SUPPORTED_LANGUAGES)}")
     print(f"📊 Training Epochs: {EPOCHS}")
     print(f"📦 Batch Size: {BATCH_SIZE}")
+    print(f"📦 Gradient Accumulation Steps: {GRADIENT_ACCUMULATION_STEPS}")
+    print(f"📦 Effective Batch Size: {BATCH_SIZE * GRADIENT_ACCUMULATION_STEPS}")
     print(f"🎯 Learning Rate: {LEARNING_RATE}")
     print(f"💾 Cache Directory: {TOKENIZED_CACHE_DIR}")
     print(f"🔧 Quantization: {'Enabled (8-bit)' if USE_QUANTIZATION else 'Disabled'}")
     print(f"🔧 PEFT/LoRA: {'Enabled' if USE_PEFT else 'Disabled'}")
+    print(f"📊 Data Sampling: {'Enabled' if USE_DATA_SAMPLING else 'Disabled'}")
+    if USE_DATA_SAMPLING:
+        print(f"📊 Max Samples per Language: {MAX_SAMPLES_PER_LANGUAGE:,}")
+        print(f"📊 Expected total samples: ~{MAX_SAMPLES_PER_LANGUAGE * 20:,} (20 languages)")
     print("=" * 80)
 
     # Ensure output directory exists
@@ -402,13 +443,13 @@ def main():
     
     # Apply PEFT/LoRA configuration if enabled
     if USE_PEFT:
-        # Configure LoRA
+        # Configure LoRA - optimized for faster training
         lora_config = LoraConfig(
             task_type=TaskType.CAUSAL_LM,
             inference_mode=False,
-            r=16,
-            lora_alpha=32,
-            lora_dropout=0.1,
+            r=8,  # Reduced from 16 - faster training, still effective
+            lora_alpha=16,  # Reduced proportionally
+            lora_dropout=0.05,  # Reduced dropout for faster convergence
             target_modules=["query_key_value", "dense", "dense_h_to_4h", "dense_4h_to_h"],
         )
 
@@ -528,6 +569,7 @@ def main():
         output_dir=OUTPUT_DIR,
         overwrite_output_dir=True,
         num_train_epochs=EPOCHS,
+        max_steps=MAX_STEPS,  # Limit total training steps for faster iteration
         per_device_train_batch_size=BATCH_SIZE,
         per_device_eval_batch_size=BATCH_SIZE,
         gradient_accumulation_steps=GRADIENT_ACCUMULATION_STEPS,
