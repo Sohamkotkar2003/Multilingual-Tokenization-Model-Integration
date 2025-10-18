@@ -1,0 +1,53 @@
+# MCP Connectors Configuration
+# Defines remote data sources for streaming multilingual corpora
+
+# Hugging Face Datasets (streaming)
+hf_sources:
+  multilingual_corpus:
+    dataset_name: "your_org/multilingual_corpus"
+    streaming: true
+    split: "train"
+    max_samples: 5000
+    languages: ["hindi", "sanskrit", "marathi", "english"]
+    
+  indian_languages:
+    dataset_name: "your_org/indian_languages"
+    streaming: true
+    split: "train"
+    max_samples: 2000
+    languages: ["tamil", "telugu", "kannada", "bengali"]
+
+# S3/Cloud Storage Sources
+s3_sources:
+  gurukul_corpus:
+    bucket: "gurukul-multilingual"
+    prefix: "corpora/"
+    region: "us-east-1"
+    max_samples: 3000
+    languages: ["hindi", "sanskrit", "marathi"]
+
+# Qdrant Vector Database Sources
+qdrant_sources:
+  knowledge_base:
+    host: "localhost"
+    port: 6333
+    collection: "multilingual_kb"
+    max_samples: 1000
+    languages: ["hindi", "sanskrit", "english"]
+
+# HTTP API Sources
+http_sources:
+  custom_api:
+    base_url: "https://api.your-domain.com"
+    endpoint: "/corpora/stream"
+    headers:
+      Authorization: "Bearer YOUR_TOKEN"
+    max_samples: 2000
+    languages: ["hindi", "sanskrit", "marathi", "english"]
+
+# Default streaming configuration
+streaming_config:
+  batch_size: 100
+  buffer_size: 1000
+  timeout: 30
+  retry_attempts: 3

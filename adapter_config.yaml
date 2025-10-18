@@ -1,0 +1,54 @@
+# Adapter Configuration for Lightweight Fine-tuning
+# Optimized for RTX 4050 with 8-bit quantization and LoRA
+
+# Model Configuration
+model:
+  base_model: "bigscience/bloom-560m"  # Lightweight base model
+  max_length: 512
+  use_8bit: true
+  use_4bit: false
+
+# LoRA Configuration
+lora:
+  r: 16                    # Rank of adaptation
+  lora_alpha: 32           # LoRA scaling parameter
+  target_modules: ["q_proj", "v_proj", "k_proj", "o_proj"]
+  lora_dropout: 0.1
+  bias: "none"
+  task_type: "CAUSAL_LM"
+
+# Training Configuration
+training:
+  num_epochs: 3
+  per_device_train_batch_size: 1
+  gradient_accumulation_steps: 8
+  learning_rate: 2e-4
+  warmup_steps: 100
+  max_steps: 1000
+  max_train_samples: 2000
+  logging_steps: 50
+  save_steps: 200
+  eval_steps: 200
+
+# Memory Optimization
+memory:
+  gradient_checkpointing: true
+  dataloader_num_workers: 2
+  remove_unused_columns: true
+  fp16: false  # Disable FP16 to avoid gradient scaling issues
+
+# Output Configuration
+output:
+  output_dir: "adapters/gurukul_lite"
+  save_strategy: "steps"
+  evaluation_strategy: "steps"
+  load_best_model_at_end: true
+  metric_for_best_model: "eval_loss"
+  greater_is_better: false
+
+# Streaming Configuration
+streaming:
+  enabled: true
+  max_samples_per_language: 5000
+  validation_samples_per_language: 500
+  shuffle_buffer_size: 1000
