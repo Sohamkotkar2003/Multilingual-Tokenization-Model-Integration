@@ -97,7 +97,7 @@ VALIDATION_DATA_PATH = "data/validation"
 CORPUS_FILES = {
     "assamese": "as_train.txt",
     "bengali": "bn_train.txt",
-    "bodo": "brx_train.txt",
+    "bodo": "bd_train.txt",
     "english": "en_train.txt",
     "gujurati": "gu_train.txt",
     "hindi": "hi_train.txt",
