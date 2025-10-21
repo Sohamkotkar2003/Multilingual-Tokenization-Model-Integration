@@ -549,6 +549,11 @@ def stream_data(source_name: str = "multilingual_corpus",
 if __name__ == "__main__":
     # Test streaming
     import sys
+    import io
+    
+    # Fix Windows console encoding
+    if sys.platform == "win32":
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
     
     logging.basicConfig(level=logging.INFO)
     
