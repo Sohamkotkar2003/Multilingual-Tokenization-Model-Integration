@@ -2,20 +2,48 @@
 # Defines remote data sources for streaming multilingual corpora
 
 # Hugging Face Datasets (streaming)
+# Note: Many HF datasets now require authentication or have deprecated scripts
+# The MCP loader automatically falls back to local data when HF is unavailable
+# To use HF datasets: pip install huggingface_hub && huggingface-cli login
 hf_sources:
+  # Example: OpenSubtitles (requires auth)
   multilingual_corpus:
-    dataset_name: "your_org/multilingual_corpus"
+    dataset_name: "Helsinki-NLP/open_subtitles"
+    config_name: "hi-en"
     streaming: true
     split: "train"
     max_samples: 5000
-    languages: ["hindi", "sanskrit", "marathi", "english"]
+    languages: ["hindi", "english"]
+    note: "Requires HuggingFace authentication - falls back to local data"
     
+  # Example: Wikipedia dumps (requires config)
   indian_languages:
-    dataset_name: "your_org/indian_languages"
+    dataset_name: "wikimedia/wikipedia"
+    config_name: "20231101.hi"
     streaming: true
     split: "train"
     max_samples: 2000
-    languages: ["tamil", "telugu", "kannada", "bengali"]
+    languages: ["hindi"]
+    note: "Falls back to local data if unavailable"
+    
+  # Example: C4 (large, may be slow)
+  wiki_multilingual:
+    dataset_name: "allenai/c4"
+    config_name: "en"
+    streaming: true
+    split: "train"
+    max_samples: 1000
+    languages: ["english"]
+    note: "Very large dataset - local fallback recommended"
+    
+  # Fallback note: All sources auto-fallback to data/training/
+  common_crawl:
+    dataset_name: "local_fallback"
+    streaming: true
+    split: "train"
+    max_samples: 3000
+    languages: ["multilingual"]
+    note: "Uses local data/training/ directory"
 
 # S3/Cloud Storage Sources
 s3_sources:
