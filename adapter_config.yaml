@@ -1,0 +1,93 @@
+# Adapter Training Configuration
+# Lightweight LoRA fine-tuning optimized for RTX 4050
+
+# Model configuration
+model:
+  base_model: "bigscience/bloomz-560m"
+  model_type: "causal_lm"
+  use_8bit: true
+  device_map: "auto"
+  torch_dtype: "float16"
+
+# LoRA/PEFT configuration
+lora:
+  r: 16                        # LoRA rank (higher = more parameters)
+  lora_alpha: 32               # LoRA scaling factor
+  lora_dropout: 0.1            # Dropout for LoRA layers
+  target_modules:              # Modules to apply LoRA (BLOOM-specific)
+    - "query_key_value"
+    - "dense"
+    - "dense_h_to_4h"
+    - "dense_4h_to_h"
+  bias: "none"                 # Bias training strategy
+  task_type: "CAUSAL_LM"       # Task type for PEFT
+
+# Training configuration
+training:
+  output_dir: "adapters/gurukul_lite"
+  num_train_epochs: 3
+  per_device_train_batch_size: 1
+  gradient_accumulation_steps: 8
+  learning_rate: 2.0e-4
+  weight_decay: 0.01
+  warmup_steps: 100
+  max_steps: -1                # -1 means use num_train_epochs
+  logging_steps: 10
+  save_steps: 100
+  save_total_limit: 3
+  fp16: true                   # Use FP16 for faster training
+  gradient_checkpointing: true # Save memory
+  dataloader_num_workers: 0    # 0 for Windows compatibility
+  max_grad_norm: 1.0
+  optim: "adamw_torch"
+  lr_scheduler_type: "cosine"
+
+# Data configuration
+data:
+  streaming: true              # Use streaming datasets (no full download)
+  max_train_samples: 2000      # Limit samples for quick training
+  max_eval_samples: 100
+  block_size: 512              # Context length
+  preprocessing_num_workers: 1
+
+# MCP streaming sources
+mcp:
+  primary_source: "multilingual_corpus"
+  fallback_source: "local"
+  config_path: "mcp_connectors.yml"
+  
+# Hardware optimization (RTX 4050)
+hardware:
+  gpu_memory_limit: 6          # GB (RTX 4050 has 6GB)
+  cpu_fallback: true           # Fall back to CPU if GPU OOM
+  mixed_precision: true
+  gradient_accumulation: 8     # Effective batch size = 1 * 8 = 8
+
+# Evaluation configuration  
+evaluation:
+  eval_strategy: "steps"
+  eval_steps: 50
+  per_device_eval_batch_size: 1
+  evaluation_samples: 10
+
+# Checkpointing
+checkpointing:
+  save_strategy: "steps"
+  save_steps: 100
+  load_best_model_at_end: true
+  metric_for_best_model: "eval_loss"
+
+# Logging
+logging:
+  logging_dir: "logs/training"
+  report_to: ["tensorboard"]
+  logging_first_step: true
+  logging_steps: 10
+
+# Note: Adapter training is currently not working due to technical issues
+# The base BLOOMZ-560M model works perfectly without adapters
+# This configuration is provided for future reference when training is fixed
+status: "NOT_WORKING"
+issue: "Training gets stuck at 0% progress (see GitHub issues)"
+workaround: "Use base model without adapters - works excellently for 21+ languages"
+

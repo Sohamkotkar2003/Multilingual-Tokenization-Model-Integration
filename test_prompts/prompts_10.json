@@ -1,0 +1,108 @@
+{
+  "description": "10 multilingual test prompts for smoke testing",
+  "model": "bigscience/bloomz-560m",
+  "prompts": [
+    {
+      "id": 1,
+      "language": "hindi",
+      "language_code": "hi",
+      "prompt": "अनुवाद करें: Hello friend, how are you today?",
+      "expected_output_type": "Hindi translation",
+      "category": "translation"
+    },
+    {
+      "id": 2,
+      "language": "bengali",
+      "language_code": "bn",
+      "prompt": "একটি ছোট গল্প লিখুন বন্ধুত্ব সম্পর্কে।",
+      "expected_output_type": "Short story in Bengali",
+      "category": "creative_writing"
+    },
+    {
+      "id": 3,
+      "language": "tamil",
+      "language_code": "ta",
+      "prompt": "தமிழில் மொழிபெயர்க்கவும்: Good morning, have a nice day!",
+      "expected_output_type": "Tamil translation",
+      "category": "translation"
+    },
+    {
+      "id": 4,
+      "language": "telugu",
+      "language_code": "te",
+      "prompt": "తెలుగులో అనువదించండి: Thank you very much for your help.",
+      "expected_output_type": "Telugu translation",
+      "category": "translation"
+    },
+    {
+      "id": 5,
+      "language": "gujarati",
+      "language_code": "gu",
+      "prompt": "ગુજરાતીમાં અનુવાદ કરો: What is your name?",
+      "expected_output_type": "Gujarati translation",
+      "category": "translation"
+    },
+    {
+      "id": 6,
+      "language": "marathi",
+      "language_code": "mr",
+      "prompt": "मराठीत अनुवाद करा: I love learning new languages.",
+      "expected_output_type": "Marathi translation",
+      "category": "translation"
+    },
+    {
+      "id": 7,
+      "language": "urdu",
+      "language_code": "ur",
+      "prompt": "اردو میں ترجمہ کریں: Where is the nearest library?",
+      "expected_output_type": "Urdu translation",
+      "category": "translation"
+    },
+    {
+      "id": 8,
+      "language": "punjabi",
+      "language_code": "pa",
+      "prompt": "ਪੰਜਾਬੀ ਵਿੱਚ ਅਨੁਵਾਦ ਕਰੋ: Please help me with this task.",
+      "expected_output_type": "Punjabi translation",
+      "category": "translation"
+    },
+    {
+      "id": 9,
+      "language": "kannada",
+      "language_code": "kn",
+      "prompt": "ಕನ್ನಡದಲ್ಲಿ ಅನುವಾದಿಸಿ: The weather is beautiful today.",
+      "expected_output_type": "Kannada translation",
+      "category": "translation"
+    },
+    {
+      "id": 10,
+      "language": "malayalam",
+      "language_code": "ml",
+      "prompt": "മലയാളത്തിൽ വിവർത്തനം ചെയ്യുക: I am happy to meet you.",
+      "expected_output_type": "Malayalam translation",
+      "category": "translation"
+    }
+  ],
+  "metadata": {
+    "total_prompts": 10,
+    "languages_covered": [
+      "hindi", "bengali", "tamil", "telugu", "gujarati",
+      "marathi", "urdu", "punjabi", "kannada", "malayalam"
+    ],
+    "created_date": "2025-10-21",
+    "purpose": "Smoke testing for MCP-enabled multilingual generation",
+    "usage": "Load this file and test each prompt against the /generate endpoint"
+  },
+  "testing_config": {
+    "max_new_tokens": 50,
+    "temperature": 0.7,
+    "do_sample": true,
+    "endpoint": "POST /generate",
+    "expected_response_format": {
+      "text": "string",
+      "language": "string",
+      "duration": "float"
+    }
+  }
+}
+

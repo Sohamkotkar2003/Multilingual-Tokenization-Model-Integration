@@ -106,6 +106,16 @@ python scripts/test_mcp_streaming.py
 - **[RL Pipeline Summary](docs/RL_PIPELINE_SUMMARY.md)** - RL pipeline docs
 - **[API Usage Guide](docs/API_USAGE_GUIDE.md)** - API reference
 - **[How-To Guide](docs/HOW_TO.md)** - Quick commands
+- **[Final Project Status](docs/FINAL_PROJECT_STATUS.md)** - Complete project status
+
+## ⚠️ **Known Issues**
+
+### **Adapter Training**
+- **Status**: Not currently working (stuck at 0% progress)
+- **Impact**: Cannot train custom LoRA adapters
+- **Workaround**: Base BLOOMZ-560M model works perfectly without adapters (21+ languages)
+- **Files Provided**: `adapter_config.yaml`, `adapter_service/model_utils.py` for future implementation
+- **Note**: All other features (API, MCP streaming, RL pipeline) are fully functional
 
 ## Dependencies
 
