@@ -1,0 +1,53 @@
+import json
+import sys
+import io
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+
+notebook = {
+    "cells": [],
+    "metadata": {
+        "accelerator": "GPU",
+        "colab": {"gpuType": "T4", "provenance": []},
+        "kernelspec": {"display_name": "Python 3", "name": "python3"}
+    },
+    "nbformat": 4,
+    "nbformat_minor": 0
+}
+
+def md(text):
+    return {"cell_type": "markdown", "metadata": {}, "source": [text]}
+
+def code(text):
+    return {"cell_type": "code", "execution_count": None, "metadata": {}, "outputs": [], "source": [text]}
+
+# Add cells
+notebook["cells"] = [
+    md("# NLLB-200 Adapter Quality Test\n\n**Test your trained NLLB-200 adapter vs BLOOMZ**\n\nUpload `nllb_18languages_adapter.zip` and run all cells!\n\n---"),
+    
+    md("## Cell 1: Install Packages"),
+    
+    code("!pip install -q transformers peft torch sentencepiece\n\nprint(\"✅ Packages installed!\")"),
+    
+    md("## Cell 2: Upload Adapter\n\n**Upload `nllb_18languages_adapter.zip`**"),
+    
+    code("from google.colab import files\nimport zipfile\nimport os\n\nif not os.path.exists('nllb_18languages_adapter'):\n    print(\"Upload nllb_18languages_adapter.zip or .rar\")\n    uploaded = files.upload()\n    \n    # Find the uploaded file\n    filename = list(uploaded.keys())[0]\n    print(f\"Uploaded: {filename}\")\n    \n    # Extract based on file type\n    if filename.endswith('.zip'):\n        with zipfile.ZipFile(filename, 'r') as z:\n            z.extractall('.')\n    elif filename.endswith('.rar'):\n        !pip install -q rarfile\n        import rarfile\n        with rarfile.RarFile(filename, 'r') as r:\n            r.extractall('.')\n    else:\n        # Try unzip command as fallback\n        !unzip -q {filename}\n    \n    print(\"✅ Extracted!\")\nelse:\n    print(\"✅ Already uploaded!\")\n\nprint(\"\\nFiles:\")\nfor f in os.listdir('nllb_18languages_adapter'):\n    s = os.path.getsize(f'nllb_18languages_adapter/{f}')/1024/1024\n    print(f\"  {f:30} {s:.1f}MB\")"),
+    
+    md("## Cell 3: Load Model"),
+    
+    code("import torch\nfrom transformers import AutoTokenizer, AutoModelForSeq2SeqLM\nfrom peft import PeftModel\n\nprint(\"Loading NLLB-200...\\n\")\n\nmodel_name = \"facebook/nllb-200-distilled-600M\"\n\ntokenizer = AutoTokenizer.from_pretrained(model_name)\nprint(\"✅ Tokenizer\")\n\nbase_model = AutoModelForSeq2SeqLM.from_pretrained(\n    model_name,\n    torch_dtype=torch.float16,\n    device_map=\"auto\"\n)\nprint(f\"✅ Base model on {base_model.device}\")\n\nmodel = PeftModel.from_pretrained(base_model, \"nllb_18languages_adapter\")\nprint(\"✅ Adapter loaded!\\n🎉 Ready!\")"),
+    
+    md("## Cell 4: Run Tests"),
+    
+    code("import time\n\ntests = [\n    {\"name\": \"Gujarati (BLOOMZ: Chinese)\", \"input\": \"Hello, good morning!\", \"chars\": [\"ગ\",\"જ\",\"ર\"], \"script\": \"Gujarati\"},\n    {\"name\": \"Telugu (BLOOMZ: English)\", \"input\": \"Thank you very much.\", \"chars\": [\"త\",\"ల\",\"గ\"], \"script\": \"Telugu\"},\n    {\"name\": \"Bengali (BLOOMZ: Artifacts)\", \"input\": \"This is beautiful.\", \"chars\": [\"ব\",\"া\",\"ং\"], \"script\": \"Bengali\"},\n    {\"name\": \"Hindi\", \"input\": \"How are you?\", \"chars\": [\"न\",\"म\",\"स\"], \"script\": \"Devanagari\"},\n    {\"name\": \"Tamil\", \"input\": \"Welcome home.\", \"chars\": [\"த\",\"ம\",\"ி\"], \"script\": \"Tamil\"},\n    {\"name\": \"Kannada\", \"input\": \"What is your name?\", \"chars\": [\"ಕ\",\"ನ\"], \"script\": \"Kannada\"},\n    {\"name\": \"Malayalam\", \"input\": \"Good night.\", \"chars\": [\"മ\",\"ല\",\"യ\"], \"script\": \"Malayalam\"},\n    {\"name\": \"Marathi\", \"input\": \"Please help me.\", \"chars\": [\"म\",\"र\",\"ा\"], \"script\": \"Devanagari\"},\n]\n\nprint(\"=\"*80)\nprint(\"TESTING NLLB-200 ADAPTER\")\nprint(\"=\"*80)\nprint()\n\nresults = []\n\nfor i, t in enumerate(tests, 1):\n    print(f\"{i}/{len(tests)}: {t['name']}\")\n    print(f\"  In:  {t['input']}\")\n    \n    # IMPORTANT: Set target language for NLLB!\n    # Get target language code (for now, try to infer from test name)\n    lang_codes = {\n        \"Gujarati\": \"guj_Gujr\",\n        \"Telugu\": \"tel_Telu\",\n        \"Bengali\": \"ben_Beng\",\n        \"Hindi\": \"hin_Deva\",\n        \"Tamil\": \"tam_Taml\",\n        \"Kannada\": \"kan_Knda\",\n        \"Malayalam\": \"mal_Mlym\",\n        \"Marathi\": \"mar_Deva\"\n    }\n    \n    # Find language from test name\n    tgt_lang = None\n    for lang, code in lang_codes.items():\n        if lang in t['name']:\n            tgt_lang = code\n            break\n    \n    inp = tokenizer(t['input'], return_tensors=\"pt\").to(model.device)\n    \n    start = time.time()\n    with torch.no_grad():\n        # Force target language using NLLB's method\n        if tgt_lang:\n            # Set target language in tokenizer\n            tokenizer.src_lang = \"eng_Latn\"  # Source is English\n            tokenizer.tgt_lang = tgt_lang     # Target is the language we want\n            forced_bos_token_id = tokenizer.convert_tokens_to_ids(tgt_lang)\n            out = model.generate(**inp, max_length=128, num_beams=4, early_stopping=True, forced_bos_token_id=forced_bos_token_id)\n        else:\n            out = model.generate(**inp, max_length=128, num_beams=4, early_stopping=True)\n    gen_time = time.time() - start\n    \n    trans = tokenizer.decode(out[0], skip_special_tokens=True)\n    print(f\"  Out: {trans}\")\n    print(f\"  Time: {gen_time:.2f}s\")\n    \n    has_script = any(c in trans for c in t['chars'])\n    has_chinese = any('\\u4e00' <= c <= '\\u9fff' for c in trans)\n    is_english = sum(1 for c in trans if c.isascii())/max(len(trans),1) > 0.7\n    \n    if has_chinese:\n        verdict = \"❌ CHINESE\"\n        q = \"bad\"\n    elif is_english:\n        verdict = \"❌ ENGLISH\"\n        q = \"bad\"\n    elif has_script:\n        verdict = f\"✅ {t['script']}\"\n        q = \"good\"\n    else:\n        verdict = \"⚠️  UNKNOWN\"\n        q = \"unknown\"\n    \n    print(f\"  ➜ {verdict}\")\n    print()\n    \n    results.append({\"test\": t['name'], \"q\": q, \"time\": gen_time})\n\nprint(\"=\"*80)"),
+    
+    md("## Cell 5: Results"),
+    
+    code("print(\"=\"*80)\nprint(\"FINAL RESULTS\")\nprint(\"=\"*80)\nprint()\n\ngood = sum(1 for r in results if r['q']=='good')\nbad = sum(1 for r in results if r['q']=='bad')\ntotal = len(results)\n\nprint(\"Results:\")\nfor r in results:\n    s = \"✅\" if r['q']=='good' else \"❌\"\n    print(f\"{s} {r['test']:30} - {r['q'].upper()}\")\n\nprint()\nprint(f\"Quality: {good}/{total} ({good*100/total:.1f}%)\")\nprint(f\"Avg time: {sum(r['time'] for r in results)/total:.2f}s\")\nprint()\n\nprint(\"=\"*80)\nprint(\"COMPARISON\")\nprint(\"=\"*80)\nprint()\nprint(\"BLOOMZ:\")\nprint(\"  ❌ Gujarati: Chinese\")\nprint(\"  ❌ Telugu: English\")\nprint(\"  ❌ Bengali: Artifacts\")\nprint(\"  Quality: ~50-70%\")\nprint()\nprint(\"NLLB-200:\")\nprint(f\"  Quality: {good*100/total:.0f}%\")\nprint(f\"  Fixed: {good}/{len([t for t in tests if 'BLOOMZ' in t['name']])} BLOOMZ issues\")\nprint()\n\nif good*100/total >= 85:\n    print(\"🎉 EXCELLENT! Much better than BLOOMZ!\")\nelif good*100/total >= 70:\n    print(\"✅ GOOD! Significant improvement!\")\nelse:\n    print(\"⚠️  Some issues remain\")\n\nprint()\nprint(\"=\"*80)"),
+]
+
+with open('test_nllb_adapter_colab.ipynb', 'w', encoding='utf-8') as f:
+    json.dump(notebook, f, indent=1, ensure_ascii=False)
+
+print("✅ Notebook created: test_nllb_adapter_colab.ipynb")
+print("   Upload to Google Colab and test your adapter!")
+
