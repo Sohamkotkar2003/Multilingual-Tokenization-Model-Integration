@@ -295,13 +295,13 @@ async def bridge_reason(request: BridgeReasonRequest):
     This is the MAIN ENDPOINT that orchestrates the complete pipeline
     
     Complete Pipeline Flow:
-    1. User Input → Bhavesh's LM Core API
-    2. Bhavesh's Response → KSML Semantic Alignment
+    1. User Input → LM Core API
+    2. LM Core Response → KSML Semantic Alignment
     3. KSML Result → RL Policy Update
     4. Enhanced Text → Vaani TTS Composition
     5. Final Response → User + Speech-ready output
     
-    This endpoint demonstrates how Bhavesh's LM responses flow through our system
+    This endpoint demonstrates how LM Core responses flow through our system
     and get enhanced with KSML alignment, RL feedback, and TTS preparation.
     """
     start_time = time.time()

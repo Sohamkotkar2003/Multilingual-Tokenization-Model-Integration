@@ -128,15 +128,15 @@ async def test_bridge_reasoner():
     =============================================================================
     TEST: MULTILINGUAL REASONING BRIDGE
     =============================================================================
-    This test demonstrates the COMPLETE PIPELINE integration with Bhavesh's LM Core
+    This test demonstrates the COMPLETE PIPELINE integration with LM Core
     
     Test Flow:
     1. Initialize the bridge reasoner
     2. Process a sample text through the complete pipeline
-    3. Verify all components are working (Bhavesh's LM, KSML, RL, Vaani, MCP)
+    3. Verify all components are working (LM Core, KSML, RL, Vaani, MCP)
     4. Check processing time and performance metrics
     
-    This test shows Bhavesh how his LM responses will be processed through our system
+    This test shows how LM Core responses will be processed through our system
     """
     print("Testing Multilingual Reasoning Bridge...")
     
@@ -152,7 +152,7 @@ async def test_bridge_reasoner():
         # =============================================================================
         # TEST COMPLETE PIPELINE PROCESSING
         # =============================================================================
-        # This simulates the complete flow: User Input → Bhavesh's LM → KSML → RL → Vaani
+        # This simulates the complete flow: User Input → LM Core → KSML → RL → Vaani
         result = await reasoner.process_reasoning(
             text="What is the meaning of dharma?",  # Sample input
             user_id="test_user",                    # User context

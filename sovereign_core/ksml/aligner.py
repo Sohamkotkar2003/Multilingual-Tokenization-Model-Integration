@@ -57,10 +57,10 @@ class KSMLAligner:
     =============================================================================
     KSML SEMANTIC ALIGNMENT ENGINE
     =============================================================================
-    This is the CORE PROCESSING ENGINE that enhances Bhavesh's LM responses
+    This is the CORE PROCESSING ENGINE that enhances LM Core responses
     
     What it does:
-    - Takes Bhavesh's generated text as input
+    - Takes LM Core generated text as input
     - Adds KSML semantic metadata (intent, karma state, Sanskrit roots)
     - Provides cultural context and alignment
     - Returns enhanced text with metadata
@@ -290,7 +290,7 @@ class KSMLAligner:
         =============================================================================
         MAIN KSML SEMANTIC ALIGNMENT METHOD
         =============================================================================
-        This is the MAIN METHOD that processes Bhavesh's LM responses
+        This is the MAIN METHOD that processes LM Core responses
         
         Processing Pipeline:
         1. Detect source language (if not provided)
@@ -301,10 +301,10 @@ class KSMLAligner:
         6. Return enhanced text with metadata
         
         Args:
-            text: Bhavesh's generated text to enhance
+            text: LM Core generated text to enhance
             source_lang: Source language (auto-detect if None)
             target_lang: Target language
-            context: Additional context from Bhavesh's response
+            context: Additional context from LM Core response
             
         Returns:
             Dictionary with KSML-enhanced text and metadata
