@@ -289,10 +289,20 @@ async def compose_speech_ready(request: SpeechReadyRequest):
 @app.post("/bridge.reason", response_model=BridgeReasonResponse)
 async def bridge_reason(request: BridgeReasonRequest):
     """
-    Multilingual Reasoning Bridge
+    =============================================================================
+    MAIN ENDPOINT: MULTILINGUAL REASONING BRIDGE
+    =============================================================================
+    This is the MAIN ENDPOINT that orchestrates the complete pipeline
     
-    Unified endpoint that connects Bhavesh's LM responses, refines them via RL-based 
-    language alignment, and streams KSML-tagged results + speech-ready text to Vaani.
+    Complete Pipeline Flow:
+    1. User Input → Bhavesh's LM Core API
+    2. Bhavesh's Response → KSML Semantic Alignment
+    3. KSML Result → RL Policy Update
+    4. Enhanced Text → Vaani TTS Composition
+    5. Final Response → User + Speech-ready output
+    
+    This endpoint demonstrates how Bhavesh's LM responses flow through our system
+    and get enhanced with KSML alignment, RL feedback, and TTS preparation.
     """
     start_time = time.time()
     trace_id = f"bridge_{int(time.time() * 1000)}"

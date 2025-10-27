@@ -124,24 +124,49 @@ async def test_vaani_composer():
         return False
 
 async def test_bridge_reasoner():
-    """Test multilingual reasoning bridge"""
+    """
+    =============================================================================
+    TEST: MULTILINGUAL REASONING BRIDGE
+    =============================================================================
+    This test demonstrates the COMPLETE PIPELINE integration with Bhavesh's LM Core
+    
+    Test Flow:
+    1. Initialize the bridge reasoner
+    2. Process a sample text through the complete pipeline
+    3. Verify all components are working (Bhavesh's LM, KSML, RL, Vaani, MCP)
+    4. Check processing time and performance metrics
+    
+    This test shows Bhavesh how his LM responses will be processed through our system
+    """
     print("Testing Multilingual Reasoning Bridge...")
     
     try:
         from bridge.reasoner import MultilingualReasoner
         
+        # =============================================================================
+        # INITIALIZE BRIDGE REASONER
+        # =============================================================================
         reasoner = MultilingualReasoner()
         await reasoner.initialize()
         
-        # Test complete bridge processing
+        # =============================================================================
+        # TEST COMPLETE PIPELINE PROCESSING
+        # =============================================================================
+        # This simulates the complete flow: User Input → Bhavesh's LM → KSML → RL → Vaani
         result = await reasoner.process_reasoning(
-            text="What is the meaning of dharma?",
-            user_id="test_user",
-            include_audio=True
+            text="What is the meaning of dharma?",  # Sample input
+            user_id="test_user",                    # User context
+            include_audio=True                      # Include TTS processing
         )
         
+        # =============================================================================
+        # VERIFY RESULTS
+        # =============================================================================
         print(f"SUCCESS: Bridge Reasoner: Processed in {result['processing_time']:.2f}s")
         print(f"   Components used: {', '.join(result['components_used'])}")
+        print(f"   KSML Intent: {result['ksml_metadata']['intent']}")
+        print(f"   Karma State: {result['ksml_metadata']['karma_state']}")
+        print(f"   Sanskrit Roots: {result['ksml_metadata']['semantic_roots']}")
         return True
         
     except Exception as e:

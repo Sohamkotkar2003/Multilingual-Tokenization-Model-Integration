@@ -54,13 +54,23 @@ class KSMLResult:
 
 class KSMLAligner:
     """
-    KSML Semantic Alignment Engine
+    =============================================================================
+    KSML SEMANTIC ALIGNMENT ENGINE
+    =============================================================================
+    This is the CORE PROCESSING ENGINE that enhances Bhavesh's LM responses
     
-    Processes raw LM text and adds semantic metadata including:
-    - Intent classification
-    - Language detection
-    - Karma state analysis
-    - Sanskrit root tagging
+    What it does:
+    - Takes Bhavesh's generated text as input
+    - Adds KSML semantic metadata (intent, karma state, Sanskrit roots)
+    - Provides cultural context and alignment
+    - Returns enhanced text with metadata
+    
+    Key Methods:
+    - align_text(): Main processing method
+    - _detect_language(): Language detection
+    - _classify_intent(): Intent classification
+    - _classify_karma_state(): Karma state analysis
+    - _extract_sanskrit_roots(): Sanskrit root tagging
     """
     
     def __init__(self):
@@ -277,16 +287,27 @@ class KSMLAligner:
     async def align_text(self, text: str, source_lang: Optional[str] = None, 
                         target_lang: str = "en", context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
-        Perform KSML semantic alignment on input text
+        =============================================================================
+        MAIN KSML SEMANTIC ALIGNMENT METHOD
+        =============================================================================
+        This is the MAIN METHOD that processes Bhavesh's LM responses
+        
+        Processing Pipeline:
+        1. Detect source language (if not provided)
+        2. Classify intent (question, statement, command, etc.)
+        3. Determine karma state (sattva, rajas, tamas)
+        4. Extract Sanskrit roots from text
+        5. Calculate confidence score
+        6. Return enhanced text with metadata
         
         Args:
-            text: Raw LM text to align
+            text: Bhavesh's generated text to enhance
             source_lang: Source language (auto-detect if None)
             target_lang: Target language
-            context: Additional context
+            context: Additional context from Bhavesh's response
             
         Returns:
-            Dictionary with alignment results
+            Dictionary with KSML-enhanced text and metadata
         """
         if not self.initialized:
             raise RuntimeError("KSML aligner not initialized")

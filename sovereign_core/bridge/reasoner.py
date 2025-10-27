@@ -12,6 +12,13 @@ This module implements the multilingual reasoning bridge that connects all compo
 Author: Soham Kotkar
 """
 
+# =============================================================================
+# INTEGRATION POINT WITH BHAVESH'S LM CORE
+# =============================================================================
+# This file is the MAIN INTEGRATION POINT with Bhavesh's LM Core API
+# It orchestrates the complete pipeline from user input to final response
+# Key integration: Lines 15-16 (endpoint config) and 204-230 (API call)
+
 import json
 import time
 import logging
@@ -46,13 +53,27 @@ class MultilingualReasoner:
     """
     
     def __init__(self):
-        self.ksml_aligner = None
-        self.mcp_feedback = None
-        self.rl_policy = None
-        self.vaani_composer = None
+        # =============================================================================
+        # COMPONENT INITIALIZATION
+        # =============================================================================
+        # These are the main components that will be initialized
+        self.ksml_aligner = None       # KSML semantic alignment engine
+        self.mcp_feedback = None       # MCP feedback collection system
+        self.rl_policy = None          # RL self-improvement loop
+        self.vaani_composer = None     # Vaani TTS compatibility layer
+        
+        # =============================================================================
+        # BHAVESH'S LM CORE INTEGRATION CONFIGURATION
+        # =============================================================================
+        # This is where we configure the connection to Bhavesh's LM Core API
+        # Currently set to localhost - will be updated with Bhavesh's actual endpoint
         self.bhavesh_lm_endpoint = "http://localhost:8000/compose.final_text"  # Bhavesh's endpoint
-        self.processing_log = []
-        self.initialized = False
+        
+        # =============================================================================
+        # SYSTEM STATE TRACKING
+        # =============================================================================
+        self.processing_log = []      # Log of all processing operations
+        self.initialized = False      # System initialization status
         
     async def initialize(self):
         """Initialize the multilingual reasoner"""
@@ -206,26 +227,55 @@ class MultilingualReasoner:
             raise
     
     async def _get_lm_response(self, text: str, user_id: Optional[str], session_id: Optional[str]) -> Dict[str, Any]:
-        """Get LM response from Bhavesh's system"""
+        """
+        =============================================================================
+        MAIN INTEGRATION POINT WITH BHAVESH'S LM CORE API
+        =============================================================================
+        This method makes the actual HTTP call to Bhavesh's /compose.final_text endpoint
+        It's the bridge between our system and his LM Core
+        
+        Args:
+            text: User input text to send to Bhavesh's LM Core
+            user_id: User identifier for context
+            session_id: Session identifier for context
+            
+        Returns:
+            Dictionary with Bhavesh's LM response + our processing metadata
+        """
         try:
-            # In a real implementation, you would make an HTTP request to Bhavesh's endpoint
-            # For now, we'll simulate the response
+            # =============================================================================
+            # TODO: REPLACE WITH ACTUAL BHAVESH API CALL
+            # =============================================================================
+            # In a real implementation, this would make an HTTP request to:
+            # self.bhavesh_lm_endpoint with proper authentication
             
-            # Simulate processing delay
-            await asyncio.sleep(0.1)
+            # Example of what the actual implementation would look like:
+            # async with httpx.AsyncClient() as client:
+            #     response = await client.post(
+            #         self.bhavesh_lm_endpoint,
+            #         headers={"Authorization": f"Bearer {auth_token}"},
+            #         json={"text": text, "user_id": user_id, "session_id": session_id}
+            #     )
+            #     return response.json()
             
-            # Simulate LM response
+            # For now, we'll simulate the response to show the expected format
+            await asyncio.sleep(0.1)  # Simulate API call delay
+            
+            # =============================================================================
+            # SIMULATED RESPONSE FROM BHAVESH'S LM CORE
+            # =============================================================================
+            # This shows the expected format of Bhavesh's response
             response = {
-                "text": f"Processed: {text}",
-                "source_lang": "en",
-                "target_lang": "en",
-                "confidence": 0.85,
-                "reward": 0.7,  # Simulated reward
+                "text": f"Processed: {text}",           # Bhavesh's generated text
+                "source_lang": "en",                    # Detected source language
+                "target_lang": "en",                    # Target language
+                "confidence": 0.85,                     # Bhavesh's confidence score
+                "reward": 0.7,                          # Simulated reward for RL
                 "metadata": {
-                    "model": "bhavesh_lm_core",
-                    "timestamp": time.time(),
-                    "user_id": user_id,
-                    "session_id": session_id
+                    "model": "bhavesh_lm_core",         # Model identifier
+                    "timestamp": time.time(),           # Processing timestamp
+                    "user_id": user_id,                 # User context
+                    "session_id": session_id            # Session context
                 }
             }
             
@@ -234,7 +284,10 @@ class MultilingualReasoner:
             
         except Exception as e:
             logger.error(f"Failed to get LM response from Bhavesh's system: {e}")
-            # Fallback response
+            # =============================================================================
+            # FALLBACK RESPONSE FOR ERROR HANDLING
+            # =============================================================================
+            # If Bhavesh's API is down, we return a fallback response
             return {
                 "text": text,
                 "source_lang": "en",
