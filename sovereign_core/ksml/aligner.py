@@ -57,20 +57,10 @@ class KSMLAligner:
     =============================================================================
     KSML SEMANTIC ALIGNMENT ENGINE
     =============================================================================
-    This is the CORE PROCESSING ENGINE that enhances LM Core responses
-    
-    What it does:
-    - Takes LM Core generated text as input
-    - Adds KSML semantic metadata (intent, karma state, Sanskrit roots)
-    - Provides cultural context and alignment
-    - Returns enhanced text with metadata
-    
-    Key Methods:
-    - align_text(): Main processing method
-    - _detect_language(): Language detection
-    - _classify_intent(): Intent classification
-    - _classify_karma_state(): Karma state analysis
-    - _extract_sanskrit_roots(): Sanskrit root tagging
+    TODO: This processes text from Bhavesh's LM Core
+    TODO: Confirm input format with Bhavesh
+    TODO: Test with real Bhavesh responses
+    TODO: Optimize performance for production
     """
     
     def __init__(self):
@@ -290,24 +280,10 @@ class KSMLAligner:
         =============================================================================
         MAIN KSML SEMANTIC ALIGNMENT METHOD
         =============================================================================
-        This is the MAIN METHOD that processes LM Core responses
-        
-        Processing Pipeline:
-        1. Detect source language (if not provided)
-        2. Classify intent (question, statement, command, etc.)
-        3. Determine karma state (sattva, rajas, tamas)
-        4. Extract Sanskrit roots from text
-        5. Calculate confidence score
-        6. Return enhanced text with metadata
-        
-        Args:
-            text: LM Core generated text to enhance
-            source_lang: Source language (auto-detect if None)
-            target_lang: Target language
-            context: Additional context from LM Core response
-            
-        Returns:
-            Dictionary with KSML-enhanced text and metadata
+        TODO: This processes Bhavesh's LM Core responses
+        TODO: Confirm text format with Bhavesh
+        TODO: Test with real Bhavesh data
+        TODO: Optimize for production performance
         """
         if not self.initialized:
             raise RuntimeError("KSML aligner not initialized")

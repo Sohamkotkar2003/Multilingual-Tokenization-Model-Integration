@@ -3,7 +3,7 @@
 Multilingual Reasoning Bridge
 
 This module implements the multilingual reasoning bridge that connects all components:
-- Bhavesh's LM Core integration
+- LM Core integration
 - KSML semantic alignment
 - RL feedback processing
 - Vaani TTS composition
@@ -13,9 +13,9 @@ Author: Soham Kotkar
 """
 
 # =============================================================================
-# INTEGRATION POINT WITH BHAVESH'S LM CORE
+# INTEGRATION POINT WITH LM CORE
 # =============================================================================
-# This file is the MAIN INTEGRATION POINT with Bhavesh's LM Core API
+# This file is the MAIN INTEGRATION POINT with the LM Core API
 # It orchestrates the complete pipeline from user input to final response
 # Key integration: Lines 15-16 (endpoint config) and 204-230 (API call)
 
@@ -26,6 +26,7 @@ import asyncio
 from datetime import datetime
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
+from pathlib import Path
 import uuid
 
 logger = logging.getLogger(__name__)
@@ -45,7 +46,7 @@ class MultilingualReasoner:
     Multilingual Reasoning Bridge
     
     Orchestrates the complete pipeline:
-    1. Connects to Bhavesh's LM Core
+    1. Connects to the LM Core
     2. Applies KSML semantic alignment
     3. Processes RL feedback
     4. Composes speech-ready text for Vaani
@@ -97,8 +98,8 @@ class MultilingualReasoner:
             await self.rl_policy.initialize()
             await self.vaani_composer.initialize()
             
-            # Test Bhavesh's LM Core connection
-            await self._test_bhavesh_connection()
+            # Test LM Core connection
+            await self._test_lm_core_connection()
             
             self.initialized = True
             logger.info("✅ Multilingual Reasoning Bridge initialized successfully")
@@ -107,21 +108,21 @@ class MultilingualReasoner:
             logger.error(f"❌ Failed to initialize multilingual reasoner: {e}")
             raise
     
-    async def _test_bhavesh_connection(self):
-        """Test connection to Bhavesh's LM Core"""
+    async def _test_lm_core_connection(self):
+        """Test connection to the LM Core"""
         try:
             # Simulate connection test
-            logger.info("Testing connection to Bhavesh's LM Core...")
+            logger.info("Testing connection to the LM Core...")
             
             # In a real implementation, you would make an HTTP request to:
-            # self.bhavesh_lm_endpoint
+            # self.lm_core_endpoint
             # For now, we'll simulate the test
             
-            logger.info("✅ Bhavesh's LM Core connection verified")
+            logger.info("✅ LM Core connection verified")
             
         except Exception as e:
-            logger.warning(f"⚠️ Bhavesh's LM Core connection test failed: {e}")
-            # Continue initialization even if Bhavesh's system is not available
+            logger.warning(f"⚠️ LM Core connection test failed: {e}")
+            # Continue initialization even if the LM Core system is not available
     
     async def process_reasoning(self, text: str, user_id: Optional[str] = None,
                               session_id: Optional[str] = None, include_audio: bool = True,
@@ -149,9 +150,9 @@ class MultilingualReasoner:
         try:
             logger.info(f"Starting bridge processing for trace {trace_id}")
             
-            # Step 1: Get LM response from Bhavesh's system
+            # Step 1: Get LM response from the LM Core system
             lm_response = await self._get_lm_response(text, user_id, session_id)
-            components_used.append("bhavesh_lm")
+            components_used.append("lm_core")
             
             # Step 2: Apply KSML semantic alignment
             ksml_result = await self.ksml_aligner.align_text(
@@ -246,17 +247,11 @@ class MultilingualReasoner:
             # =============================================================================
             # TODO: REPLACE WITH ACTUAL LM CORE API CALL
             # =============================================================================
-            # In a real implementation, this would make an HTTP request to:
-            # self.lm_core_endpoint with proper authentication
-            
-            # Example of what the actual implementation would look like:
-            # async with httpx.AsyncClient() as client:
-            #     response = await client.post(
-            #         self.lm_core_endpoint,
-            #         headers={"Authorization": f"Bearer {auth_token}"},
-            #         json={"text": text, "user_id": user_id, "session_id": session_id}
-            #     )
-            #     return response.json()
+            # TODO: Get API endpoint URL from Bhavesh
+            # TODO: Get authentication method (API key, bearer token, etc.)
+            # TODO: Get request/response format specification
+            # TODO: Implement actual HTTP call to Bhavesh's /compose.final_text endpoint
+            # TODO: Handle error cases and timeouts
             
             # For now, we'll simulate the response to show the expected format
             await asyncio.sleep(0.1)  # Simulate API call delay
@@ -264,18 +259,19 @@ class MultilingualReasoner:
             # =============================================================================
             # SIMULATED RESPONSE FROM LM CORE
             # =============================================================================
-            # This shows the expected format of the LM Core response
+            # TODO: Confirm this response format with Bhavesh
+            # TODO: Replace with actual response from Bhavesh's API
             response = {
-                "text": f"Processed: {text}",           # LM Core's generated text
-                "source_lang": "en",                    # Detected source language
-                "target_lang": "en",                    # Target language
-                "confidence": 0.85,                     # LM Core's confidence score
-                "reward": 0.7,                          # Simulated reward for RL
+                "text": f"Processed: {text}",           # TODO: Get actual text from Bhavesh
+                "source_lang": "en",                    # TODO: Get actual language detection from Bhavesh
+                "target_lang": "en",                    # TODO: Get actual target language from Bhavesh
+                "confidence": 0.85,                     # TODO: Get actual confidence score from Bhavesh
+                "reward": 0.7,                          # TODO: Get actual reward score from Bhavesh
                 "metadata": {
-                    "model": "lm_core",                 # Model identifier
-                    "timestamp": time.time(),           # Processing timestamp
-                    "user_id": user_id,                 # User context
-                    "session_id": session_id            # Session context
+                    "model": "lm_core",                 # TODO: Get actual model identifier from Bhavesh
+                    "timestamp": time.time(),           # TODO: Get actual timestamp from Bhavesh
+                    "user_id": user_id,                 # TODO: Confirm user context handling with Bhavesh
+                    "session_id": session_id            # TODO: Confirm session context handling with Bhavesh
                 }
             }
             
@@ -335,7 +331,7 @@ class MultilingualReasoner:
             stats = {
                 "initialized": self.initialized,
                 "processing_log_size": len(self.processing_log),
-                "bhavesh_endpoint": self.bhavesh_lm_endpoint,
+                "lm_core_endpoint": self.lm_core_endpoint,
                 "components": {}
             }
             

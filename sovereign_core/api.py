@@ -3,7 +3,7 @@
 Sovereign LM Bridge + Multilingual KSML Core API
 
 This is the main FastAPI application that provides the sovereign multilingual 
-reasoning bridge connecting Bhavesh's LM Core, Vaani TTS, and Gurukul/Uniguru front-end.
+reasoning bridge connecting the LM Core, Vaani TTS, and Gurukul/Uniguru front-end.
 
 Core Endpoints:
 - /align.ksml - KSML semantic alignment engine
@@ -64,7 +64,7 @@ _bridge_reasoner = None
 
 class KSMLAlignmentRequest(BaseModel):
     """Request model for KSML semantic alignment"""
-    text: str = Field(..., description="Raw LM text from Bhavesh's system")
+    text: str = Field(..., description="Raw LM text from the LM Core system")
     source_lang: Optional[str] = Field(None, description="Source language (auto-detect if not provided)")
     target_lang: Optional[str] = Field("en", description="Target language")
     context: Optional[Dict[str, Any]] = Field(None, description="Additional context")
@@ -177,7 +177,7 @@ async def align_ksml(request: KSMLAlignmentRequest):
     """
     KSML Semantic Alignment Engine
     
-    Accepts raw LM text from Bhavesh's system and adds:
+    Accepts raw LM text from the LM Core system and adds:
     - Intent classification
     - Language detection (source/target)
     - Karma state classification (sattva/rajas/tamas)
@@ -292,17 +292,11 @@ async def bridge_reason(request: BridgeReasonRequest):
     =============================================================================
     MAIN ENDPOINT: MULTILINGUAL REASONING BRIDGE
     =============================================================================
-    This is the MAIN ENDPOINT that orchestrates the complete pipeline
-    
-    Complete Pipeline Flow:
-    1. User Input → LM Core API
-    2. LM Core Response → KSML Semantic Alignment
-    3. KSML Result → RL Policy Update
-    4. Enhanced Text → Vaani TTS Composition
-    5. Final Response → User + Speech-ready output
-    
-    This endpoint demonstrates how LM Core responses flow through our system
-    and get enhanced with KSML alignment, RL feedback, and TTS preparation.
+    TODO: This is the main endpoint that Bhavesh's system will call
+    TODO: Confirm request/response format with Bhavesh
+    TODO: Test integration with Bhavesh's system
+    TODO: Handle error cases and timeouts
+    TODO: Monitor performance metrics
     """
     start_time = time.time()
     trace_id = f"bridge_{int(time.time() * 1000)}"
