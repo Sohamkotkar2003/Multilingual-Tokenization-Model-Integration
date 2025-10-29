@@ -29,6 +29,7 @@ class IntentType(Enum):
     QUESTION = "question"
     STATEMENT = "statement"
     COMMAND = "command"
+    INSTRUCTION = "instruction"
     GREETING = "greeting"
     EXPLANATION = "explanation"
     TRANSLATION = "translation"
@@ -186,8 +187,10 @@ class KSMLAligner:
         """Initialize patterns for intent classification"""
         self.intent_patterns = {
             IntentType.QUESTION: [
-                # English
+                # English - Enhanced patterns
                 r'\b(what|how|why|when|where|who|which|can|could|would|should|is|are|do|does|did)\b',
+                r'\b(tell me about|what is|how does|explain|describe)\b',
+                r'\b(what\'s|how\'s|why\'s|when\'s|where\'s|who\'s)\b',
                 # Hindi
                 r'\b(क्या|कैसे|क्यों|कब|कहाँ|कौन|कौनसा|क्या|है|हैं|कर|करता|करती)\b',
                 # Sanskrit
@@ -198,12 +201,22 @@ class KSMLAligner:
                 r'\b(কী|কীভাবে|কেন|কখন|কোথায়|কে|কোন|হয়|আছে|করে)\b'
             ],
             IntentType.COMMAND: [
-                # English
-                r'\b(please|do|make|create|build|start|stop|go|come|give|take|show|tell)\b',
+                # English - Basic commands
+                r'\b(please|do|go|come|give|take|show|tell|stop|start)\b',
                 # Hindi
-                r'\b(कृपया|करो|बनाओ|बनाएं|शुरू|रुको|जाओ|आओ|दो|लो|दिखाओ|बताओ)\b',
+                r'\b(कृपया|करो|जाओ|आओ|दो|लो|दिखाओ|बताओ|रुको|शुरू)\b',
                 # Sanskrit
-                r'\b(कृपया|कुरु|निर्माण|आरभ|स्थगय|गच्छ|आगच्छ|देहि|गृहाण|दर्शय|कथय)\b'
+                r'\b(कृपया|कुरु|गच्छ|आगच्छ|देहि|गृहाण|दर्शय|कथय|स्थगय|आरभ)\b'
+            ],
+            IntentType.INSTRUCTION: [
+                # English - Action-oriented instructions
+                r'\b(create|build|make|write|develop|generate|design|construct|produce)\b',
+                r'\b(create a|build a|make a|write a|develop a|generate a|design a)\b',
+                r'\b(create an|build an|make an|write an|develop an|generate an|design an)\b',
+                # Hindi
+                r'\b(बनाओ|निर्माण|लिखो|विकसित|उत्पन्न|डिजाइन|निर्माण करो)\b',
+                # Sanskrit
+                r'\b(निर्माण|रचय|लिख|विकस|उत्पादय|रूपय|निर्माण कुरु)\b'
             ],
             IntentType.GREETING: [
                 # English
@@ -216,8 +229,10 @@ class KSMLAligner:
                 r'\b(வணக்கம்|வாழ்க|நமஸ்காரம்|காலை வணக்கம்)\b'
             ],
             IntentType.EXPLANATION: [
-                # English
+                # English - Enhanced patterns with higher priority
+                r'^(explain|describe|define|clarify|elaborate)',
                 r'\b(explain|describe|tell me about|what is|how does|means|definition)\b',
+                r'\b(explanation|description|definition|clarification|elaboration)\b',
                 # Hindi
                 r'\b(समझाओ|वर्णन|बताओ|क्या है|कैसे|मतलब|परिभाषा)\b',
                 # Sanskrit
@@ -244,10 +259,14 @@ class KSMLAligner:
                 r'\b(அமைதி|அமைதியான|ஒற்றுமை|சமநிலை|ஞானம்|உண்மை|அன்பு|கருணை)\b'
             ],
             KarmaState.RAJASIC: [
-                # Active, passionate, dynamic
+                # Active, passionate, dynamic - Enhanced patterns
                 r'\b(action|passion|energy|dynamic|active|ambition|desire|work|effort|striving)\b',
+                r'\b(create|build|make|write|develop|generate|design|construct|produce|work|do)\b',
+                r'\b(create a|build a|make a|write a|develop a|generate a|design a|work on)\b',
                 r'\b(कर्म|जुनून|ऊर्जा|गतिशील|सक्रिय|महत्वाकांक्षा|इच्छा|काम|प्रयास)\b',
+                r'\b(बनाओ|निर्माण|लिखो|विकसित|उत्पन्न|डिजाइन|काम करो|करो)\b',
                 r'\b(कर्म|जुनूनः|ऊर्जा|गतिशीलः|सक्रियः|महत्वाकाङ्क्षा|इच्छा|कामः|प्रयासः)\b',
+                r'\b(निर्माण|रचय|लिख|विकस|उत्पादय|रूपय|कर्म कुरु|कुरु)\b',
                 r'\b(செயல்|ஆர்வம்|ஆற்றல்|இயக்க|செயல்பாட்டு|ஆசை|வேலை|முயற்சி)\b'
             ],
             KarmaState.TAMASIC: [

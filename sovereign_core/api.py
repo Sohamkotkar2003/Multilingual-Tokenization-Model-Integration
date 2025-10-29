@@ -29,9 +29,11 @@ from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
-# Add project root to path for imports
+# Add project root and this package directory to sys.path so local modules resolve
 project_root = Path(__file__).parent.parent
+package_root = Path(__file__).parent
 sys.path.append(str(project_root))
+sys.path.append(str(package_root))
 
 # Import existing services
 from src.services.knowledge_base import process_qa_query
