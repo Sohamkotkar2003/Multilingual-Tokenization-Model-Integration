@@ -6,7 +6,7 @@
 
 ## 🎯 **Overview**
 
-The Sovereign LM Bridge + Multilingual KSML Core is a comprehensive system that connects Bhavesh's LM Core, Vaani TTS, and Gurukul/Uniguru front-end through a sophisticated multilingual reasoning bridge with KSML semantic alignment.
+The Sovereign LM Bridge + Multilingual KSML Core is a comprehensive system that connects the LM Core, Vaani TTS, and Gurukul/Uniguru front-end through a sophisticated multilingual reasoning bridge with KSML semantic alignment.
 
 ## 🏗️ **Architecture**
 
@@ -59,7 +59,7 @@ sovereign_core/
 
 ### 5. **Multilingual Reasoning Bridge** (`/bridge.reason`)
 - **End-to-End Pipeline**: Complete orchestration of all components
-- **Bhavesh Integration**: Connects to Bhavesh's `/compose.final_text` API
+- **LM Core Integration**: Connects to the `/compose.final_text` API
 - **Unified Output**: Text + KSML + prosody in one response
 - **Trace Logging**: Complete processing trace with `trace_id`
 - **Performance Monitoring**: <2s end-to-end latency target
@@ -205,7 +205,7 @@ curl http://localhost:8116/stats
 
 ## 🚀 **Integration Points**
 
-### **Bhavesh's LM Core**
+### **LM Core**
 - **Endpoint**: `http://localhost:8000/compose.final_text`
 - **Integration**: HTTP client with fallback handling
 - **Data Flow**: Input → LM Core → KSML Alignment → Output
@@ -278,7 +278,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 **Acknowledgments**
 
-- **Bhavesh**: LM Core integration and API design
+- **LM Core Team**: LM Core integration and API design
 - **Karthikeya**: Vaani TTS system and prosody optimization
 - **Gurukul/Uniguru**: Front-end integration requirements
 - **MCP Community**: Multi-Cloud Protocol standards and connectors

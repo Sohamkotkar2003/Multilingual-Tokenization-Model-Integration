@@ -66,9 +66,9 @@ class MultilingualReasoner:
         # =============================================================================
         # LM CORE INTEGRATION CONFIGURATION
         # =============================================================================
-        # This is where we configure the connection to the LM Core API
-        # Currently set to localhost - will be updated with the actual endpoint
-        self.lm_core_endpoint = "http://localhost:8000/compose.final_text"  # LM Core endpoint
+        # This is where we configure the connection to Bhavesh's LM Core API
+        # Endpoint: /compose.final_text (from Bhavesh's app.py)
+        self.lm_core_endpoint = "http://localhost:8000/compose.final_text"  # Bhavesh's LM Core endpoint
         
         # =============================================================================
         # SYSTEM STATE TRACKING
@@ -230,9 +230,9 @@ class MultilingualReasoner:
     async def _get_lm_response(self, text: str, user_id: Optional[str], session_id: Optional[str]) -> Dict[str, Any]:
         """
         =============================================================================
-        MAIN INTEGRATION POINT WITH LM CORE API
+        REAL INTEGRATION WITH BHAVESH'S LM CORE API
         =============================================================================
-        This method makes the actual HTTP call to the /compose.final_text endpoint
+        This method makes actual HTTP calls to Bhavesh's /compose.final_text endpoint
         It's the bridge between our system and the LM Core
         
         Args:
@@ -243,55 +243,103 @@ class MultilingualReasoner:
         Returns:
             Dictionary with LM Core response + our processing metadata
         """
+        import httpx
+        
         try:
             # =============================================================================
-            # TODO: REPLACE WITH ACTUAL LM CORE API CALL
+            # REAL API CALL TO BHAVESH'S LM CORE
             # =============================================================================
-            # TODO: Get API endpoint URL from Bhavesh
-            # TODO: Get authentication method (API key, bearer token, etc.)
-            # TODO: Get request/response format specification
-            # TODO: Implement actual HTTP call to Bhavesh's /compose.final_text endpoint
-            # TODO: Handle error cases and timeouts
-            
-            # For now, we'll simulate the response to show the expected format
-            await asyncio.sleep(0.1)  # Simulate API call delay
-            
-            # =============================================================================
-            # SIMULATED RESPONSE FROM LM CORE
-            # =============================================================================
-            # TODO: Confirm this response format with Bhavesh
-            # TODO: Replace with actual response from Bhavesh's API
-            response = {
-                "text": f"Processed: {text}",           # TODO: Get actual text from Bhavesh
-                "source_lang": "en",                    # TODO: Get actual language detection from Bhavesh
-                "target_lang": "en",                    # TODO: Get actual target language from Bhavesh
-                "confidence": 0.85,                     # TODO: Get actual confidence score from Bhavesh
-                "reward": 0.7,                          # TODO: Get actual reward score from Bhavesh
-                "metadata": {
-                    "model": "lm_core",                 # TODO: Get actual model identifier from Bhavesh
-                    "timestamp": time.time(),           # TODO: Get actual timestamp from Bhavesh
-                    "user_id": user_id,                 # TODO: Confirm user context handling with Bhavesh
-                    "session_id": session_id            # TODO: Confirm session context handling with Bhavesh
-                }
+            # Prepare request payload according to Bhavesh's API format
+            request_payload = {
+                "query": text,
+                "language": "en",  # Default language, can be made dynamic
+                "top_k": 5,        # Number of retrieved chunks
+                "context": []       # Empty context for now, can be enhanced later
             }
             
-            logger.info(f"Retrieved LM response from LM Core system")
-            return response
+            # Add user context if available
+            if user_id or session_id:
+                context_item = {
+                    "sender": "user",
+                    "content": text,
+                    "timestamp": datetime.now().isoformat()
+                }
+                request_payload["context"] = [context_item]
+            
+            # Make HTTP request to Bhavesh's API
+            async with httpx.AsyncClient(timeout=30.0) as client:
+                response = await client.post(
+                    self.lm_core_endpoint,
+                    json=request_payload,
+                    headers={"Content-Type": "application/json"}
+                )
+                response.raise_for_status()
+                
+                # Parse the response from Bhavesh's API
+                api_response = response.json()
+                
+                # Extract the final text from Bhavesh's response
+                final_text = api_response.get("final_text", text)
+                
+                # =============================================================================
+                # MAP BHAVESH'S RESPONSE TO OUR EXPECTED FORMAT
+                # =============================================================================
+                # Bhavesh's API returns: {"final_text": str, "vaani_audio": dict}
+                # We need to map this to our expected format with additional metadata
+                
+                mapped_response = {
+                    "text": final_text,
+                    "source_lang": "en",  # Default, can be enhanced with language detection
+                    "target_lang": "en",  # Default, can be enhanced with language detection
+                    "confidence": 0.85,   # Default confidence, can be enhanced
+                    "reward": 0.7,        # Default reward, can be enhanced
+                    "metadata": {
+                        "model": "bhavesh_lm_core",
+                        "timestamp": time.time(),
+                        "user_id": user_id,
+                        "session_id": session_id,
+                        "api_response": api_response,  # Store full API response for debugging
+                        "vaani_audio": api_response.get("vaani_audio")  # Include Vaani audio if available
+                    }
+                }
+                
+                logger.info(f"Successfully retrieved LM response from Bhavesh's LM Core system")
+                return mapped_response
+                
+        except httpx.TimeoutException:
+            logger.error("Timeout while calling Bhavesh's LM Core API")
+            return self._get_fallback_response(text, user_id, session_id, "timeout")
+            
+        except httpx.HTTPStatusError as e:
+            logger.error(f"HTTP error {e.response.status_code} while calling Bhavesh's LM Core API: {e.response.text}")
+            return self._get_fallback_response(text, user_id, session_id, f"http_error_{e.response.status_code}")
             
         except Exception as e:
-            logger.error(f"Failed to get LM response from LM Core system: {e}")
-            # =============================================================================
-            # FALLBACK RESPONSE FOR ERROR HANDLING
-            # =============================================================================
-            # If the LM Core API is down, we return a fallback response
-            return {
-                "text": text,
-                "source_lang": "en",
-                "target_lang": "en",
-                "confidence": 0.5,
-                "reward": 0.5,
-                "metadata": {"error": str(e)}
+            logger.error(f"Failed to get LM response from Bhavesh's LM Core system: {e}")
+            return self._get_fallback_response(text, user_id, session_id, str(e))
+    
+    def _get_fallback_response(self, text: str, user_id: Optional[str], session_id: Optional[str], error: str) -> Dict[str, Any]:
+        """
+        =============================================================================
+        FALLBACK RESPONSE FOR ERROR HANDLING
+        =============================================================================
+        If Bhavesh's LM Core API is down, we return a fallback response
+        """
+        return {
+            "text": text,
+            "source_lang": "en",
+            "target_lang": "en",
+            "confidence": 0.5,
+            "reward": 0.5,
+            "metadata": {
+                "model": "fallback",
+                "timestamp": time.time(),
+                "user_id": user_id,
+                "session_id": session_id,
+                "error": error,
+                "fallback": True
             }
+        }
     
     async def _log_processing(self, trace_id: str, input_text: str, ksml_result: Dict[str, Any],
                             processing_time: float, components_used: List[str]):
