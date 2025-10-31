@@ -7,6 +7,13 @@ import os
 from typing import Optional
 import logging
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+import asyncio
+
+# MCP stream client
+try:
+	from sovereign_core.mcp.stream_client import MCPStreamClient
+except Exception:
+	MCPStreamClient = None  # type: ignore
 
 # Import settings
 import sys
@@ -50,6 +57,7 @@ model = None
 hf_tokenizer = None  # Hugging Face tokenizer for decoder-only LM
 cuda_generation_disabled = False  # Flag to track CUDA issues
 model_reloaded_cpu = False  # Flag to track if model was reloaded in CPU mode
+_mcp_stream_task = None  # Background task handle for MCP stream
 
 # =============================================================================
 # Request / Response Schemas
@@ -1212,10 +1220,31 @@ async def reset_generation_status():
 async def startup_event():
     logger.info("🚀 API Startup")
     load_models()
+    # Optionally start MCP stream in background
+    try:
+        enabled = os.getenv("MCP_STREAM_ENABLED", "0").strip() in ("1", "true", "True")
+        if enabled and MCPStreamClient is not None:
+            client = MCPStreamClient()
+            global _mcp_stream_task
+            _mcp_stream_task = asyncio.create_task(client.run_forever())
+            logger.info("MCP stream started (background task)")
+        elif enabled and MCPStreamClient is None:
+            logger.warning("MCP stream enabled but client unavailable (missing deps)")
+    except Exception as e:
+        logger.error(f"Failed to start MCP stream: {e}")
 
 @app.on_event("shutdown")
 async def shutdown_event():
     logger.info("🔌 API Shutdown")
+    # Attempt to cancel MCP stream task
+    try:
+        global _mcp_stream_task
+        if _mcp_stream_task is not None:
+            _mcp_stream_task.cancel()
+            _mcp_stream_task = None
+            logger.info("MCP stream task cancelled")
+    except Exception as e:
+        logger.warning(f"Error cancelling MCP stream task: {e}")
 
 # =============================================================================
 # Run with uvicorn

@@ -35,6 +35,14 @@ package_root = Path(__file__).parent
 sys.path.append(str(project_root))
 sys.path.append(str(package_root))
 
+# Load environment variables from project-root .env (optional)
+try:
+    from dotenv import load_dotenv
+    load_dotenv(dotenv_path=project_root / ".env")
+except Exception:
+    # dotenv not installed or .env missing; ignore and continue
+    pass
+
 # Import existing services
 from src.services.knowledge_base import process_qa_query
 from src.integration.tts_integration import VaaniTTSIntegration

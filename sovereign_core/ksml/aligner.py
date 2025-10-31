@@ -22,6 +22,11 @@ from pathlib import Path
 from dataclasses import dataclass
 from enum import Enum
 
+try:
+	from sovereign_core.rl.policy import get_policy_manager
+except Exception:
+	get_policy_manager = None  # type: ignore
+
 logger = logging.getLogger(__name__)
 
 class IntentType(Enum):
@@ -325,6 +330,30 @@ class KSMLAligner:
             
             # Step 5: Calculate confidence
             confidence = self._calculate_confidence(text, intent, karma_state, semantic_roots)
+
+            # Step 6: Apply RL policy nudges (if available)
+            tone = None
+            if get_policy_manager is not None:
+                try:
+                    pm = get_policy_manager()
+                    actions = pm.get_alignment_actions(input_text=text, source_lang=source_lang)
+                    # target_lang override
+                    if actions.get("target_lang_override"):
+                        target_lang = actions["target_lang_override"]
+                    # karma bias
+                    karma_bias = actions.get("karma_bias")
+                    if isinstance(karma_bias, str):
+                        from enum import Enum as _E
+                        try:
+                            karma_state = KarmaState(karma_bias)  # type: ignore[arg-type]
+                        except Exception:
+                            pass
+                    # intent bias (future use)
+                    # confidence delta
+                    confidence = max(0.0, min(1.0, confidence + float(actions.get("confidence_delta", 0.0))))
+                    tone = actions.get("tone")
+                except Exception:
+                    pass
             
             processing_time = time.time() - start_time
             
@@ -340,7 +369,8 @@ class KSMLAligner:
                 "metadata": {
                     "text_length": len(text),
                     "word_count": len(text.split()),
-                    "context": context or {}
+                    "context": context or {},
+                    "tone": tone
                 }
             }
             
