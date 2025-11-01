@@ -67,10 +67,13 @@ flores101_dataset/
 # ============================================================================
 # Logs & Output
 # ============================================================================
-logs/
-*.log
-*.jsonl
+logs/*.log
+logs/*.jsonl
 rl_runs/*.jsonl
+# Keep logs/ structure files
+!logs/agent_logs.json
+!logs/learning_log.json
+!logs/model_logs.json
 
 # ============================================================================
 # Jupyter Notebooks
@@ -133,4 +136,3 @@ site/
 # ============================================================================
 BOSS_BRIEFING.md
 sovereign_core/CONVERSATION_WITH_BHAVESH.md
-\n# Local environment\n.env
