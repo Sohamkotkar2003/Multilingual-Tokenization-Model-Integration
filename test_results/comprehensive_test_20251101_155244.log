@@ -1,0 +1,1006 @@
+[2025-11-01 15:52:44.771] [INFO] ====================================================================================================
+[2025-11-01 15:52:44.772] [INFO]   COMPREHENSIVE BHIV SOVEREIGN AI PLATFORM TEST SUITE
+[2025-11-01 15:52:44.772] [INFO] ====================================================================================================
+[2025-11-01 15:52:44.772] [INFO] Test started at: 2025-11-01T15:52:44.772526
+[2025-11-01 15:52:44.773] [INFO] Results will be saved to: test_results\comprehensive_test_20251101_155244.log
+[2025-11-01 15:52:44.773] [INFO] JSON results will be saved to: test_results\test_results_20251101_155244.json
+[2025-11-01 15:52:44.774] [INFO] ====================================================================================================
+[2025-11-01 15:52:44.774] [INFO]   SECTION 1: HEALTH CHECKS
+[2025-11-01 15:52:44.774] [INFO] ====================================================================================================
+[2025-11-01 15:52:44.774] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:52:44.775] [INFO]   TEST 1: LM Core Health Check
+[2025-11-01 15:52:44.775] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:52:44.775] [INFO] URL: http://localhost:8117/health
+[2025-11-01 15:52:44.775] [INFO] Method: GET
+[2025-11-01 15:52:46.848] [INFO] Status Code: 200
+[2025-11-01 15:52:46.848] [INFO] Response Time: 2.073s
+[2025-11-01 15:52:46.848] [PASS] ✅ SUCCESS
+[2025-11-01 15:52:46.848] [INFO] Response Preview: {
+  "status": "healthy",
+  "timestamp": 1761992566.8468788,
+  "components": {
+    "tokenizer": {
+      "loaded": true,
+      "status": "ok"
+    },
+    "model": {
+      "loaded": true,
+      "status": "ok",
+      "device": "cuda"
+    },
+    "kb_integration": {
+      "configured": true,
+      "endpoint": "http://127.0.0.1:8001",
+      "status": "configured",
+      "note": "KB endpoint not configured - using enhanced mock responses for QA queries"
+    },
+    "vaani_tts": {
+      "configured": false...
+[2025-11-01 15:52:46.849] [INFO] ✓ All expected keys present: ['status', 'components', 'supported_languages']
+[2025-11-01 15:52:47.850] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:52:47.850] [INFO]   TEST 2: Sovereign Core Health Check
+[2025-11-01 15:52:47.850] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:52:47.850] [INFO] URL: http://localhost:8116/health
+[2025-11-01 15:52:47.850] [INFO] Method: GET
+[2025-11-01 15:52:49.899] [INFO] Status Code: 200
+[2025-11-01 15:52:49.900] [INFO] Response Time: 2.049s
+[2025-11-01 15:52:49.900] [PASS] ✅ SUCCESS
+[2025-11-01 15:52:49.900] [INFO] Response Preview: {
+  "status": "healthy",
+  "timestamp": "2025-11-01T15:52:49.899453",
+  "components": {
+    "ksml_aligner": true,
+    "mcp_feedback": true,
+    "rl_policy": true,
+    "vaani_composer": true,
+    "bridge_reasoner": true
+  },
+  "version": "1.0.0"
+}...
+[2025-11-01 15:52:49.900] [INFO] ✓ All expected keys present: ['status', 'components', 'timestamp']
+[2025-11-01 15:52:50.902] [INFO] ====================================================================================================
+[2025-11-01 15:52:50.902] [INFO]   SECTION 2: LANGUAGE DETECTION & PROCESSING
+[2025-11-01 15:52:50.902] [INFO] ====================================================================================================
+[2025-11-01 15:52:50.902] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:52:50.902] [INFO]   TEST 3: Language Detection - Hindi
+[2025-11-01 15:52:50.903] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:52:50.903] [INFO] URL: http://localhost:8117/language-detect
+[2025-11-01 15:52:50.903] [INFO] Method: POST
+[2025-11-01 15:52:50.903] [INFO] Payload: {"text": "नमस्ते, आप कैसे हैं?"}
+[2025-11-01 15:52:52.940] [INFO] Status Code: 200
+[2025-11-01 15:52:52.940] [INFO] Response Time: 2.037s
+[2025-11-01 15:52:52.940] [PASS] ✅ SUCCESS
+[2025-11-01 15:52:52.941] [INFO] Response Preview: {
+  "language": "hindi",
+  "confidence": 1.0
+}...
+[2025-11-01 15:52:52.941] [INFO] ✓ All expected keys present: ['language', 'confidence']
+[2025-11-01 15:52:52.941] [INFO] ✓ Correctly detected as hindi
+[2025-11-01 15:52:53.442] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:52:53.442] [INFO]   TEST 4: Language Detection - Tamil
+[2025-11-01 15:52:53.443] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:52:53.443] [INFO] URL: http://localhost:8117/language-detect
+[2025-11-01 15:52:53.444] [INFO] Method: POST
+[2025-11-01 15:52:53.444] [INFO] Payload: {"text": "வணக்கம், எப்படி இருக்கிறீர்கள்?"}
+[2025-11-01 15:52:55.500] [INFO] Status Code: 200
+[2025-11-01 15:52:55.500] [INFO] Response Time: 2.055s
+[2025-11-01 15:52:55.500] [PASS] ✅ SUCCESS
+[2025-11-01 15:52:55.500] [INFO] Response Preview: {
+  "language": "tamil",
+  "confidence": 1.0
+}...
+[2025-11-01 15:52:55.500] [INFO] ✓ All expected keys present: ['language', 'confidence']
+[2025-11-01 15:52:55.501] [INFO] ✓ Correctly detected as tamil
+[2025-11-01 15:52:56.002] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:52:56.002] [INFO]   TEST 5: Language Detection - Bengali
+[2025-11-01 15:52:56.002] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:52:56.002] [INFO] URL: http://localhost:8117/language-detect
+[2025-11-01 15:52:56.003] [INFO] Method: POST
+[2025-11-01 15:52:56.003] [INFO] Payload: {"text": "নমস্কার, আপনি কেমন আছেন?"}
+[2025-11-01 15:52:58.062] [INFO] Status Code: 200
+[2025-11-01 15:52:58.062] [INFO] Response Time: 2.060s
+[2025-11-01 15:52:58.062] [PASS] ✅ SUCCESS
+[2025-11-01 15:52:58.062] [INFO] Response Preview: {
+  "language": "assamese",
+  "confidence": 1.0
+}...
+[2025-11-01 15:52:58.062] [INFO] ✓ All expected keys present: ['language', 'confidence']
+[2025-11-01 15:52:58.063] [WARNING] ⚠️ Expected bengali, got assamese
+[2025-11-01 15:52:58.564] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:52:58.564] [INFO]   TEST 6: Language Detection - English
+[2025-11-01 15:52:58.564] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:52:58.565] [INFO] URL: http://localhost:8117/language-detect
+[2025-11-01 15:52:58.565] [INFO] Method: POST
+[2025-11-01 15:52:58.565] [INFO] Payload: {"text": "Hello, how are you?"}
+[2025-11-01 15:53:00.603] [INFO] Status Code: 200
+[2025-11-01 15:53:00.603] [INFO] Response Time: 2.039s
+[2025-11-01 15:53:00.604] [PASS] ✅ SUCCESS
+[2025-11-01 15:53:00.604] [INFO] Response Preview: {
+  "language": "english",
+  "confidence": 1.0
+}...
+[2025-11-01 15:53:00.604] [INFO] ✓ All expected keys present: ['language', 'confidence']
+[2025-11-01 15:53:00.604] [INFO] ✓ Correctly detected as english
+[2025-11-01 15:53:01.105] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:53:01.105] [INFO]   TEST 7: Language Detection - Sanskrit
+[2025-11-01 15:53:01.105] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:53:01.105] [INFO] URL: http://localhost:8117/language-detect
+[2025-11-01 15:53:01.105] [INFO] Method: POST
+[2025-11-01 15:53:01.105] [INFO] Payload: {"text": "नमस्कारः, कथम् अस्ति?"}
+[2025-11-01 15:53:03.179] [INFO] Status Code: 200
+[2025-11-01 15:53:03.179] [INFO] Response Time: 2.072s
+[2025-11-01 15:53:03.179] [PASS] ✅ SUCCESS
+[2025-11-01 15:53:03.179] [INFO] Response Preview: {
+  "language": "sanskrit",
+  "confidence": 1.0
+}...
+[2025-11-01 15:53:03.179] [INFO] ✓ All expected keys present: ['language', 'confidence']
+[2025-11-01 15:53:03.179] [INFO] ✓ Correctly detected as sanskrit
+[2025-11-01 15:53:03.681] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:53:03.681] [INFO]   TEST 8: Language Detection - Telugu
+[2025-11-01 15:53:03.681] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:53:03.681] [INFO] URL: http://localhost:8117/language-detect
+[2025-11-01 15:53:03.682] [INFO] Method: POST
+[2025-11-01 15:53:03.682] [INFO] Payload: {"text": "నమస్కారం, మీరు ఎలా ఉన్నారు?"}
+[2025-11-01 15:53:05.729] [INFO] Status Code: 200
+[2025-11-01 15:53:05.730] [INFO] Response Time: 2.047s
+[2025-11-01 15:53:05.730] [PASS] ✅ SUCCESS
+[2025-11-01 15:53:05.730] [INFO] Response Preview: {
+  "language": "telugu",
+  "confidence": 1.0
+}...
+[2025-11-01 15:53:05.730] [INFO] ✓ All expected keys present: ['language', 'confidence']
+[2025-11-01 15:53:05.730] [INFO] ✓ Correctly detected as telugu
+[2025-11-01 15:53:06.232] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:53:06.232] [INFO]   TEST 9: Language Detection - Marathi
+[2025-11-01 15:53:06.233] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:53:06.233] [INFO] URL: http://localhost:8117/language-detect
+[2025-11-01 15:53:06.234] [INFO] Method: POST
+[2025-11-01 15:53:06.234] [INFO] Payload: {"text": "नमस्कार, तुम्ही कसे आहात?"}
+[2025-11-01 15:53:08.285] [INFO] Status Code: 200
+[2025-11-01 15:53:08.286] [INFO] Response Time: 2.051s
+[2025-11-01 15:53:08.286] [PASS] ✅ SUCCESS
+[2025-11-01 15:53:08.286] [INFO] Response Preview: {
+  "language": "marathi",
+  "confidence": 1.0
+}...
+[2025-11-01 15:53:08.287] [INFO] ✓ All expected keys present: ['language', 'confidence']
+[2025-11-01 15:53:08.287] [INFO] ✓ Correctly detected as marathi
+[2025-11-01 15:53:08.789] [INFO] ====================================================================================================
+[2025-11-01 15:53:08.789] [INFO]   SECTION 3: TEXT GENERATION (BLOOMZ Model)
+[2025-11-01 15:53:08.789] [INFO] ====================================================================================================
+[2025-11-01 15:53:08.789] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:53:08.789] [INFO]   TEST 10: Hindi Generation
+[2025-11-01 15:53:08.789] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:53:08.789] [INFO] URL: http://localhost:8117/generate
+[2025-11-01 15:53:08.789] [INFO] Method: POST
+[2025-11-01 15:53:08.789] [INFO] Payload: {"text": "नमस्ते, मुझे भारत के बारे में बताइए।", "language": "hindi"}
+[2025-11-01 15:53:13.052] [INFO] Status Code: 200
+[2025-11-01 15:53:13.053] [INFO] Response Time: 4.262s
+[2025-11-01 15:53:13.053] [PASS] ✅ SUCCESS
+[2025-11-01 15:53:13.053] [INFO] Response Preview: {
+  "language": "hindi",
+  "generated_text": "नमस्ते, मुझे भारत के बारे में बताइए। मैं यह पढ़ रहा हूं कि कैसे भारतीय मूल की एक लड़की ने अपने प्रेमी से शादी कर ली है और वह अपनी पत्नी को हराम कर रही है। क्या मुझे पता है कि मैं वास्तव में भारत का नागरिक हूं या नहीं? मैं भारत में रहने वाली हूं और मेरा नाम हैं - वीना। मैंने अपने पति की मां को एक पत्र लिख दिया था जो मैं अपने साथ लाये थे। लेकिन बाद में उसने मुझसे कहा कि उसे वह पत्र दे दिया जाए जिसने मुझे पहले ही बताया था।\nफिर",
+  "input_text": "नमस्ते...
+[2025-11-01 15:53:13.053] [INFO] ✓ All expected keys present: ['language', 'generated_text', 'input_text']
+[2025-11-01 15:53:15.054] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:53:15.054] [INFO]   TEST 11: English Generation
+[2025-11-01 15:53:15.054] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:53:15.055] [INFO] URL: http://localhost:8117/generate
+[2025-11-01 15:53:15.055] [INFO] Method: POST
+[2025-11-01 15:53:15.055] [INFO] Payload: {"text": "Tell me about artificial intelligence.", "language": "english"}
+[2025-11-01 15:53:19.096] [INFO] Status Code: 200
+[2025-11-01 15:53:19.097] [INFO] Response Time: 4.041s
+[2025-11-01 15:53:19.097] [PASS] ✅ SUCCESS
+[2025-11-01 15:53:19.097] [INFO] Response Preview: {
+  "language": "english",
+  "generated_text": "Tell me about artificial intelligence. I will tell you that there are a lot of things we can do with our brains, and then they turn into something entirely different in the future.\nI don’t believe it’s possible to predict what’s going on or where you’re heading at this time so I’m not sure if it’ll be any good for us all either but still:\n[And] I’ll say this: Artificial Intelligence isn’t bad; just because humans have learned how best work togeth...
+[2025-11-01 15:53:19.097] [INFO] ✓ All expected keys present: ['language', 'generated_text', 'input_text']
+[2025-11-01 15:53:21.099] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:53:21.099] [INFO]   TEST 12: Tamil Generation
+[2025-11-01 15:53:21.099] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:53:21.100] [INFO] URL: http://localhost:8117/generate
+[2025-11-01 15:53:21.100] [INFO] Method: POST
+[2025-11-01 15:53:21.100] [INFO] Payload: {"text": "செயற்கை நுண்ணறிவு பற்றி சொல்லுங்கள்.", "language": "tamil"}
+[2025-11-01 15:53:23.182] [INFO] Status Code: 200
+[2025-11-01 15:53:23.182] [INFO] Response Time: 2.083s
+[2025-11-01 15:53:23.182] [PASS] ✅ SUCCESS
+[2025-11-01 15:53:23.183] [INFO] Response Preview: {
+  "language": "tamil",
+  "generated_text": "செயற்கை நுண்ணறிவு பற்றி சொல்லுங்கள்.",
+  "input_text": "செயற்கை நுண்ணறிவு பற்றி சொல்லுங்கள்."
+}...
+[2025-11-01 15:53:23.183] [INFO] ✓ All expected keys present: ['language', 'generated_text', 'input_text']
+[2025-11-01 15:53:25.184] [INFO] ====================================================================================================
+[2025-11-01 15:53:25.184] [INFO]   SECTION 4: KNOWLEDGE BASE & RAG QUERIES
+[2025-11-01 15:53:25.184] [INFO] ====================================================================================================
+[2025-11-01 15:53:25.184] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:53:25.185] [INFO]   TEST 13: English Q&A
+[2025-11-01 15:53:25.185] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:53:25.185] [INFO] URL: http://localhost:8117/qa
+[2025-11-01 15:53:25.185] [INFO] Method: POST
+[2025-11-01 15:53:25.185] [INFO] Payload: {"query": "What is machine learning?", "language": "english", "top_k": 5}
+[2025-11-01 15:53:32.842] [INFO] Status Code: 200
+[2025-11-01 15:53:32.843] [INFO] Response Time: 7.657s
+[2025-11-01 15:53:32.843] [PASS] ✅ SUCCESS
+[2025-11-01 15:53:32.843] [INFO] Response Preview: {
+  "answer": "Hello! I'm here to help you with your questions.\n\n(Source: Multilingual Tokenization API - Mock Response)",
+  "generated_response": "If we",
+  "query": "What is machine learning?",
+  "language": "english",
+  "confidence": 0.8,
+  "sources": [
+    "Multilingual Tokenization API - Mock Response"
+  ],
+  "query_type": "factual",
+  "processing_time": 5.630457878112793,
+  "metadata": {
+    "query_type": "factual",
+    "kb_confidence": 0.8,
+    "kb_sources": [
+      "Multilingual Tokeni...
+[2025-11-01 15:53:32.843] [INFO] ✓ All expected keys present: ['answer', 'query', 'language', 'confidence', 'sources']
+[2025-11-01 15:53:34.844] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:53:34.844] [INFO]   TEST 14: Hindi Q&A
+[2025-11-01 15:53:34.844] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:53:34.844] [INFO] URL: http://localhost:8117/qa
+[2025-11-01 15:53:34.844] [INFO] Method: POST
+[2025-11-01 15:53:34.844] [INFO] Payload: {"query": "भारत की राजधानी क्या है?", "language": "hindi", "top_k": 5}
+[2025-11-01 15:53:41.538] [INFO] Status Code: 200
+[2025-11-01 15:53:41.538] [INFO] Response Time: 6.694s
+[2025-11-01 15:53:41.538] [PASS] ✅ SUCCESS
+[2025-11-01 15:53:41.538] [INFO] Response Preview: {
+  "answer": "भारत की राजधानी नई दिल्ली है। यह एक मॉक प्रतिक्रिया है - सटीक जानकारी के लिए विश्वसनीय स्रोतों से जांच करें।\n\n(स्रोत: Multilingual Tokenization API - Mock Response)",
+  "generated_response": "आप सही उत्तर दे रहे हैं। भारत में केवल एक शहर है, जो है Mumbai.\nमज़दूरों का देश है भारत, तो वे भारत से भी आते हैं।\nसड़कों पर, सड़कों पर और सड़क पर बहुत लोग हैं, इसलिए कई जगह काम कर रहे थे। लेकिन अगर वे अपने घरों के पास चले जाते हैं तो यहां बस नहीं होती थी। फिर भी, वहाँ एक सड़क थी, जिसमें ...
+[2025-11-01 15:53:41.539] [INFO] ✓ All expected keys present: ['answer', 'query', 'language', 'confidence', 'sources']
+[2025-11-01 15:53:43.540] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:53:43.540] [INFO]   TEST 15: Educational Q&A
+[2025-11-01 15:53:43.540] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:53:43.540] [INFO] URL: http://localhost:8117/qa
+[2025-11-01 15:53:43.540] [INFO] Method: POST
+[2025-11-01 15:53:43.541] [INFO] Payload: {"query": "Explain neural networks in simple terms.", "language": "english", "top_k": 5}
+[2025-11-01 15:53:50.639] [INFO] Status Code: 200
+[2025-11-01 15:53:50.639] [INFO] Response Time: 7.098s
+[2025-11-01 15:53:50.639] [PASS] ✅ SUCCESS
+[2025-11-01 15:53:50.640] [INFO] Response Preview: {
+  "answer": "This is an educational question. I can assist with language processing and tokenization topics.\n\n(Source: Multilingual Tokenization API - Mock Response)",
+  "generated_response": "(1) The probability density function (pdf)\n$$f(x,y|z_0 = x + y/z_1= z_2)) $$\nis $\\frac{1}{2\\pi}\\int_{-\\pi/2}^{0} f'((1-\\cos\\theta)(-1- \\sin \\theta) ) dy\\ \\mathrm{d}x'$.\nThe pdf $f'$ can be calculated as follows by integrating \n$$\\frac\\pi 2 \\int_{0}^{1}f'[1\\theta]dy=0.5 \\pi \\implies ...
+[2025-11-01 15:53:50.640] [INFO] ✓ All expected keys present: ['answer', 'query', 'language', 'confidence', 'sources']
+[2025-11-01 15:53:52.641] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:53:52.641] [INFO]   TEST 16: Factual Q&A
+[2025-11-01 15:53:52.641] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:53:52.642] [INFO] URL: http://localhost:8117/qa
+[2025-11-01 15:53:52.642] [INFO] Method: POST
+[2025-11-01 15:53:52.642] [INFO] Payload: {"query": "What is the capital of France?", "language": "english", "top_k": 5}
+[2025-11-01 15:53:59.957] [INFO] Status Code: 200
+[2025-11-01 15:53:59.958] [INFO] Response Time: 7.314s
+[2025-11-01 15:53:59.958] [PASS] ✅ SUCCESS
+[2025-11-01 15:53:59.958] [INFO] Response Preview: {
+  "answer": "The capital of India is New Delhi. This is a mock response - for accurate information, please consult reliable sources.\n\n(Source: Multilingual Tokenization API - Mock Response)",
+  "generated_response": "Ukraine / Belarus \nPolish Republic/Chisinau  (4) \nLithuania , Romania  \nBulgaria   Bulgaria   (5)  \n(6) \n\nSo then how big were some areas or territories above mentioned when Europe started? (7)  You may ask yourself why European Union states don't seem like",
+  "query": "W...
+[2025-11-01 15:53:59.958] [INFO] ✓ All expected keys present: ['answer', 'query', 'language', 'confidence', 'sources']
+[2025-11-01 15:54:01.959] [INFO] ====================================================================================================
+[2025-11-01 15:54:01.960] [INFO]   SECTION 5: MULTILINGUAL CONVERSATION
+[2025-11-01 15:54:01.960] [INFO] ====================================================================================================
+[2025-11-01 15:54:01.960] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:01.960] [INFO]   TEST 17: English Conversation
+[2025-11-01 15:54:01.962] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:01.962] [INFO] URL: http://localhost:8117/multilingual-conversation
+[2025-11-01 15:54:01.962] [INFO] Method: POST
+[2025-11-01 15:54:01.962] [INFO] Payload: {"text": "How does photosynthesis work?", "language": "english", "generate_response": true, "max_response_length": 150}
+[2025-11-01 15:54:07.185] [INFO] Status Code: 200
+[2025-11-01 15:54:07.185] [INFO] Response Time: 5.224s
+[2025-11-01 15:54:07.185] [PASS] ✅ SUCCESS
+[2025-11-01 15:54:07.185] [INFO] Response Preview: {
+  "user_query": "How does photosynthesis work?",
+  "kb_answer": "Regarding your question: This is a multilingual language processing system. For more specific information, please ask in detail.\n\n(Source: Multilingual Tokenization API - Mock Response)",
+  "generated_response": "Can we know if mutations affect gene expression through regulation and/or protein synthesis? (Or perhaps they do not?)\nAre certain mechanisms involved throughout development different than what was previously assumed?...
+[2025-11-01 15:54:07.185] [INFO] ✓ All expected keys present: ['user_query', 'kb_answer', 'language', 'session_id']
+[2025-11-01 15:54:09.187] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:09.187] [INFO]   TEST 18: Hindi Conversation
+[2025-11-01 15:54:09.187] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:09.188] [INFO] URL: http://localhost:8117/multilingual-conversation
+[2025-11-01 15:54:09.188] [INFO] Method: POST
+[2025-11-01 15:54:09.188] [INFO] Payload: {"text": "मशीन लर्निंग क्या है?", "language": "hindi", "generate_response": true, "max_response_length": 150}
+[2025-11-01 15:54:13.852] [INFO] Status Code: 200
+[2025-11-01 15:54:13.852] [INFO] Response Time: 4.664s
+[2025-11-01 15:54:13.853] [PASS] ✅ SUCCESS
+[2025-11-01 15:54:13.853] [INFO] Response Preview: {
+  "user_query": "मशीन लर्निंग क्या है?",
+  "kb_answer": "आपके प्रश्न के बारे में: यह एक बहुभाषी भाषा प्रसंस्करण प्रणाली है। अधिक जानकारी के लिए कृपया विस्तार से पूछें।\n\n(स्रोत: Multilingual Tokenization API - Mock Response)",
+  "generated_response": "मशीनलर्नing मशीन का उपयोग करके पाठकों को पढ़ने के लिए अपने कंप्यूटर में पढ़ना सिखाता है। यह कंप्यूटर की एक प्रणाली है, जो पाठ का विश्लेषण करती है और उसे एक प्रक्रिया से संबंधित विवरण देता है।\nयह तकनीक इंटरनेट पर उपलब्ध सभी स्रोतों (नेटवर्क्स) स...
+[2025-11-01 15:54:13.853] [INFO] ✓ All expected keys present: ['user_query', 'kb_answer', 'language', 'session_id']
+[2025-11-01 15:54:15.854] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:15.854] [INFO]   TEST 19: Tamil Conversation
+[2025-11-01 15:54:15.855] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:15.855] [INFO] URL: http://localhost:8117/multilingual-conversation
+[2025-11-01 15:54:15.855] [INFO] Method: POST
+[2025-11-01 15:54:15.855] [INFO] Payload: {"text": "இயற்கை மொழி செயலாக்கம் என்றால் என்ன?", "language": "tamil", "generate_response": true, "max_response_length": 150}
+[2025-11-01 15:54:21.166] [INFO] Status Code: 200
+[2025-11-01 15:54:21.166] [INFO] Response Time: 5.311s
+[2025-11-01 15:54:21.167] [PASS] ✅ SUCCESS
+[2025-11-01 15:54:21.167] [INFO] Response Preview: {
+  "user_query": "இயற்கை மொழி செயலாக்கம் என்றால் என்ன?",
+  "kb_answer": "உங்கள் கேள்வி பற்றி: இது பல மொழி செயலாக்க அமைப்பு. மேலும் தகவலுக்கு தயவுசெய்து விரிவாக கேளுங்கள்.\n\n(ஆதாரம்: Multilingual Tokenization API - Mock Response)",
+  "generated_response": "நம்முடைய மொழியை இந்த பூமியின் எல்லைக்கு வரவழைக்கும் ஒரு கருவியாகச் சொல்லவேண்டும். அது இந்த உலகத்தின் எல்லைக்குக் கொண்டுசெல்லும் கருவியான ஒரு செயல் ஆகும்.\n\nஅதாவது, நமது மொழியால் இந்த அழிவின் காரணத்தை ஆராய முடியும். ஆனால், அந்த செயலாக்கத்தின்...
+[2025-11-01 15:54:21.167] [INFO] ✓ All expected keys present: ['user_query', 'kb_answer', 'language', 'session_id']
+[2025-11-01 15:54:23.169] [INFO] ====================================================================================================
+[2025-11-01 15:54:23.169] [INFO]   SECTION 6: KSML SEMANTIC ALIGNMENT
+[2025-11-01 15:54:23.169] [INFO] ====================================================================================================
+[2025-11-01 15:54:23.169] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:23.170] [INFO]   TEST 20: KSML - Instruction Intent
+[2025-11-01 15:54:23.170] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:23.170] [INFO] URL: http://localhost:8116/align.ksml
+[2025-11-01 15:54:23.170] [INFO] Method: POST
+[2025-11-01 15:54:23.171] [INFO] Payload: {"text": "Create a new mobile application for learning languages", "target_lang": "en"}
+[2025-11-01 15:54:25.227] [INFO] Status Code: 200
+[2025-11-01 15:54:25.229] [INFO] Response Time: 2.057s
+[2025-11-01 15:54:25.229] [PASS] ✅ SUCCESS
+[2025-11-01 15:54:25.229] [INFO] Response Preview: {
+  "intent": "instruction",
+  "source_lang": "english",
+  "target_lang": "en",
+  "karma_state": "rajas",
+  "semantic_roots": [],
+  "confidence": 0.85,
+  "processing_time": 0.0009975433349609375
+}...
+[2025-11-01 15:54:25.230] [INFO] ✓ All expected keys present: ['intent', 'source_lang', 'target_lang', 'karma_state', 'semantic_roots', 'confidence']
+[2025-11-01 15:54:25.731] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:25.731] [INFO]   TEST 21: KSML - Question Intent
+[2025-11-01 15:54:25.731] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:25.731] [INFO] URL: http://localhost:8116/align.ksml
+[2025-11-01 15:54:25.731] [INFO] Method: POST
+[2025-11-01 15:54:25.732] [INFO] Payload: {"text": "What is the meaning of life?", "target_lang": "en"}
+[2025-11-01 15:54:27.764] [INFO] Status Code: 200
+[2025-11-01 15:54:27.764] [INFO] Response Time: 2.032s
+[2025-11-01 15:54:27.764] [PASS] ✅ SUCCESS
+[2025-11-01 15:54:27.764] [INFO] Response Preview: {
+  "intent": "question",
+  "source_lang": "english",
+  "target_lang": "en",
+  "karma_state": "rajas",
+  "semantic_roots": [],
+  "confidence": 0.75,
+  "processing_time": 0.0009992122650146484
+}...
+[2025-11-01 15:54:27.764] [INFO] ✓ All expected keys present: ['intent', 'source_lang', 'target_lang', 'karma_state', 'semantic_roots', 'confidence']
+[2025-11-01 15:54:28.266] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:28.266] [INFO]   TEST 22: KSML - Greeting Intent
+[2025-11-01 15:54:28.266] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:28.267] [INFO] URL: http://localhost:8116/align.ksml
+[2025-11-01 15:54:28.267] [INFO] Method: POST
+[2025-11-01 15:54:28.267] [INFO] Payload: {"text": "Hello, how are you today?", "target_lang": "en"}
+[2025-11-01 15:54:30.310] [INFO] Status Code: 200
+[2025-11-01 15:54:30.311] [INFO] Response Time: 2.043s
+[2025-11-01 15:54:30.311] [PASS] ✅ SUCCESS
+[2025-11-01 15:54:30.312] [INFO] Response Preview: {
+  "intent": "question",
+  "source_lang": "english",
+  "target_lang": "en",
+  "karma_state": "rajas",
+  "semantic_roots": [],
+  "confidence": 0.75,
+  "processing_time": 0.0010018348693847656
+}...
+[2025-11-01 15:54:30.312] [INFO] ✓ All expected keys present: ['intent', 'source_lang', 'target_lang', 'karma_state', 'semantic_roots', 'confidence']
+[2025-11-01 15:54:30.813] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:30.813] [INFO]   TEST 23: KSML - Explanation Intent
+[2025-11-01 15:54:30.813] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:30.814] [INFO] URL: http://localhost:8116/align.ksml
+[2025-11-01 15:54:30.814] [INFO] Method: POST
+[2025-11-01 15:54:30.814] [INFO] Payload: {"text": "Explain quantum computing to me", "target_lang": "en"}
+[2025-11-01 15:54:32.852] [INFO] Status Code: 200
+[2025-11-01 15:54:32.853] [INFO] Response Time: 2.038s
+[2025-11-01 15:54:32.853] [PASS] ✅ SUCCESS
+[2025-11-01 15:54:32.854] [INFO] Response Preview: {
+  "intent": "explanation",
+  "source_lang": "english",
+  "target_lang": "en",
+  "karma_state": "rajas",
+  "semantic_roots": [],
+  "confidence": 0.75,
+  "processing_time": 0.0
+}...
+[2025-11-01 15:54:32.854] [INFO] ✓ All expected keys present: ['intent', 'source_lang', 'target_lang', 'karma_state', 'semantic_roots', 'confidence']
+[2025-11-01 15:54:33.355] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:33.355] [INFO]   TEST 24: KSML - Command Intent
+[2025-11-01 15:54:33.355] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:33.355] [INFO] URL: http://localhost:8116/align.ksml
+[2025-11-01 15:54:33.355] [INFO] Method: POST
+[2025-11-01 15:54:33.356] [INFO] Payload: {"text": "Please show me the results", "target_lang": "en"}
+[2025-11-01 15:54:35.429] [INFO] Status Code: 200
+[2025-11-01 15:54:35.430] [INFO] Response Time: 2.073s
+[2025-11-01 15:54:35.430] [PASS] ✅ SUCCESS
+[2025-11-01 15:54:35.430] [INFO] Response Preview: {
+  "intent": "command",
+  "source_lang": "english",
+  "target_lang": "en",
+  "karma_state": "rajas",
+  "semantic_roots": [],
+  "confidence": 0.75,
+  "processing_time": 0.0009989738464355469
+}...
+[2025-11-01 15:54:35.431] [INFO] ✓ All expected keys present: ['intent', 'source_lang', 'target_lang', 'karma_state', 'semantic_roots', 'confidence']
+[2025-11-01 15:54:35.932] [INFO] ====================================================================================================
+[2025-11-01 15:54:35.932] [INFO]   SECTION 7: RL FEEDBACK & POLICY LEARNING
+[2025-11-01 15:54:35.932] [INFO] ====================================================================================================
+[2025-11-01 15:54:35.932] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:35.933] [INFO]   TEST 25: RL - High Reward Feedback (reward=0.95)
+[2025-11-01 15:54:35.933] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:35.933] [INFO] URL: http://localhost:8116/rl.feedback
+[2025-11-01 15:54:35.933] [INFO] Method: POST
+[2025-11-01 15:54:35.933] [INFO] Payload: {"prompt": "Translate to English: नमस्ते", "output": "Hello", "reward": 0.95, "user_id": "test_user", "session_id": "session_25"}
+[2025-11-01 15:54:37.975] [INFO] Status Code: 200
+[2025-11-01 15:54:37.975] [INFO] Response Time: 2.042s
+[2025-11-01 15:54:37.976] [PASS] ✅ SUCCESS
+[2025-11-01 15:54:37.976] [INFO] Response Preview: {
+  "status": "success",
+  "policy_updated": true,
+  "reward_logged": true,
+  "s3_synced": false,
+  "processing_time": 0.0
+}...
+[2025-11-01 15:54:37.976] [INFO] ✓ All expected keys present: ['status', 'policy_updated', 'reward_logged']
+[2025-11-01 15:54:38.477] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:38.478] [INFO]   TEST 26: RL - Medium Reward Feedback (reward=0.7)
+[2025-11-01 15:54:38.478] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:38.478] [INFO] URL: http://localhost:8116/rl.feedback
+[2025-11-01 15:54:38.478] [INFO] Method: POST
+[2025-11-01 15:54:38.478] [INFO] Payload: {"prompt": "Create a todo app", "output": "Here's a basic todo app structure", "reward": 0.7, "user_id": "test_user", "session_id": "session_26"}
+[2025-11-01 15:54:40.514] [INFO] Status Code: 200
+[2025-11-01 15:54:40.515] [INFO] Response Time: 2.036s
+[2025-11-01 15:54:40.515] [PASS] ✅ SUCCESS
+[2025-11-01 15:54:40.515] [INFO] Response Preview: {
+  "status": "success",
+  "policy_updated": true,
+  "reward_logged": true,
+  "s3_synced": false,
+  "processing_time": 0.0
+}...
+[2025-11-01 15:54:40.516] [INFO] ✓ All expected keys present: ['status', 'policy_updated', 'reward_logged']
+[2025-11-01 15:54:41.017] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:41.017] [INFO]   TEST 27: RL - Low Reward Feedback (reward=0.3)
+[2025-11-01 15:54:41.018] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:41.018] [INFO] URL: http://localhost:8116/rl.feedback
+[2025-11-01 15:54:41.018] [INFO] Method: POST
+[2025-11-01 15:54:41.018] [INFO] Payload: {"prompt": "Random text", "output": "Unclear response", "reward": 0.3, "user_id": "test_user", "session_id": "session_27"}
+[2025-11-01 15:54:43.083] [INFO] Status Code: 200
+[2025-11-01 15:54:43.084] [INFO] Response Time: 2.064s
+[2025-11-01 15:54:43.084] [PASS] ✅ SUCCESS
+[2025-11-01 15:54:43.084] [INFO] Response Preview: {
+  "status": "success",
+  "policy_updated": true,
+  "reward_logged": true,
+  "s3_synced": false,
+  "processing_time": 0.0
+}...
+[2025-11-01 15:54:43.084] [INFO] ✓ All expected keys present: ['status', 'policy_updated', 'reward_logged']
+[2025-11-01 15:54:43.585] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:43.585] [INFO]   TEST 28: RL - Perfect Reward (reward=1.0)
+[2025-11-01 15:54:43.585] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:43.585] [INFO] URL: http://localhost:8116/rl.feedback
+[2025-11-01 15:54:43.586] [INFO] Method: POST
+[2025-11-01 15:54:43.587] [INFO] Payload: {"prompt": "What is AI?", "output": "Artificial Intelligence is...", "reward": 1.0, "user_id": "test_user", "session_id": "session_28"}
+[2025-11-01 15:54:45.653] [INFO] Status Code: 200
+[2025-11-01 15:54:45.653] [INFO] Response Time: 2.066s
+[2025-11-01 15:54:45.654] [PASS] ✅ SUCCESS
+[2025-11-01 15:54:45.654] [INFO] Response Preview: {
+  "status": "success",
+  "policy_updated": true,
+  "reward_logged": true,
+  "s3_synced": false,
+  "processing_time": 0.0
+}...
+[2025-11-01 15:54:45.655] [INFO] ✓ All expected keys present: ['status', 'policy_updated', 'reward_logged']
+[2025-11-01 15:54:46.157] [INFO] ====================================================================================================
+[2025-11-01 15:54:46.157] [INFO]   SECTION 8: VAANI SPEECH-READY COMPOSITION
+[2025-11-01 15:54:46.157] [INFO] ====================================================================================================
+[2025-11-01 15:54:46.157] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:46.158] [INFO]   TEST 29: Speech - Calm Tone
+[2025-11-01 15:54:46.158] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:46.158] [INFO] URL: http://localhost:8116/compose.speech_ready
+[2025-11-01 15:54:46.158] [INFO] Method: POST
+[2025-11-01 15:54:46.158] [INFO] Payload: {"text": "Welcome to our meditation session", "language": "en", "tone": "calm"}
+[2025-11-01 15:54:48.214] [INFO] Status Code: 200
+[2025-11-01 15:54:48.214] [INFO] Response Time: 2.056s
+[2025-11-01 15:54:48.215] [PASS] ✅ SUCCESS
+[2025-11-01 15:54:48.215] [INFO] Response Preview: {
+  "text": "Welcome to our meditation session",
+  "tone": "calm",
+  "lang": "en",
+  "prosody_hint": "calm_steady",
+  "audio_metadata": {
+    "text": "Welcome to our meditation session",
+    "language": "en",
+    "voice": "en_default",
+    "speed": 0.9,
+    "pitch": 0.95,
+    "volume": 0.6400000000000001,
+    "prosody_hint": "calm_steady",
+    "format": "wav",
+    "sample_rate": 22050
+  },
+  "processing_time": 0.0
+}...
+[2025-11-01 15:54:48.215] [INFO] ✓ All expected keys present: ['text', 'tone', 'lang', 'prosody_hint', 'audio_metadata']
+[2025-11-01 15:54:48.716] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:48.716] [INFO]   TEST 30: Speech - Excited Tone
+[2025-11-01 15:54:48.716] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:48.716] [INFO] URL: http://localhost:8116/compose.speech_ready
+[2025-11-01 15:54:48.716] [INFO] Method: POST
+[2025-11-01 15:54:48.718] [INFO] Payload: {"text": "Congratulations on your achievement!", "language": "en", "tone": "excited"}
+[2025-11-01 15:54:50.754] [INFO] Status Code: 200
+[2025-11-01 15:54:50.754] [INFO] Response Time: 2.037s
+[2025-11-01 15:54:50.754] [PASS] ✅ SUCCESS
+[2025-11-01 15:54:50.755] [INFO] Response Preview: {
+  "text": "Congratulations on your achievement!<break time=\"0.5s\"/> ",
+  "tone": "excited",
+  "lang": "en",
+  "prosody_hint": "energetic_high",
+  "audio_metadata": {
+    "text": "Congratulations on your achievement!<break time=\"0.5s\"/> ",
+    "language": "en",
+    "voice": "en_default",
+    "speed": 1.2,
+    "pitch": 1.1,
+    "volume": 0.7200000000000001,
+    "prosody_hint": "energetic_high",
+    "format": "wav",
+    "sample_rate": 22050
+  },
+  "processing_time": 0.0
+}...
+[2025-11-01 15:54:50.755] [INFO] ✓ All expected keys present: ['text', 'tone', 'lang', 'prosody_hint', 'audio_metadata']
+[2025-11-01 15:54:51.256] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:51.256] [INFO]   TEST 31: Speech - Friendly Tone
+[2025-11-01 15:54:51.256] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:51.256] [INFO] URL: http://localhost:8116/compose.speech_ready
+[2025-11-01 15:54:51.257] [INFO] Method: POST
+[2025-11-01 15:54:51.257] [INFO] Payload: {"text": "Hello! Nice to meet you.", "language": "en", "tone": "friendly"}
+[2025-11-01 15:54:53.307] [INFO] Status Code: 200
+[2025-11-01 15:54:53.307] [INFO] Response Time: 2.050s
+[2025-11-01 15:54:53.307] [PASS] ✅ SUCCESS
+[2025-11-01 15:54:53.308] [INFO] Response Preview: {
+  "text": "Hello!<break time=\"0.5s\"/> Nice to meet you.<break time=\"0.5s\"/> ",
+  "tone": "friendly",
+  "lang": "en",
+  "prosody_hint": "gentle_low",
+  "audio_metadata": {
+    "text": "Hello!<break time=\"0.5s\"/> Nice to meet you.<break time=\"0.5s\"/> ",
+    "language": "en",
+    "voice": "en_default",
+    "speed": 1.05,
+    "pitch": 1.0,
+    "volume": 0.6400000000000001,
+    "prosody_hint": "gentle_low",
+    "format": "wav",
+    "sample_rate": 22050
+  },
+  "processing_time": 0.0
+}...
+[2025-11-01 15:54:53.308] [INFO] ✓ All expected keys present: ['text', 'tone', 'lang', 'prosody_hint', 'audio_metadata']
+[2025-11-01 15:54:53.809] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:53.809] [INFO]   TEST 32: Speech - Serious Tone
+[2025-11-01 15:54:53.809] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:53.810] [INFO] URL: http://localhost:8116/compose.speech_ready
+[2025-11-01 15:54:53.810] [INFO] Method: POST
+[2025-11-01 15:54:53.810] [INFO] Payload: {"text": "This is an important announcement.", "language": "en", "tone": "serious"}
+[2025-11-01 15:54:55.858] [INFO] Status Code: 200
+[2025-11-01 15:54:55.859] [INFO] Response Time: 2.048s
+[2025-11-01 15:54:55.859] [PASS] ✅ SUCCESS
+[2025-11-01 15:54:55.859] [INFO] Response Preview: {
+  "text": "This is an important announcement.<break time=\"0.5s\"/> ",
+  "tone": "serious",
+  "lang": "en",
+  "prosody_hint": "confident_mid",
+  "audio_metadata": {
+    "text": "This is an important announcement.<break time=\"0.5s\"/> ",
+    "language": "en",
+    "voice": "en_default",
+    "speed": 0.95,
+    "pitch": 1.05,
+    "volume": 0.68,
+    "prosody_hint": "confident_mid",
+    "format": "wav",
+    "sample_rate": 22050
+  },
+  "processing_time": 0.0010066032409667969
+}...
+[2025-11-01 15:54:55.859] [INFO] ✓ All expected keys present: ['text', 'tone', 'lang', 'prosody_hint', 'audio_metadata']
+[2025-11-01 15:54:56.361] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:56.361] [INFO]   TEST 33: Speech - Hindi Speech
+[2025-11-01 15:54:56.361] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:56.361] [INFO] URL: http://localhost:8116/compose.speech_ready
+[2025-11-01 15:54:56.362] [INFO] Method: POST
+[2025-11-01 15:54:56.362] [INFO] Payload: {"text": "नमस्ते, आपका स्वागत है।", "language": "hi", "tone": "friendly"}
+[2025-11-01 15:54:58.398] [INFO] Status Code: 200
+[2025-11-01 15:54:58.398] [INFO] Response Time: 2.036s
+[2025-11-01 15:54:58.398] [PASS] ✅ SUCCESS
+[2025-11-01 15:54:58.399] [INFO] Response Preview: {
+  "text": "नमस्ते, आपका स्वागत है।",
+  "tone": "friendly",
+  "lang": "hi",
+  "prosody_hint": "gentle_low",
+  "audio_metadata": {
+    "text": "नमस्ते, आपका स्वागत है।",
+    "language": "hi",
+    "voice": "hi_default",
+    "speed": 1.05,
+    "pitch": 1.0,
+    "volume": 0.6400000000000001,
+    "prosody_hint": "gentle_low",
+    "format": "wav",
+    "sample_rate": 22050
+  },
+  "processing_time": 0.0
+}...
+[2025-11-01 15:54:58.399] [INFO] ✓ All expected keys present: ['text', 'tone', 'lang', 'prosody_hint', 'audio_metadata']
+[2025-11-01 15:54:58.900] [INFO] ====================================================================================================
+[2025-11-01 15:54:58.900] [INFO]   SECTION 9: COMPLETE MULTILINGUAL REASONING BRIDGE
+[2025-11-01 15:54:58.900] [INFO] ====================================================================================================
+[2025-11-01 15:54:58.900] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:58.901] [INFO]   TEST 34: Bridge - Simple Query
+[2025-11-01 15:54:58.901] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:54:58.901] [INFO] URL: http://localhost:8116/bridge.reason
+[2025-11-01 15:54:58.901] [INFO] Method: POST
+[2025-11-01 15:54:58.901] [INFO] Payload: {"text": "What is Python programming?", "include_audio": false, "user_id": "test_user", "session_id": "bridge_session_34"}
+[2025-11-01 15:55:03.302] [INFO] Status Code: 200
+[2025-11-01 15:55:03.302] [INFO] Response Time: 4.401s
+[2025-11-01 15:55:03.302] [PASS] ✅ SUCCESS
+[2025-11-01 15:55:03.302] [INFO] Response Preview: {
+  "aligned_text": "What is Python programming?",
+  "ksml_metadata": {
+    "intent": "question",
+    "source_lang": "en",
+    "target_lang": "en",
+    "karma_state": "rajas",
+    "semantic_roots": [],
+    "confidence": 0.75
+  },
+  "speech_ready": null,
+  "processing_time": 2.321755886077881,
+  "trace_id": "bridge_1761992700979"
+}...
+[2025-11-01 15:55:03.302] [INFO] ✓ All expected keys present: ['aligned_text', 'ksml_metadata', 'processing_time', 'trace_id']
+[2025-11-01 15:55:05.303] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:55:05.303] [INFO]   TEST 35: Bridge - Educational Query
+[2025-11-01 15:55:05.303] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:55:05.303] [INFO] URL: http://localhost:8116/bridge.reason
+[2025-11-01 15:55:05.303] [INFO] Method: POST
+[2025-11-01 15:55:05.305] [INFO] Payload: {"text": "Teach me about machine learning", "include_audio": false, "user_id": "test_user", "session_id": "bridge_session_35"}
+[2025-11-01 15:55:09.663] [INFO] Status Code: 200
+[2025-11-01 15:55:09.663] [INFO] Response Time: 4.358s
+[2025-11-01 15:55:09.663] [PASS] ✅ SUCCESS
+[2025-11-01 15:55:09.663] [INFO] Response Preview: {
+  "aligned_text": "Teach me about machine learning",
+  "ksml_metadata": {
+    "intent": "conversational",
+    "source_lang": "en",
+    "target_lang": "en",
+    "karma_state": "rajas",
+    "semantic_roots": [],
+    "confidence": 0.65
+  },
+  "speech_ready": null,
+  "processing_time": 2.320751667022705,
+  "trace_id": "bridge_1761992707341"
+}...
+[2025-11-01 15:55:09.664] [INFO] ✓ All expected keys present: ['aligned_text', 'ksml_metadata', 'processing_time', 'trace_id']
+[2025-11-01 15:55:11.665] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:55:11.665] [INFO]   TEST 36: Bridge - Translation Query
+[2025-11-01 15:55:11.665] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:55:11.666] [INFO] URL: http://localhost:8116/bridge.reason
+[2025-11-01 15:55:11.666] [INFO] Method: POST
+[2025-11-01 15:55:11.666] [INFO] Payload: {"text": "Translate: Hello world", "include_audio": false, "user_id": "test_user", "session_id": "bridge_session_36"}
+[2025-11-01 15:55:16.045] [INFO] Status Code: 200
+[2025-11-01 15:55:16.046] [INFO] Response Time: 4.378s
+[2025-11-01 15:55:16.046] [PASS] ✅ SUCCESS
+[2025-11-01 15:55:16.046] [INFO] Response Preview: {
+  "aligned_text": "Translate: Hello world",
+  "ksml_metadata": {
+    "intent": "greeting",
+    "source_lang": "en",
+    "target_lang": "en",
+    "karma_state": "rajas",
+    "semantic_roots": [],
+    "confidence": 0.75
+  },
+  "speech_ready": null,
+  "processing_time": 2.3208062648773193,
+  "trace_id": "bridge_1761992713724"
+}...
+[2025-11-01 15:55:16.047] [INFO] ✓ All expected keys present: ['aligned_text', 'ksml_metadata', 'processing_time', 'trace_id']
+[2025-11-01 15:55:18.048] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:55:18.048] [INFO]   TEST 37: Bridge - Complex Query
+[2025-11-01 15:55:18.048] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:55:18.048] [INFO] URL: http://localhost:8116/bridge.reason
+[2025-11-01 15:55:18.049] [INFO] Method: POST
+[2025-11-01 15:55:18.049] [INFO] Payload: {"text": "Explain the difference between AI and ML in simple terms", "include_audio": false, "user_id": "test_user", "session_id": "bridge_session_37"}
+[2025-11-01 15:55:22.444] [INFO] Status Code: 200
+[2025-11-01 15:55:22.444] [INFO] Response Time: 4.395s
+[2025-11-01 15:55:22.444] [PASS] ✅ SUCCESS
+[2025-11-01 15:55:22.444] [INFO] Response Preview: {
+  "aligned_text": "Explain the difference between AI and ML in simple terms",
+  "ksml_metadata": {
+    "intent": "explanation",
+    "source_lang": "en",
+    "target_lang": "en",
+    "karma_state": "rajas",
+    "semantic_roots": [],
+    "confidence": 0.75
+  },
+  "speech_ready": null,
+  "processing_time": 2.335115671157837,
+  "trace_id": "bridge_1761992720108"
+}...
+[2025-11-01 15:55:22.445] [INFO] ✓ All expected keys present: ['aligned_text', 'ksml_metadata', 'processing_time', 'trace_id']
+[2025-11-01 15:55:24.446] [INFO] ====================================================================================================
+[2025-11-01 15:55:24.446] [INFO]   SECTION 10: SYSTEM STATISTICS & MONITORING
+[2025-11-01 15:55:24.446] [INFO] ====================================================================================================
+[2025-11-01 15:55:24.446] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:55:24.447] [INFO]   TEST 38: LM Core Statistics
+[2025-11-01 15:55:24.447] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:55:24.447] [INFO] URL: http://localhost:8117/stats
+[2025-11-01 15:55:24.447] [INFO] Method: GET
+[2025-11-01 15:55:26.506] [INFO] Status Code: 200
+[2025-11-01 15:55:26.506] [INFO] Response Time: 2.059s
+[2025-11-01 15:55:26.507] [PASS] ✅ SUCCESS
+[2025-11-01 15:55:26.507] [INFO] Response Preview: {
+  "status": "API is running",
+  "tokenizer_loaded": true,
+  "model_loaded": true,
+  "api_version": "1.0.1",
+  "supported_languages": [
+    "assamese",
+    "bengali",
+    "bodo",
+    "english",
+    "gujurati",
+    "hindi",
+    "kannada",
+    "kashmiri",
+    "maithili",
+    "malyalam",
+    "marathi",
+    "meitei",
+    "nepali",
+    "odia",
+    "punjabi",
+    "sanskrit",
+    "santali",
+    "sindhi",
+    "tamil",
+    "telugu",
+    "urdu"
+  ],
+  "kb_integration": {
+    "conversation_sessions": 9,
+ ...
+[2025-11-01 15:55:26.507] [INFO] ✓ All expected keys present: ['status', 'kb_integration', 'endpoints']
+[2025-11-01 15:55:27.508] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:55:27.508] [INFO]   TEST 39: Sovereign Core Statistics
+[2025-11-01 15:55:27.508] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:55:27.508] [INFO] URL: http://localhost:8116/stats
+[2025-11-01 15:55:27.508] [INFO] Method: GET
+[2025-11-01 15:55:29.564] [INFO] Status Code: 200
+[2025-11-01 15:55:29.565] [INFO] Response Time: 2.055s
+[2025-11-01 15:55:29.566] [PASS] ✅ SUCCESS
+[2025-11-01 15:55:29.566] [INFO] Response Preview: {
+  "timestamp": "2025-11-01T15:55:29.560820",
+  "uptime": 1139.6955444812775,
+  "components": {
+    "ksml": {
+      "initialized": true,
+      "ksml_roots_count": 20,
+      "intent_patterns_count": 27,
+      "karma_patterns_count": 16,
+      "supported_languages": [
+        "hindi",
+        "sanskrit",
+        "tamil",
+        "bengali",
+        "english",
+        "telugu",
+        "kannada",
+        "gujarati",
+        "marathi",
+        "punjabi"
+      ]
+    },
+    "mcp": {
+      "initialized...
+[2025-11-01 15:55:29.567] [INFO] ✓ All expected keys present: ['timestamp', 'components']
+[2025-11-01 15:55:30.568] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:55:30.568] [INFO]   TEST 40: LM Core Configuration
+[2025-11-01 15:55:30.568] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:55:30.568] [INFO] URL: http://localhost:8117/config
+[2025-11-01 15:55:30.569] [INFO] Method: GET
+[2025-11-01 15:55:32.642] [INFO] Status Code: 200
+[2025-11-01 15:55:32.643] [INFO] Response Time: 2.073s
+[2025-11-01 15:55:32.643] [PASS] ✅ SUCCESS
+[2025-11-01 15:55:32.643] [INFO] Response Preview: {
+  "api": {
+    "host": "127.0.0.1",
+    "port": 8000,
+    "title": "Multilingual Tokenization & Inference API",
+    "description": "API for Hindi, Sanskrit, Marathi, and English tokenization and text generation",
+    "version": "1.0.1",
+    "debug": true
+  },
+  "model": {
+    "model_name": "bigscience/bloom-560m",
+    "model_path": "",
+    "max_new_tokens": 256,
+    "num_return_sequences": 1,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "do_sample": true,
+    "use_4bit_quantization": false,
+ ...
+[2025-11-01 15:55:32.644] [INFO] ✓ All expected keys present: ['api', 'model', 'languages']
+[2025-11-01 15:55:32.644] [INFO] ====================================================================================================
+[2025-11-01 15:55:32.644] [INFO]   SECTION 11: RAPID FIRE TESTS (Performance)
+[2025-11-01 15:55:32.644] [INFO] ====================================================================================================
+[2025-11-01 15:55:32.644] [INFO] Testing rapid successive requests...
+[2025-11-01 15:55:32.644] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:55:32.644] [INFO]   TEST 41: Rapid Fire KSML #1
+[2025-11-01 15:55:32.644] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:55:32.645] [INFO] URL: http://localhost:8116/align.ksml
+[2025-11-01 15:55:32.645] [INFO] Method: POST
+[2025-11-01 15:55:32.645] [INFO] Payload: {"text": "Test query number 1", "target_lang": "en"}
+[2025-11-01 15:55:34.712] [INFO] Status Code: 200
+[2025-11-01 15:55:34.712] [INFO] Response Time: 2.067s
+[2025-11-01 15:55:34.713] [PASS] ✅ SUCCESS
+[2025-11-01 15:55:34.713] [INFO] Response Preview: {
+  "intent": "conversational",
+  "source_lang": "english",
+  "target_lang": "en",
+  "karma_state": "rajas",
+  "semantic_roots": [],
+  "confidence": 0.6,
+  "processing_time": 0.0009963512420654297
+}...
+[2025-11-01 15:55:34.713] [INFO] ✓ All expected keys present: ['intent', 'karma_state']
+[2025-11-01 15:55:34.713] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:55:34.714] [INFO]   TEST 42: Rapid Fire KSML #2
+[2025-11-01 15:55:34.714] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:55:34.714] [INFO] URL: http://localhost:8116/align.ksml
+[2025-11-01 15:55:34.714] [INFO] Method: POST
+[2025-11-01 15:55:34.714] [INFO] Payload: {"text": "Test query number 2", "target_lang": "en"}
+[2025-11-01 15:55:36.766] [INFO] Status Code: 200
+[2025-11-01 15:55:36.767] [INFO] Response Time: 2.051s
+[2025-11-01 15:55:36.767] [PASS] ✅ SUCCESS
+[2025-11-01 15:55:36.767] [INFO] Response Preview: {
+  "intent": "conversational",
+  "source_lang": "english",
+  "target_lang": "en",
+  "karma_state": "rajas",
+  "semantic_roots": [],
+  "confidence": 0.6,
+  "processing_time": 0.001004934310913086
+}...
+[2025-11-01 15:55:36.768] [INFO] ✓ All expected keys present: ['intent', 'karma_state']
+[2025-11-01 15:55:36.768] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:55:36.768] [INFO]   TEST 43: Rapid Fire KSML #3
+[2025-11-01 15:55:36.768] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:55:36.768] [INFO] URL: http://localhost:8116/align.ksml
+[2025-11-01 15:55:36.768] [INFO] Method: POST
+[2025-11-01 15:55:36.769] [INFO] Payload: {"text": "Test query number 3", "target_lang": "en"}
+[2025-11-01 15:55:38.816] [INFO] Status Code: 200
+[2025-11-01 15:55:38.816] [INFO] Response Time: 2.048s
+[2025-11-01 15:55:38.816] [PASS] ✅ SUCCESS
+[2025-11-01 15:55:38.816] [INFO] Response Preview: {
+  "intent": "conversational",
+  "source_lang": "english",
+  "target_lang": "en",
+  "karma_state": "rajas",
+  "semantic_roots": [],
+  "confidence": 0.6,
+  "processing_time": 0.0
+}...
+[2025-11-01 15:55:38.816] [INFO] ✓ All expected keys present: ['intent', 'karma_state']
+[2025-11-01 15:55:38.817] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:55:38.817] [INFO]   TEST 44: Rapid Fire KSML #4
+[2025-11-01 15:55:38.817] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:55:38.817] [INFO] URL: http://localhost:8116/align.ksml
+[2025-11-01 15:55:38.817] [INFO] Method: POST
+[2025-11-01 15:55:38.818] [INFO] Payload: {"text": "Test query number 4", "target_lang": "en"}
+[2025-11-01 15:55:40.887] [INFO] Status Code: 200
+[2025-11-01 15:55:40.887] [INFO] Response Time: 2.068s
+[2025-11-01 15:55:40.887] [PASS] ✅ SUCCESS
+[2025-11-01 15:55:40.888] [INFO] Response Preview: {
+  "intent": "conversational",
+  "source_lang": "english",
+  "target_lang": "en",
+  "karma_state": "rajas",
+  "semantic_roots": [],
+  "confidence": 0.6,
+  "processing_time": 0.0009806156158447266
+}...
+[2025-11-01 15:55:40.888] [INFO] ✓ All expected keys present: ['intent', 'karma_state']
+[2025-11-01 15:55:40.888] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:55:40.888] [INFO]   TEST 45: Rapid Fire KSML #5
+[2025-11-01 15:55:40.888] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 15:55:40.889] [INFO] URL: http://localhost:8116/align.ksml
+[2025-11-01 15:55:40.889] [INFO] Method: POST
+[2025-11-01 15:55:40.889] [INFO] Payload: {"text": "Test query number 5", "target_lang": "en"}
+[2025-11-01 15:55:42.943] [INFO] Status Code: 200
+[2025-11-01 15:55:42.943] [INFO] Response Time: 2.055s
+[2025-11-01 15:55:42.943] [PASS] ✅ SUCCESS
+[2025-11-01 15:55:42.945] [INFO] Response Preview: {
+  "intent": "conversational",
+  "source_lang": "english",
+  "target_lang": "en",
+  "karma_state": "rajas",
+  "semantic_roots": [],
+  "confidence": 0.6,
+  "processing_time": 0.0
+}...
+[2025-11-01 15:55:42.945] [INFO] ✓ All expected keys present: ['intent', 'karma_state']
+[2025-11-01 15:55:42.945] [INFO] Rapid fire completed in 10.30s
+[2025-11-01 15:55:42.946] [INFO] ====================================================================================================
+[2025-11-01 15:55:42.946] [INFO]   TEST SUITE COMPLETE - GENERATING REPORTS
+[2025-11-01 15:55:42.947] [INFO] ====================================================================================================
+[2025-11-01 15:55:42.949] [INFO] 
+✅ JSON results saved to: test_results\test_results_20251101_155244.json
+[2025-11-01 15:55:42.949] [INFO] ====================================================================================================
+[2025-11-01 15:55:42.949] [INFO]   TEST SUMMARY
+[2025-11-01 15:55:42.949] [INFO] ====================================================================================================
+[2025-11-01 15:55:42.949] [INFO] Total Tests Run: 45
+[2025-11-01 15:55:42.949] [INFO] ✅ Passed: 45
+[2025-11-01 15:55:42.950] [INFO] ❌ Failed: 0
+[2025-11-01 15:55:42.950] [INFO] ⚠️ Warnings: 0
+[2025-11-01 15:55:42.950] [INFO] Success Rate: 100.0%
+[2025-11-01 15:55:42.950] [INFO] Total Duration: 178.18s
+[2025-11-01 15:55:42.950] [INFO] 
+📄 Complete log saved to: test_results\comprehensive_test_20251101_155244.log
+[2025-11-01 15:55:42.951] [INFO] 📊 JSON results saved to: test_results\test_results_20251101_155244.json
+[2025-11-01 15:55:42.951] [INFO] 
+🎉 ALL TESTS PASSED SUCCESSFULLY!

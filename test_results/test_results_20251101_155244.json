@@ -1,0 +1,1170 @@
+{
+  "test_run_info": {
+    "timestamp": "2025-11-01T15:52:44.771529",
+    "lm_core_url": "http://localhost:8117",
+    "sovereign_url": "http://localhost:8116"
+  },
+  "tests": [
+    {
+      "test_name": "LM Core Health Check",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:52:46.849868",
+      "response_time": 2.0733420848846436,
+      "details": {
+        "status": "healthy",
+        "timestamp": 1761992566.8468788,
+        "components": {
+          "tokenizer": {
+            "loaded": true,
+            "status": "ok"
+          },
+          "model": {
+            "loaded": true,
+            "status": "ok",
+            "device": "cuda"
+          },
+          "kb_integration": {
+            "configured": true,
+            "endpoint": "http://127.0.0.1:8001",
+            "status": "configured",
+            "note": "KB endpoint not configured - using enhanced mock responses for QA queries"
+          },
+          "vaani_tts": {
+            "configured": false,
+            "endpoint": "not_configured",
+            "status": "not_configured"
+          }
+        },
+        "supported_languages": [
+          "assamese",
+          "bengali",
+          "bodo",
+          "english",
+          "gujurati",
+          "hindi",
+          "kannada",
+          "kashmiri",
+          "maithili",
+          "malyalam",
+          "marathi",
+          "meitei",
+          "nepali",
+          "odia",
+          "punjabi",
+          "sanskrit",
+          "santali",
+          "sindhi",
+          "tamil",
+          "telugu",
+          "urdu"
+        ],
+        "api_version": "1.0.1"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Sovereign Core Health Check",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:52:49.901457",
+      "response_time": 2.0486373901367188,
+      "details": {
+        "status": "healthy",
+        "timestamp": "2025-11-01T15:52:49.899453",
+        "components": {
+          "ksml_aligner": true,
+          "mcp_feedback": true,
+          "rl_policy": true,
+          "vaani_composer": true,
+          "bridge_reasoner": true
+        },
+        "version": "1.0.0"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Language Detection - Hindi",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:52:52.941522",
+      "response_time": 2.037095069885254,
+      "details": {
+        "language": "hindi",
+        "confidence": 1.0
+      },
+      "error": null
+    },
+    {
+      "test_name": "Language Detection - Tamil",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:52:55.501471",
+      "response_time": 2.054839611053467,
+      "details": {
+        "language": "tamil",
+        "confidence": 1.0
+      },
+      "error": null
+    },
+    {
+      "test_name": "Language Detection - Bengali",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:52:58.063852",
+      "response_time": 2.05968976020813,
+      "details": {
+        "language": "assamese",
+        "confidence": 1.0
+      },
+      "error": null
+    },
+    {
+      "test_name": "Language Detection - English",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:53:00.604301",
+      "response_time": 2.0385663509368896,
+      "details": {
+        "language": "english",
+        "confidence": 1.0
+      },
+      "error": null
+    },
+    {
+      "test_name": "Language Detection - Sanskrit",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:53:03.179490",
+      "response_time": 2.0724899768829346,
+      "details": {
+        "language": "sanskrit",
+        "confidence": 1.0
+      },
+      "error": null
+    },
+    {
+      "test_name": "Language Detection - Telugu",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:53:05.730710",
+      "response_time": 2.0473954677581787,
+      "details": {
+        "language": "telugu",
+        "confidence": 1.0
+      },
+      "error": null
+    },
+    {
+      "test_name": "Language Detection - Marathi",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:53:08.287493",
+      "response_time": 2.0511457920074463,
+      "details": {
+        "language": "marathi",
+        "confidence": 1.0
+      },
+      "error": null
+    },
+    {
+      "test_name": "Hindi Generation",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:53:13.054301",
+      "response_time": 4.261610746383667,
+      "details": {
+        "language": "hindi",
+        "generated_text": "नमस्ते, मुझे भारत के बारे में बताइए। मैं यह पढ़ रहा हूं कि कैसे भारतीय मूल की एक लड़की ने अपने प्रेमी से शादी कर ली है और वह अपनी पत्नी को हराम कर रही है। क्या मुझे पता है कि मैं वास्तव में भारत का नागरिक हूं या नहीं? मैं भारत में रहने वाली हूं और मेरा नाम हैं - वीना। मैंने अपने पति की मां को एक पत्र लिख दिया था जो मैं अपने साथ लाये थे। लेकिन बाद में उसने मुझसे कहा कि उसे वह पत्र दे दिया जाए जिसने मुझे पहले ही बताया था।\nफिर",
+        "input_text": "नमस्ते, मुझे भारत के बारे में बताइए।"
+      },
+      "error": null
+    },
+    {
+      "test_name": "English Generation",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:53:19.097413",
+      "response_time": 4.040601015090942,
+      "details": {
+        "language": "english",
+        "generated_text": "Tell me about artificial intelligence. I will tell you that there are a lot of things we can do with our brains, and then they turn into something entirely different in the future.\nI don’t believe it’s possible to predict what’s going on or where you’re heading at this time so I’m not sure if it’ll be any good for us all either but still:\n[And] I’ll say this: Artificial Intelligence isn’t bad; just because humans have learned how best work together doesn’t mean AI can’t help people perform better than human beings could",
+        "input_text": "Tell me about artificial intelligence."
+      },
+      "error": null
+    },
+    {
+      "test_name": "Tamil Generation",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:53:23.183884",
+      "response_time": 2.0827419757843018,
+      "details": {
+        "language": "tamil",
+        "generated_text": "செயற்கை நுண்ணறிவு பற்றி சொல்லுங்கள்.",
+        "input_text": "செயற்கை நுண்ணறிவு பற்றி சொல்லுங்கள்."
+      },
+      "error": null
+    },
+    {
+      "test_name": "English Q&A",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:53:32.844441",
+      "response_time": 7.65652060508728,
+      "details": {
+        "answer": "Hello! I'm here to help you with your questions.\n\n(Source: Multilingual Tokenization API - Mock Response)",
+        "generated_response": "If we",
+        "query": "What is machine learning?",
+        "language": "english",
+        "confidence": 0.8,
+        "sources": [
+          "Multilingual Tokenization API - Mock Response"
+        ],
+        "query_type": "factual",
+        "processing_time": 5.630457878112793,
+        "metadata": {
+          "query_type": "factual",
+          "kb_confidence": 0.8,
+          "kb_sources": [
+            "Multilingual Tokenization API - Mock Response"
+          ],
+          "processing_time": 0.10980892181396484,
+          "kb_processing_time": 0.10880756378173828,
+          "cached_response": false,
+          "language": "english"
+        }
+      },
+      "error": null
+    },
+    {
+      "test_name": "Hindi Q&A",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:53:41.539450",
+      "response_time": 6.693613052368164,
+      "details": {
+        "answer": "भारत की राजधानी नई दिल्ली है। यह एक मॉक प्रतिक्रिया है - सटीक जानकारी के लिए विश्वसनीय स्रोतों से जांच करें।\n\n(स्रोत: Multilingual Tokenization API - Mock Response)",
+        "generated_response": "आप सही उत्तर दे रहे हैं। भारत में केवल एक शहर है, जो है Mumbai.\nमज़दूरों का देश है भारत, तो वे भारत से भी आते हैं।\nसड़कों पर, सड़कों पर और सड़क पर बहुत लोग हैं, इसलिए कई जगह काम कर रहे थे। लेकिन अगर वे अपने घरों के पास चले जाते हैं तो यहां बस नहीं होती थी। फिर भी, वहाँ एक सड़क थी, जिसमें एक बड़े बड़े वाहन थे, और जब वह वापस लौटते हैं तब उन्हें एक बड़ी सड़क के किनारे खड़ा होना पड़ता था।\nयहाँ एक बड़ा सड़क का निर्माण किया गया था, लेकिन उस समय, इस सड़क को एक प्रमुख सड़क कहा जाता था। यह सड़क भारत के उत्तर पश्चिम भाग पर स्थित है। और यह एक अच्छी सड़क है।\nमई 2004 में, रेलवे ने एक नया रेलवे लाइन का विकास शुरू किया, जिसकी लंबाई 6.5 किलोमीटर है और इसमें सबसे बड़ा रेलगाड़ी है जो कि एमआर-बी-एच (एमआर -बी -एच) है जिसे 1.8 किलोमीटर लंबा है क्योंकि इसमें एक कोच होता है जिसमें लगभग 2,000 यात्री सवार होते हैं और",
+        "query": "भारत की राजधानी क्या है?",
+        "language": "hindi",
+        "confidence": 0.8,
+        "sources": [
+          "Multilingual Tokenization API - Mock Response"
+        ],
+        "query_type": "factual",
+        "processing_time": 4.633628845214844,
+        "metadata": {
+          "query_type": "factual",
+          "kb_confidence": 0.8,
+          "kb_sources": [
+            "Multilingual Tokenization API - Mock Response"
+          ],
+          "processing_time": 0.09424829483032227,
+          "kb_processing_time": 0.09424829483032227,
+          "cached_response": false,
+          "language": "hindi"
+        }
+      },
+      "error": null
+    },
+    {
+      "test_name": "Educational Q&A",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:53:50.640285",
+      "response_time": 7.097807168960571,
+      "details": {
+        "answer": "This is an educational question. I can assist with language processing and tokenization topics.\n\n(Source: Multilingual Tokenization API - Mock Response)",
+        "generated_response": "(1) The probability density function (pdf)\n$$f(x,y|z_0 = x + y/z_1= z_2)) $$\nis $\\frac{1}{2\\pi}\\int_{-\\pi/2}^{0} f'((1-\\cos\\theta)(-1- \\sin \\theta) ) dy\\ \\mathrm{d}x'$.\nThe pdf $f'$ can be calculated as follows by integrating \n$$\\frac\\pi 2 \\int_{0}^{1}f'[1\\theta]dy=0.5 \\pi \\implies \\frac{1}{\\sqrt{2}} 0=1-\\frac{2}{3}\\text{ where }0< x\\ < 1$. \nAnd you have to take into account that when $\\theta=\\frac{\\sin^2}{2} $ then $f$ has an analytic continuation at $z=0$ so it takes some time before your solution arrives.  \n$\\int_{\\varphi=0}^{\\infty} f'[\\phi]$ with $\\phi\\in [0];e^{i\\phi}dx=1$ .\nNow since for $x>0 , \\frac{\\cos θ }{ x} > 0$ we get  \n\\begin{align}\n(1+ \\cos^{-1} [\\sin^{-1}] )^{2} dx &= \\lim_{x\\rightarrow 0} 1 - \\sqrt{1+\\frac{ cos -1}{\\tan-1}}  \\left\\lvert\\frac{\\hbar}{2}\\right\\rVert\\left \\lfloor\\frac{r}{l}>{\\sqrt{1}} \\right \\rceil \\\\ &=\\frac{1/16}{r^2} \\cdot \\frac",
+        "query": "Explain neural networks in simple terms.",
+        "language": "english",
+        "confidence": 0.8,
+        "sources": [
+          "Multilingual Tokenization API - Mock Response"
+        ],
+        "query_type": "educational",
+        "processing_time": 5.064080476760864,
+        "metadata": {
+          "query_type": "educational",
+          "kb_confidence": 0.8,
+          "kb_sources": [
+            "Multilingual Tokenization API - Mock Response"
+          ],
+          "processing_time": 0.10922574996948242,
+          "kb_processing_time": 0.10922574996948242,
+          "cached_response": false,
+          "language": "english"
+        }
+      },
+      "error": null
+    },
+    {
+      "test_name": "Factual Q&A",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:53:59.958335",
+      "response_time": 7.313982009887695,
+      "details": {
+        "answer": "The capital of India is New Delhi. This is a mock response - for accurate information, please consult reliable sources.\n\n(Source: Multilingual Tokenization API - Mock Response)",
+        "generated_response": "Ukraine / Belarus \nPolish Republic/Chisinau  (4) \nLithuania , Romania  \nBulgaria   Bulgaria   (5)  \n(6) \n\nSo then how big were some areas or territories above mentioned when Europe started? (7)  You may ask yourself why European Union states don't seem like",
+        "query": "What is the capital of France?",
+        "language": "english",
+        "confidence": 0.8,
+        "sources": [
+          "Multilingual Tokenization API - Mock Response"
+        ],
+        "query_type": "factual",
+        "processing_time": 5.257686376571655,
+        "metadata": {
+          "query_type": "factual",
+          "kb_confidence": 0.8,
+          "kb_sources": [
+            "Multilingual Tokenization API - Mock Response"
+          ],
+          "processing_time": 0.10588693618774414,
+          "kb_processing_time": 0.10588693618774414,
+          "cached_response": false,
+          "language": "english"
+        }
+      },
+      "error": null
+    },
+    {
+      "test_name": "English Conversation",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:54:07.187108",
+      "response_time": 5.223541259765625,
+      "details": {
+        "user_query": "How does photosynthesis work?",
+        "kb_answer": "Regarding your question: This is a multilingual language processing system. For more specific information, please ask in detail.\n\n(Source: Multilingual Tokenization API - Mock Response)",
+        "generated_response": "Can we know if mutations affect gene expression through regulation and/or protein synthesis? (Or perhaps they do not?)\nAre certain mechanisms involved throughout development different than what was previously assumed? \nIs all organisms capable within their genome so much information about which proteins function differently depending",
+        "language": "english",
+        "confidence": 0.8,
+        "query_type": "conversational",
+        "sources": [
+          "Multilingual Tokenization API - Mock Response"
+        ],
+        "session_id": "c2e10e5d-5cc8-4e24-9e5a-9b11be0bb59f",
+        "processing_time": 3.170867919921875,
+        "metadata": {
+          "query_type": "conversational",
+          "kb_confidence": 0.8,
+          "kb_sources": [
+            "Multilingual Tokenization API - Mock Response"
+          ],
+          "processing_time": 0.0937042236328125,
+          "kb_processing_time": 0.0937042236328125,
+          "cached_response": false,
+          "language": "english"
+        }
+      },
+      "error": null
+    },
+    {
+      "test_name": "Hindi Conversation",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:54:13.853361",
+      "response_time": 4.664056301116943,
+      "details": {
+        "user_query": "मशीन लर्निंग क्या है?",
+        "kb_answer": "आपके प्रश्न के बारे में: यह एक बहुभाषी भाषा प्रसंस्करण प्रणाली है। अधिक जानकारी के लिए कृपया विस्तार से पूछें।\n\n(स्रोत: Multilingual Tokenization API - Mock Response)",
+        "generated_response": "मशीनलर्नing मशीन का उपयोग करके पाठकों को पढ़ने के लिए अपने कंप्यूटर में पढ़ना सिखाता है। यह कंप्यूटर की एक प्रणाली है, जो पाठ का विश्लेषण करती है और उसे एक प्रक्रिया से संबंधित विवरण देता है।\nयह तकनीक इंटरनेट पर उपलब्ध सभी स्रोतों (नेटवर्क्स) से प्राप्त पाठों को पहले से ही पढ़ने और पढ़ने वाले पाठ को व्यवस्थित करने के साथ-साथ उन्हें पढ़ने का एक तरीका बनाती है ताकि पाठ पढ़ते समय आप खुद को याद रख सकें। इससे आप अपने मनमाफिक पाठ चुन सकते हैं और अच्छी तरह से समझ सकते हो कि आप किस प्रकार से पढ़ रहे हैं।",
+        "language": "hindi",
+        "confidence": 0.8,
+        "query_type": "factual",
+        "sources": [
+          "Multilingual Tokenization API - Mock Response"
+        ],
+        "session_id": "9484aec6-5d2f-43cb-940e-88b967556035",
+        "processing_time": 2.640118360519409,
+        "metadata": {
+          "query_type": "factual",
+          "kb_confidence": 0.8,
+          "kb_sources": [
+            "Multilingual Tokenization API - Mock Response"
+          ],
+          "processing_time": 0.10779380798339844,
+          "kb_processing_time": 0.10779380798339844,
+          "cached_response": false,
+          "language": "hindi"
+        }
+      },
+      "error": null
+    },
+    {
+      "test_name": "Tamil Conversation",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:54:21.168862",
+      "response_time": 5.311008453369141,
+      "details": {
+        "user_query": "இயற்கை மொழி செயலாக்கம் என்றால் என்ன?",
+        "kb_answer": "உங்கள் கேள்வி பற்றி: இது பல மொழி செயலாக்க அமைப்பு. மேலும் தகவலுக்கு தயவுசெய்து விரிவாக கேளுங்கள்.\n\n(ஆதாரம்: Multilingual Tokenization API - Mock Response)",
+        "generated_response": "நம்முடைய மொழியை இந்த பூமியின் எல்லைக்கு வரவழைக்கும் ஒரு கருவியாகச் சொல்லவேண்டும். அது இந்த உலகத்தின் எல்லைக்குக் கொண்டுசெல்லும் கருவியான ஒரு செயல் ஆகும்.\n\nஅதாவது, நமது மொழியால் இந்த அழிவின் காரணத்தை ஆராய முடியும். ஆனால், அந்த செயலாக்கத்தின் மூலம் இந்த இருள் மற்றும் அசைவுகளை ஒழிக்க முடியும்.\n\nஅந்த வகையில், இயற்கைப் படைத்தவர்களுக்கு இந்த அக்ஷயத்தின் செயலாற்றலை நாம் பார்க்கலாம். அந்த அக்னி வடிவத்தில் இருப்பதை நாம் பார்த்து இருக்கலாம். அதேபோல், இந்த அவதாரத்தில் உள்ள அந்த கருமையை நாம் காணலாம்.\n\nஇந்த அவைகளின் செயல்தன்மையானது, அவை மூலமாக அந்த பூமியில் உள்ள அனைத்து இடங்களுக்கும் சென்று கொண்டிருக்கிறது. இந்த செயல்த்தன்மை அந்த இடங்களுக்கு சென்று சேருவதையும், அதன் மூல",
+        "language": "tamil",
+        "confidence": 0.8,
+        "query_type": "conversational",
+        "sources": [
+          "Multilingual Tokenization API - Mock Response"
+        ],
+        "session_id": "c69b556b-5cc7-49ec-a1f8-0fb252849802",
+        "processing_time": 3.2540462017059326,
+        "metadata": {
+          "query_type": "conversational",
+          "kb_confidence": 0.8,
+          "kb_sources": [
+            "Multilingual Tokenization API - Mock Response"
+          ],
+          "processing_time": 0.09330511093139648,
+          "kb_processing_time": 0.09330511093139648,
+          "cached_response": false,
+          "language": "tamil"
+        }
+      },
+      "error": null
+    },
+    {
+      "test_name": "KSML - Instruction Intent",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:54:25.230293",
+      "response_time": 2.056614637374878,
+      "details": {
+        "intent": "instruction",
+        "source_lang": "english",
+        "target_lang": "en",
+        "karma_state": "rajas",
+        "semantic_roots": [],
+        "confidence": 0.85,
+        "processing_time": 0.0009975433349609375
+      },
+      "error": null
+    },
+    {
+      "test_name": "KSML - Question Intent",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:54:27.764521",
+      "response_time": 2.032222032546997,
+      "details": {
+        "intent": "question",
+        "source_lang": "english",
+        "target_lang": "en",
+        "karma_state": "rajas",
+        "semantic_roots": [],
+        "confidence": 0.75,
+        "processing_time": 0.0009992122650146484
+      },
+      "error": null
+    },
+    {
+      "test_name": "KSML - Greeting Intent",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:54:30.312225",
+      "response_time": 2.0429558753967285,
+      "details": {
+        "intent": "question",
+        "source_lang": "english",
+        "target_lang": "en",
+        "karma_state": "rajas",
+        "semantic_roots": [],
+        "confidence": 0.75,
+        "processing_time": 0.0010018348693847656
+      },
+      "error": null
+    },
+    {
+      "test_name": "KSML - Explanation Intent",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:54:32.854519",
+      "response_time": 2.038020610809326,
+      "details": {
+        "intent": "explanation",
+        "source_lang": "english",
+        "target_lang": "en",
+        "karma_state": "rajas",
+        "semantic_roots": [],
+        "confidence": 0.75,
+        "processing_time": 0.0
+      },
+      "error": null
+    },
+    {
+      "test_name": "KSML - Command Intent",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:54:35.431987",
+      "response_time": 2.07328724861145,
+      "details": {
+        "intent": "command",
+        "source_lang": "english",
+        "target_lang": "en",
+        "karma_state": "rajas",
+        "semantic_roots": [],
+        "confidence": 0.75,
+        "processing_time": 0.0009989738464355469
+      },
+      "error": null
+    },
+    {
+      "test_name": "RL - High Reward Feedback (reward=0.95)",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:54:37.977398",
+      "response_time": 2.0419132709503174,
+      "details": {
+        "status": "success",
+        "policy_updated": true,
+        "reward_logged": true,
+        "s3_synced": false,
+        "processing_time": 0.0
+      },
+      "error": null
+    },
+    {
+      "test_name": "RL - Medium Reward Feedback (reward=0.7)",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:54:40.516793",
+      "response_time": 2.036273717880249,
+      "details": {
+        "status": "success",
+        "policy_updated": true,
+        "reward_logged": true,
+        "s3_synced": false,
+        "processing_time": 0.0
+      },
+      "error": null
+    },
+    {
+      "test_name": "RL - Low Reward Feedback (reward=0.3)",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:54:43.084288",
+      "response_time": 2.0635249614715576,
+      "details": {
+        "status": "success",
+        "policy_updated": true,
+        "reward_logged": true,
+        "s3_synced": false,
+        "processing_time": 0.0
+      },
+      "error": null
+    },
+    {
+      "test_name": "RL - Perfect Reward (reward=1.0)",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:54:45.655932",
+      "response_time": 2.0658059120178223,
+      "details": {
+        "status": "success",
+        "policy_updated": true,
+        "reward_logged": true,
+        "s3_synced": false,
+        "processing_time": 0.0
+      },
+      "error": null
+    },
+    {
+      "test_name": "Speech - Calm Tone",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:54:48.215291",
+      "response_time": 2.0561447143554688,
+      "details": {
+        "text": "Welcome to our meditation session",
+        "tone": "calm",
+        "lang": "en",
+        "prosody_hint": "calm_steady",
+        "audio_metadata": {
+          "text": "Welcome to our meditation session",
+          "language": "en",
+          "voice": "en_default",
+          "speed": 0.9,
+          "pitch": 0.95,
+          "volume": 0.6400000000000001,
+          "prosody_hint": "calm_steady",
+          "format": "wav",
+          "sample_rate": 22050
+        },
+        "processing_time": 0.0
+      },
+      "error": null
+    },
+    {
+      "test_name": "Speech - Excited Tone",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:54:50.755516",
+      "response_time": 2.0365047454833984,
+      "details": {
+        "text": "Congratulations on your achievement!<break time=\"0.5s\"/> ",
+        "tone": "excited",
+        "lang": "en",
+        "prosody_hint": "energetic_high",
+        "audio_metadata": {
+          "text": "Congratulations on your achievement!<break time=\"0.5s\"/> ",
+          "language": "en",
+          "voice": "en_default",
+          "speed": 1.2,
+          "pitch": 1.1,
+          "volume": 0.7200000000000001,
+          "prosody_hint": "energetic_high",
+          "format": "wav",
+          "sample_rate": 22050
+        },
+        "processing_time": 0.0
+      },
+      "error": null
+    },
+    {
+      "test_name": "Speech - Friendly Tone",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:54:53.308914",
+      "response_time": 2.0499091148376465,
+      "details": {
+        "text": "Hello!<break time=\"0.5s\"/> Nice to meet you.<break time=\"0.5s\"/> ",
+        "tone": "friendly",
+        "lang": "en",
+        "prosody_hint": "gentle_low",
+        "audio_metadata": {
+          "text": "Hello!<break time=\"0.5s\"/> Nice to meet you.<break time=\"0.5s\"/> ",
+          "language": "en",
+          "voice": "en_default",
+          "speed": 1.05,
+          "pitch": 1.0,
+          "volume": 0.6400000000000001,
+          "prosody_hint": "gentle_low",
+          "format": "wav",
+          "sample_rate": 22050
+        },
+        "processing_time": 0.0
+      },
+      "error": null
+    },
+    {
+      "test_name": "Speech - Serious Tone",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:54:55.859985",
+      "response_time": 2.0482707023620605,
+      "details": {
+        "text": "This is an important announcement.<break time=\"0.5s\"/> ",
+        "tone": "serious",
+        "lang": "en",
+        "prosody_hint": "confident_mid",
+        "audio_metadata": {
+          "text": "This is an important announcement.<break time=\"0.5s\"/> ",
+          "language": "en",
+          "voice": "en_default",
+          "speed": 0.95,
+          "pitch": 1.05,
+          "volume": 0.68,
+          "prosody_hint": "confident_mid",
+          "format": "wav",
+          "sample_rate": 22050
+        },
+        "processing_time": 0.0010066032409667969
+      },
+      "error": null
+    },
+    {
+      "test_name": "Speech - Hindi Speech",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:54:58.399129",
+      "response_time": 2.0360119342803955,
+      "details": {
+        "text": "नमस्ते, आपका स्वागत है।",
+        "tone": "friendly",
+        "lang": "hi",
+        "prosody_hint": "gentle_low",
+        "audio_metadata": {
+          "text": "नमस्ते, आपका स्वागत है।",
+          "language": "hi",
+          "voice": "hi_default",
+          "speed": 1.05,
+          "pitch": 1.0,
+          "volume": 0.6400000000000001,
+          "prosody_hint": "gentle_low",
+          "format": "wav",
+          "sample_rate": 22050
+        },
+        "processing_time": 0.0
+      },
+      "error": null
+    },
+    {
+      "test_name": "Bridge - Simple Query",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:55:03.303524",
+      "response_time": 4.401299953460693,
+      "details": {
+        "aligned_text": "What is Python programming?",
+        "ksml_metadata": {
+          "intent": "question",
+          "source_lang": "en",
+          "target_lang": "en",
+          "karma_state": "rajas",
+          "semantic_roots": [],
+          "confidence": 0.75
+        },
+        "speech_ready": null,
+        "processing_time": 2.321755886077881,
+        "trace_id": "bridge_1761992700979"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Bridge - Educational Query",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:55:09.664558",
+      "response_time": 4.3584144115448,
+      "details": {
+        "aligned_text": "Teach me about machine learning",
+        "ksml_metadata": {
+          "intent": "conversational",
+          "source_lang": "en",
+          "target_lang": "en",
+          "karma_state": "rajas",
+          "semantic_roots": [],
+          "confidence": 0.65
+        },
+        "speech_ready": null,
+        "processing_time": 2.320751667022705,
+        "trace_id": "bridge_1761992707341"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Bridge - Translation Query",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:55:16.047441",
+      "response_time": 4.378118515014648,
+      "details": {
+        "aligned_text": "Translate: Hello world",
+        "ksml_metadata": {
+          "intent": "greeting",
+          "source_lang": "en",
+          "target_lang": "en",
+          "karma_state": "rajas",
+          "semantic_roots": [],
+          "confidence": 0.75
+        },
+        "speech_ready": null,
+        "processing_time": 2.3208062648773193,
+        "trace_id": "bridge_1761992713724"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Bridge - Complex Query",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:55:22.445721",
+      "response_time": 4.395255088806152,
+      "details": {
+        "aligned_text": "Explain the difference between AI and ML in simple terms",
+        "ksml_metadata": {
+          "intent": "explanation",
+          "source_lang": "en",
+          "target_lang": "en",
+          "karma_state": "rajas",
+          "semantic_roots": [],
+          "confidence": 0.75
+        },
+        "speech_ready": null,
+        "processing_time": 2.335115671157837,
+        "trace_id": "bridge_1761992720108"
+      },
+      "error": null
+    },
+    {
+      "test_name": "LM Core Statistics",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:55:26.507181",
+      "response_time": 2.0586681365966797,
+      "details": {
+        "status": "API is running",
+        "tokenizer_loaded": true,
+        "model_loaded": true,
+        "api_version": "1.0.1",
+        "supported_languages": [
+          "assamese",
+          "bengali",
+          "bodo",
+          "english",
+          "gujurati",
+          "hindi",
+          "kannada",
+          "kashmiri",
+          "maithili",
+          "malyalam",
+          "marathi",
+          "meitei",
+          "nepali",
+          "odia",
+          "punjabi",
+          "sanskrit",
+          "santali",
+          "sindhi",
+          "tamil",
+          "telugu",
+          "urdu"
+        ],
+        "kb_integration": {
+          "conversation_sessions": 9,
+          "total_exchanges": 18
+        },
+        "endpoints": {
+          "tokenization": "/tokenize",
+          "generation": "/generate",
+          "language_detection": "/language-detect",
+          "knowledge_base_qa": "/qa",
+          "multilingual_conversation": "/multilingual-conversation",
+          "conversation_history": "/conversation/{session_id}/history"
+        }
+      },
+      "error": null
+    },
+    {
+      "test_name": "Sovereign Core Statistics",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:55:29.567859",
+      "response_time": 2.055089235305786,
+      "details": {
+        "timestamp": "2025-11-01T15:55:29.560820",
+        "uptime": 1139.6955444812775,
+        "components": {
+          "ksml": {
+            "initialized": true,
+            "ksml_roots_count": 20,
+            "intent_patterns_count": 27,
+            "karma_patterns_count": 16,
+            "supported_languages": [
+              "hindi",
+              "sanskrit",
+              "tamil",
+              "bengali",
+              "english",
+              "telugu",
+              "kannada",
+              "gujarati",
+              "marathi",
+              "punjabi"
+            ]
+          },
+          "mcp": {
+            "initialized": true,
+            "active_connectors": 4,
+            "total_connectors": 4,
+            "buffer_size": 0,
+            "total_entries": 10,
+            "feedback_file": "data\\feedback_stream.jsonl",
+            "connectors": {
+              "huggingface": {
+                "type": "huggingface",
+                "active": true,
+                "last_check": 1761991589.8813193
+              },
+              "s3": {
+                "type": "s3",
+                "active": true,
+                "last_check": 1761991589.8813193
+              },
+              "http": {
+                "type": "http",
+                "active": true,
+                "last_check": 1761991589.8813193
+              },
+              "qdrant": {
+                "type": "qdrant",
+                "active": true,
+                "last_check": 1761991589.8813193
+              }
+            }
+          },
+          "rl": {
+            "initialized": true,
+            "policy_entries": 11,
+            "reward_history_size": 5,
+            "average_reward": 0.7699999999999999,
+            "recent_average_reward": 0.7699999999999999,
+            "learning_rate": 0.12100000000000002,
+            "exploration_rate": 0.08100000000000002,
+            "adapter_deltas": 6,
+            "last_sync": 1761992729.5628273
+          },
+          "vaani": {
+            "initialized": true,
+            "supported_tones": [
+              "calm",
+              "excited",
+              "serious",
+              "friendly",
+              "authoritative",
+              "gentle",
+              "energetic",
+              "soothing"
+            ],
+            "supported_prosody_hints": [
+              "gentle_low",
+              "confident_mid",
+              "energetic_high",
+              "calm_steady",
+              "questioning_rise",
+              "statement_fall",
+              "emphatic_stress",
+              "soft_whisper"
+            ],
+            "supported_languages": [
+              "hindi",
+              "sanskrit",
+              "tamil",
+              "bengali",
+              "english"
+            ],
+            "tone_patterns_count": 24,
+            "prosody_mappings_count": 6
+          },
+          "bridge": {
+            "initialized": true,
+            "processing_log_size": 5,
+            "lm_core_endpoint": "http://localhost:8000/compose.final_text",
+            "components": {
+              "ksml": {
+                "initialized": true,
+                "ksml_roots_count": 20,
+                "intent_patterns_count": 27,
+                "karma_patterns_count": 16,
+                "supported_languages": [
+                  "hindi",
+                  "sanskrit",
+                  "tamil",
+                  "bengali",
+                  "english",
+                  "telugu",
+                  "kannada",
+                  "gujarati",
+                  "marathi",
+                  "punjabi"
+                ]
+              },
+              "mcp": {
+                "initialized": true,
+                "active_connectors": 4,
+                "total_connectors": 4,
+                "buffer_size": 4,
+                "total_entries": 10,
+                "feedback_file": "data\\feedback_stream.jsonl",
+                "connectors": {
+                  "huggingface": {
+                    "type": "huggingface",
+                    "active": true,
+                    "last_check": 1761992130.1428354
+                  },
+                  "s3": {
+                    "type": "s3",
+                    "active": true,
+                    "last_check": 1761992130.1433437
+                  },
+                  "http": {
+                    "type": "http",
+                    "active": true,
+                    "last_check": 1761992130.1433437
+                  },
+                  "qdrant": {
+                    "type": "qdrant",
+                    "active": true,
+                    "last_check": 1761992130.1433437
+                  }
+                }
+              },
+              "rl": {
+                "initialized": true,
+                "policy_entries": 11,
+                "reward_history_size": 5,
+                "average_reward": 0.5,
+                "recent_average_reward": 0.5,
+                "learning_rate": 0.1,
+                "exploration_rate": 0.1,
+                "adapter_deltas": 3,
+                "last_sync": 1761992729.5638356
+              },
+              "vaani": {
+                "initialized": true,
+                "supported_tones": [
+                  "calm",
+                  "excited",
+                  "serious",
+                  "friendly",
+                  "authoritative",
+                  "gentle",
+                  "energetic",
+                  "soothing"
+                ],
+                "supported_prosody_hints": [
+                  "gentle_low",
+                  "confident_mid",
+                  "energetic_high",
+                  "calm_steady",
+                  "questioning_rise",
+                  "statement_fall",
+                  "emphatic_stress",
+                  "soft_whisper"
+                ],
+                "supported_languages": [
+                  "hindi",
+                  "sanskrit",
+                  "tamil",
+                  "bengali",
+                  "english"
+                ],
+                "tone_patterns_count": 24,
+                "prosody_mappings_count": 6
+              }
+            },
+            "recent_avg_processing_time": 2.3461511611938475,
+            "recent_max_processing_time": 2.43332576751709,
+            "recent_min_processing_time": 2.3198068141937256
+          }
+        }
+      },
+      "error": null
+    },
+    {
+      "test_name": "LM Core Configuration",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:55:32.644370",
+      "response_time": 2.0731167793273926,
+      "details": {
+        "api": {
+          "host": "127.0.0.1",
+          "port": 8000,
+          "title": "Multilingual Tokenization & Inference API",
+          "description": "API for Hindi, Sanskrit, Marathi, and English tokenization and text generation",
+          "version": "1.0.1",
+          "debug": true
+        },
+        "model": {
+          "model_name": "bigscience/bloom-560m",
+          "model_path": "",
+          "max_new_tokens": 256,
+          "num_return_sequences": 1,
+          "temperature": 0.7,
+          "top_p": 0.9,
+          "do_sample": true,
+          "use_4bit_quantization": false,
+          "quantization_config": {
+            "load_in_4bit": false,
+            "bnb_4bit_quant_type": "nf4",
+            "bnb_4bit_compute_dtype": "float16",
+            "bnb_4bit_use_double_quant": true
+          }
+        },
+        "tokenizer": {
+          "model_path": "model/multilingual_tokenizer.model",
+          "vocab_path": "model/multilingual_tokenizer.vocab",
+          "vocab_size": 32000,
+          "model_type": "bpe",
+          "character_coverage": 0.9995
+        },
+        "languages": {
+          "supported": [
+            "assamese",
+            "bengali",
+            "bodo",
+            "english",
+            "gujurati",
+            "hindi",
+            "kannada",
+            "kashmiri",
+            "maithili",
+            "malyalam",
+            "marathi",
+            "meitei",
+            "nepali",
+            "odia",
+            "punjabi",
+            "sanskrit",
+            "santali",
+            "sindhi",
+            "tamil",
+            "telugu",
+            "urdu"
+          ],
+          "default": "english"
+        },
+        "kb_endpoint": "http://127.0.0.1:8001",
+        "vaani_endpoint": "",
+        "generation": {
+          "cuda_generation_disabled": false,
+          "force_cpu_only": false
+        }
+      },
+      "error": null
+    },
+    {
+      "test_name": "Rapid Fire KSML #1",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:55:34.713865",
+      "response_time": 2.0671064853668213,
+      "details": {
+        "intent": "conversational",
+        "source_lang": "english",
+        "target_lang": "en",
+        "karma_state": "rajas",
+        "semantic_roots": [],
+        "confidence": 0.6,
+        "processing_time": 0.0009963512420654297
+      },
+      "error": null
+    },
+    {
+      "test_name": "Rapid Fire KSML #2",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:55:36.768314",
+      "response_time": 2.0514392852783203,
+      "details": {
+        "intent": "conversational",
+        "source_lang": "english",
+        "target_lang": "en",
+        "karma_state": "rajas",
+        "semantic_roots": [],
+        "confidence": 0.6,
+        "processing_time": 0.001004934310913086
+      },
+      "error": null
+    },
+    {
+      "test_name": "Rapid Fire KSML #3",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:55:38.817944",
+      "response_time": 2.047625780105591,
+      "details": {
+        "intent": "conversational",
+        "source_lang": "english",
+        "target_lang": "en",
+        "karma_state": "rajas",
+        "semantic_roots": [],
+        "confidence": 0.6,
+        "processing_time": 0.0
+      },
+      "error": null
+    },
+    {
+      "test_name": "Rapid Fire KSML #4",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:55:40.888360",
+      "response_time": 2.068397283554077,
+      "details": {
+        "intent": "conversational",
+        "source_lang": "english",
+        "target_lang": "en",
+        "karma_state": "rajas",
+        "semantic_roots": [],
+        "confidence": 0.6,
+        "processing_time": 0.0009806156158447266
+      },
+      "error": null
+    },
+    {
+      "test_name": "Rapid Fire KSML #5",
+      "status": "PASS",
+      "timestamp": "2025-11-01T15:55:42.945008",
+      "response_time": 2.054640531539917,
+      "details": {
+        "intent": "conversational",
+        "source_lang": "english",
+        "target_lang": "en",
+        "karma_state": "rajas",
+        "semantic_roots": [],
+        "confidence": 0.6,
+        "processing_time": 0.0
+      },
+      "error": null
+    }
+  ],
+  "summary": {
+    "total_tests": 45,
+    "passed": 45,
+    "failed": 0,
+    "warnings": 0,
+    "success_rate": 100.0,
+    "duration_seconds": 178.1755039691925,
+    "end_time": "2025-11-01T15:55:42.947033"
+  }
+}

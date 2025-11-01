@@ -1,0 +1,37 @@
+[2025-11-01 16:01:10.650] [INFO] ====================================================================================================
+[2025-11-01 16:01:10.651] [INFO]   COMPREHENSIVE BHIV SOVEREIGN AI PLATFORM TEST SUITE
+[2025-11-01 16:01:10.651] [INFO] ====================================================================================================
+[2025-11-01 16:01:10.651] [INFO] Test started at: 2025-11-01T16:01:10.651368
+[2025-11-01 16:01:10.651] [INFO] Results will be saved to: test_results\comprehensive_test_20251101_160110.log
+[2025-11-01 16:01:10.651] [INFO] JSON results will be saved to: test_results\test_results_20251101_160110.json
+[2025-11-01 16:01:10.652] [INFO] ====================================================================================================
+[2025-11-01 16:01:10.652] [INFO]   SECTION 1: HEALTH CHECKS
+[2025-11-01 16:01:10.653] [INFO] ====================================================================================================
+[2025-11-01 16:01:10.653] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 16:01:10.653] [INFO]   TEST 1: LM Core Health Check
+[2025-11-01 16:01:10.653] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 16:01:10.654] [INFO] URL: http://localhost:8117/health
+[2025-11-01 16:01:10.654] [INFO] Method: GET
+[2025-11-01 16:01:14.760] [FAIL] ❌ FAILED: Connection error - HTTPConnectionPool(host='localhost', port=8117): Max retries exceeded with url: /health (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001EE63399010>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+[2025-11-01 16:01:15.761] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 16:01:15.761] [INFO]   TEST 2: Sovereign Core Health Check
+[2025-11-01 16:01:15.761] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 16:01:15.762] [INFO] URL: http://localhost:8116/health
+[2025-11-01 16:01:15.762] [INFO] Method: GET
+[2025-11-01 16:01:19.857] [FAIL] ❌ FAILED: Connection error - HTTPConnectionPool(host='localhost', port=8116): Max retries exceeded with url: /health (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001EE63399350>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+[2025-11-01 16:01:20.858] [INFO] ====================================================================================================
+[2025-11-01 16:01:20.858] [INFO]   SECTION 2: LANGUAGE DETECTION & PROCESSING
+[2025-11-01 16:01:20.858] [INFO] ====================================================================================================
+[2025-11-01 16:01:20.858] [INFO] 
+────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 16:01:20.859] [INFO]   TEST 3: Language Detection - Hindi
+[2025-11-01 16:01:20.859] [INFO] ────────────────────────────────────────────────────────────────────────────────────────────────────
+[2025-11-01 16:01:20.859] [INFO] URL: http://localhost:8117/language-detect
+[2025-11-01 16:01:20.859] [INFO] Method: POST
+[2025-11-01 16:01:20.860] [INFO] Payload: {"text": "नमस्ते, आप कैसे हैं?"}
+[2025-11-01 16:01:24.979] [WARNING] 
+
+⚠️ Test suite interrupted by user
+[2025-11-01 16:01:24.980] [INFO] Partial results saved to: test_results\comprehensive_test_20251101_160110.log
