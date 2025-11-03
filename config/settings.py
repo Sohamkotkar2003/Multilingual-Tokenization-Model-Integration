@@ -33,7 +33,7 @@ TOKENIZER_MERGE_PATH = "model/tokenizer_merge.txt"
 
 # Model Configuration
 MODEL_NAME = os.getenv("MODEL_NAME", "bigscience/bloom-560m")  # HF model name fallback (decoder-only)
-MODEL_PATH = os.getenv("MODEL_PATH", "")  # local checkpoint folder (if used). Empty -> use MODEL_NAME
+MODEL_PATH = os.getenv("MODEL_PATH", "adapters/gurukul_lite")  # local checkpoint folder (if used). Empty -> use MODEL_NAME
 
 # Generation params
 MAX_GENERATION_LENGTH = 256
@@ -54,7 +54,7 @@ DEFAULT_LANGUAGE = "english"
 # Language Detection Configuration
 # Unicode ranges for different scripts
 UNICODE_RANGES = {
-    "devanagari": (0x0900, 0x097F),  # Hindi, Sanskrit, Marathi, Nepali, etc.
+    "devanagari": (0x0900, 0x097F),  # Hindi, Sanskrit, Marathi, Nepali
     "tamil": (0x0B80, 0x0BFF),       # Tamil
     "telugu": (0x0C00, 0x0C7F),      # Telugu
     "kannada": (0x0C80, 0x0CFF),     # Kannada
@@ -64,7 +64,7 @@ UNICODE_RANGES = {
     "odia": (0x0B00, 0x0B7F),        # Odia
     "malayalam": (0x0D00, 0x0D7F),   # Malayalam
     "urdu": (0x0600, 0x06FF),        # Urdu (Arabic script)
-    "latin": (0x0000, 0x007F),       # English and other Latin scripts
+    "latin": (0x0000, 0x007F),       # English (Latin script)
     "meetei_mayek": (0xABC0, 0xABFF) # Meitei (Meetei Mayek script)
 }
 

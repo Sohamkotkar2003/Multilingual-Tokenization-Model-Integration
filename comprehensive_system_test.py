@@ -2,6 +2,7 @@
 """
 Comprehensive System Test Suite for BHIV Sovereign AI Platform
 Tests ALL endpoints, components, and features with detailed logging
+Tests 21 Indian languages
 Generates a complete test report with timestamps and results
 """
 

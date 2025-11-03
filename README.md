@@ -14,7 +14,7 @@ This repository houses two integrated AI systems that work together:
 **Production-ready multilingual generation system** with KSML (Knowledge, Semantic, Multilingual, Language) semantic alignment, RL-based self-improvement, and MCP streaming.
 
 **Key Features:**
-- ✅ Multilingual generation API (21+ Indian languages)
+- ✅ Multilingual generation API (31 languages: 21 Indian + 10 South Asian)
 - ✅ KSML Semantic Alignment Engine (intent, karma state, Sanskrit roots)
 - ✅ RL Self-Improvement Loop with policy updates
 - ✅ MCP-Driven Feedback Stream (HF + S3 + HTTP + Qdrant connectors)
@@ -216,12 +216,13 @@ python integration/web_interface.py
 
 ## 🌍 Supported Languages (Sovereign LM Bridge)
 
-21 Indian languages:
+### **21 Indian Languages**
+
 - Hindi, Bengali, Tamil, Telugu, Gujarati, Marathi, Urdu, Punjabi
 - Kannada, Malayalam, Assamese, Odia, Sanskrit, Nepali, Sindhi
 - Kashmiri, Maithili, Bodo, Meitei, Santali, English
 
-Base model: `bigscience/bloomz-560m`
+Base model: `bigscience/bloomz-560m` + Gurukul Lite adapter
 
 ---
 
