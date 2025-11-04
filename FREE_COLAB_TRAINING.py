@@ -26,7 +26,8 @@ print("  FREE COLAB TRAINING - Gurukul Lite Enhanced")
 print("="*80)
 print("\n📦 Installing packages...")
 
-!pip install -q transformers==4.35.0 peft==0.6.0 datasets==2.14.0 accelerate==0.24.0 bitsandbytes==0.41.0
+# Use latest versions - auto-detects correct CUDA version for bitsandbytes
+!pip install -q transformers peft datasets accelerate bitsandbytes
 
 print("✅ Packages installed!")
 
