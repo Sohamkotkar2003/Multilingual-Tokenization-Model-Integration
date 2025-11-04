@@ -21,6 +21,12 @@ import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
 from config import settings
 
+# Import prompt engineering
+from src.utils.prompt_engineering import get_generation_prompt, get_qa_prompt, get_conversation_prompt
+
+# Import post-processing
+from src.utils.post_processing import process_output
+
 # =============================================================================
 # Logging Setup
 # =============================================================================
@@ -187,23 +193,14 @@ async def knowledge_base_qa(request: QARequest):
         if request.generate_response and model and hf_tokenizer and not force_cpu_only and not cuda_generation_disabled:
             try:
                 logger.info(f"Starting response generation for query: {request.text[:50]}...")
-                # Create prompt combining KB answer with original query
-                if detected_lang == "hindi":
-                    prompt = f"प्रश्न: {request.text}\n\nसंक्षिप्त और सटीक उत्तर दें:"
-                elif detected_lang == "sanskrit":
-                    prompt = f"प्रश्नः {request.text}\n\nसंक्षिप्तं सटीकं च उत्तरं ददातु:"
-                elif detected_lang == "marathi":
-                    prompt = f"प्रश्न: {request.text}\n\nसंक्षिप्त आणि अचूक उत्तर द्या:"
-                elif detected_lang == "tamil":
-                    prompt = f"கேள்வி: {request.text}\n\nசுருக்கமான மற்றும் துல்லியமான பதில் கொடுங்கள்:"
-                elif detected_lang == "telugu":
-                    prompt = f"ప్రశ్న: {request.text}\n\nసంక్షిప్తమైన మరియు ఖచ్చితమైన సమాధానం ఇవ్వండి:"
-                elif detected_lang == "bengali":
-                    prompt = f"প্রশ্ন: {request.text}\n\nসংক্ষিপ্ত এবং সঠিক উত্তর দিন:"
-                else:
-                    prompt = f"Question: {request.text}\n\nProvide a concise and accurate answer:"
                 
-                logger.info(f"Generated prompt: {prompt[:100]}...")
+                # 🎯 PROMPT ENGINEERING: Use engineered Q&A prompt for all 21 languages
+                prompt = get_qa_prompt(
+                    question=request.text,
+                    language=detected_lang,
+                    context=answer if answer != "I don't have specific information" else None
+                )
+                logger.info(f"Engineered Q&A prompt: {prompt[:100]}...")
                 
                 # Generate response
                 inputs = hf_tokenizer(prompt, return_tensors="pt", padding=True, truncation=True, max_length=512)
@@ -323,6 +320,16 @@ async def knowledge_base_qa(request: QARequest):
                         generated_response = full_response[len(prompt):].strip()
                     
                     logger.info(f"Extracted generated response: {generated_response[:100]}...")
+                    
+                    # ✨ POST-PROCESSING: Clean and refine the Q&A response
+                    if generated_response:
+                        logger.info(f"Applying post-processing for Q&A ({detected_lang})")
+                        generated_response, post_metadata = process_output(
+                            text=generated_response,
+                            language=detected_lang,
+                            max_length=request.max_response_length or 512
+                        )
+                        logger.info(f"Post-processing: Quality score {post_metadata.get('quality_score', 0):.2f}")
                 else:
                     logger.warning("No outputs generated - using KB answer only")
                     generated_response = None
@@ -389,21 +396,23 @@ async def multilingual_conversation(request: MultilingualConversationRequest):
         # Generate additional response using LM if requested
         if request.generate_response and model and hf_tokenizer:
             try:
-                # Create prompt combining KB answer with original query
-                if detected_lang == "hindi":
-                    prompt = f"प्रश्न: {request.text}\n\nसंक्षिप्त और सटीक उत्तर दें:"
-                elif detected_lang == "sanskrit":
-                    prompt = f"प्रश्नः {request.text}\n\nसंक्षिप्तं सटीकं च उत्तरं ददातु:"
-                elif detected_lang == "marathi":
-                    prompt = f"प्रश्न: {request.text}\n\nसंक्षिप्त आणि अचूक उत्तर द्या:"
-                elif detected_lang == "tamil":
-                    prompt = f"கேள்வி: {request.text}\n\nசுருக்கமான மற்றும் துல்லியமான பதில் கொடுங்கள்:"
-                elif detected_lang == "telugu":
-                    prompt = f"ప్రశ్న: {request.text}\n\nసంక్షిప్తమైన మరియు ఖచ్చితమైన సమాధానం ఇవ్వండి:"
-                elif detected_lang == "bengali":
-                    prompt = f"প্রশ্ন: {request.text}\n\nসংক্ষিপ্ত এবং সঠিক উত্তর দিন:"
-                else:
-                    prompt = f"Question: {request.text}\n\nProvide a concise and accurate answer:"
+                # 🎯 PROMPT ENGINEERING: Use conversation-aware prompt with history
+                # Get conversation history for this session
+                from src.services.knowledge_base import qa_orchestrator
+                
+                history = None
+                if session_id in qa_orchestrator.conversation_history:
+                    conv_history = qa_orchestrator.conversation_history[session_id]
+                    # Format history as list of (user, assistant) tuples
+                    history = [(turn.get("user_query", ""), turn.get("generated_response", "")) 
+                              for turn in conv_history[-3:]]  # Use last 3 turns for context
+                
+                prompt = get_conversation_prompt(
+                    message=request.text,
+                    language=detected_lang,
+                    history=history
+                )
+                logger.info(f"Engineered conversation prompt with history: {len(history) if history else 0} turns")
                 
                 # Generate response
                 inputs = hf_tokenizer(prompt, return_tensors="pt", padding=True, truncation=True, max_length=512)
@@ -462,6 +471,16 @@ async def multilingual_conversation(request: MultilingualConversationRequest):
                     generated_response = full_response.split(":")[-1].strip()
                 else:
                     generated_response = full_response[len(prompt):].strip()
+                
+                # ✨ POST-PROCESSING: Clean and refine the conversation response
+                if generated_response:
+                    logger.info(f"Applying post-processing for conversation ({detected_lang})")
+                    generated_response, post_metadata = process_output(
+                        text=generated_response,
+                        language=detected_lang,
+                        max_length=request.max_response_length or 256
+                    )
+                    logger.info(f"Post-processing: Quality score {post_metadata.get('quality_score', 0):.2f}")
                     
             except Exception as e:
                 logger.warning(f"Response generation failed: {e}")
@@ -1119,8 +1138,17 @@ async def generate_text(request: TextRequest):
         detected_lang = settings.DEFAULT_LANGUAGE
 
     try:
-        # Tokenize input text
-        inputs = hf_tokenizer(request.text, return_tensors="pt", padding=True, truncation=True, max_length=512)
+        # 🎯 PROMPT ENGINEERING: Create optimized prompt for the detected language
+        logger.info(f"Applying prompt engineering for language: {detected_lang}")
+        prompt = get_generation_prompt(
+            text=request.text,
+            language=detected_lang,
+            mode="simple"  # Use simple mode for general text generation
+        )
+        logger.debug(f"Engineered prompt: {prompt[:100]}...")
+        
+        # Tokenize the engineered prompt instead of raw text
+        inputs = hf_tokenizer(prompt, return_tensors="pt", padding=True, truncation=True, max_length=512)
         
         # Validate token IDs to prevent CUDA assertion errors
         input_ids = inputs['input_ids']
@@ -1144,15 +1172,17 @@ async def generate_text(request: TextRequest):
             try:
                 outputs = model.generate(
                     **inputs,
-                    max_new_tokens=min(settings.MAX_GENERATION_LENGTH, 100),  # Reduce max tokens to avoid memory issues
+                    max_new_tokens=min(settings.MAX_GENERATION_LENGTH, 100),
                     temperature=settings.TEMPERATURE,
                     top_p=settings.TOP_P,
+                    top_k=getattr(settings, 'TOP_K', 40),  # 🎯 NEW: Vocabulary limiting
                     do_sample=settings.DO_SAMPLE,
-                    num_return_sequences=1,  # Reduce to 1 to avoid memory issues
-                    pad_token_id=hf_tokenizer.eos_token_id,  # Ensure proper padding
-                    repetition_penalty=1.1,  # Add repetition penalty
-                    no_repeat_ngram_size=2,  # Prevent repetition
-                    early_stopping=True  # Stop early if possible
+                    num_return_sequences=1,
+                    pad_token_id=hf_tokenizer.eos_token_id,
+                    repetition_penalty=getattr(settings, 'REPETITION_PENALTY', 1.3),  # 🎯 OPTIMIZED
+                    no_repeat_ngram_size=getattr(settings, 'NO_REPEAT_NGRAM_SIZE', 3),  # 🎯 OPTIMIZED
+                    min_length=getattr(settings, 'MIN_LENGTH', 50),  # 🎯 NEW: Minimum length
+                    early_stopping=True
                 )
             except RuntimeError as e:
                 if "CUDA" in str(e) or "device-side assert" in str(e):
@@ -1171,7 +1201,54 @@ async def generate_text(request: TextRequest):
                 else:
                     raise e
         generated_text = hf_tokenizer.decode(outputs[0], skip_special_tokens=True)
-        return GenerateResponse(language=detected_lang, generated_text=generated_text, input_text=request.text)
+        
+        # ✨ POST-PROCESSING: Clean and refine the generated output
+        logger.info(f"Applying post-processing for {detected_lang}")
+        processed_text, post_metadata = process_output(
+            text=generated_text,
+            language=detected_lang,
+            max_length=settings.MAX_GENERATION_LENGTH * 2
+        )
+        quality_score = post_metadata.get('quality_score', 0)
+        logger.info(f"Post-processing: {post_metadata.get('steps_applied', [])} | Quality: {quality_score:.2f}")
+        
+        # 🎯 VALIDATION & RETRY: If quality is too low, retry with stricter parameters
+        MIN_QUALITY_THRESHOLD = 0.5
+        if quality_score < MIN_QUALITY_THRESHOLD:
+            logger.warning(f"⚠️ Low quality ({quality_score:.2f}), retrying with stricter parameters...")
+            try:
+                # Retry with more conservative parameters
+                retry_outputs = model.generate(
+                    **inputs,
+                    max_new_tokens=min(settings.MAX_GENERATION_LENGTH, 100),
+                    temperature=0.4,  # Much lower
+                    top_p=0.75,  # More conservative
+                    top_k=25,  # More limited
+                    do_sample=True,
+                    num_return_sequences=1,
+                    pad_token_id=hf_tokenizer.eos_token_id,
+                    repetition_penalty=1.5,  # Higher
+                    no_repeat_ngram_size=3,
+                    min_length=50,
+                    early_stopping=True
+                )
+                retry_text = hf_tokenizer.decode(retry_outputs[0], skip_special_tokens=True)
+                retry_processed, retry_metadata = process_output(retry_text, detected_lang, settings.MAX_GENERATION_LENGTH * 2)
+                retry_quality = retry_metadata.get('quality_score', 0)
+                
+                logger.info(f"Retry quality: {retry_quality:.2f}")
+                
+                # Use retry if better
+                if retry_quality > quality_score:
+                    logger.info(f"✅ Retry improved quality: {quality_score:.2f} → {retry_quality:.2f}")
+                    processed_text = retry_processed
+                    quality_score = retry_quality
+                else:
+                    logger.info(f"Keeping original output (retry didn't improve)")
+            except Exception as retry_error:
+                logger.error(f"Retry failed: {retry_error}, using original output")
+        
+        return GenerateResponse(language=detected_lang, generated_text=processed_text, input_text=request.text)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Text generation failed: {e}")
 

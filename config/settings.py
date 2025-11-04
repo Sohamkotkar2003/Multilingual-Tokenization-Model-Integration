@@ -32,15 +32,20 @@ TOKENIZER_VOCAB_PATH = "model/multilingual_tokenizer.vocab"
 TOKENIZER_MERGE_PATH = "model/tokenizer_merge.txt"
 
 # Model Configuration
-MODEL_NAME = os.getenv("MODEL_NAME", "bigscience/bloom-560m")  # HF model name fallback (decoder-only)
+# 🔄 TESTING: Comparing 560m + Gurukul Lite vs 1b7
+MODEL_NAME = os.getenv("MODEL_NAME", "bigscience/bloomz-560m")  # HF model name fallback (decoder-only)
 MODEL_PATH = os.getenv("MODEL_PATH", "adapters/gurukul_lite")  # local checkpoint folder (if used). Empty -> use MODEL_NAME
 
-# Generation params
+# Generation params - Optimized for accuracy
 MAX_GENERATION_LENGTH = 256
 NUM_RETURN_SEQUENCES = 1
-TEMPERATURE = 0.7
-TOP_P = 0.9
+TEMPERATURE = 0.6  # 🎯 Lowered from 0.7 → More focused, less random
+TOP_P = 0.85  # 🎯 Lowered from 0.9 → More conservative choices
+TOP_K = 40  # 🎯 NEW: Limit vocabulary for consistency
 DO_SAMPLE = True
+REPETITION_PENALTY = 1.3  # 🎯 Increased from default → Reduce repetition
+NO_REPEAT_NGRAM_SIZE = 3  # 🎯 NEW: Prevent 3-gram repetition
+MIN_LENGTH = 50  # 🎯 NEW: Ensure minimum output length
 
 # Supported Languages - 21 Indian languages
 SUPPORTED_LANGUAGES = [
@@ -148,9 +153,10 @@ VAANI_TIMEOUT = float(os.getenv("VAANI_TIMEOUT", 120.0))
 USE_FP16_IF_GPU = True
 
 # Quantization Configuration for Inference
-USE_4BIT_QUANTIZATION = False  # Disable 4-bit quantization to avoid memory issues
+# 🔄 DISABLED for BLOOMZ-560m: Not needed for smaller model
+USE_4BIT_QUANTIZATION = False  # Disable for 560m (only needed for 1b7+)
 QUANTIZATION_CONFIG = {
-    "load_in_4bit": False,
+    "load_in_4bit": True,
     "bnb_4bit_quant_type": "nf4",  # NormalFloat4 quantization
     "bnb_4bit_compute_dtype": "float16",  # Compute dtype for 4-bit base models
     "bnb_4bit_use_double_quant": True,  # Use double quantization for better accuracy

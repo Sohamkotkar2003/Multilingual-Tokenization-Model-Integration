@@ -1,0 +1,251 @@
+{
+  "model_info": {
+    "model_name": "bigscience/bloomz-560m",
+    "model_path": "adapters/gurukul_lite",
+    "max_new_tokens": 256,
+    "num_return_sequences": 1,
+    "temperature": 0.6,
+    "top_p": 0.85,
+    "do_sample": true,
+    "use_4bit_quantization": false,
+    "quantization_config": {
+      "load_in_4bit": true,
+      "bnb_4bit_quant_type": "nf4",
+      "bnb_4bit_compute_dtype": "float16",
+      "bnb_4bit_use_double_quant": true
+    }
+  },
+  "summary": {
+    "total_tests": 21,
+    "successful": 21,
+    "perfect": 14,
+    "with_issues": 7,
+    "accuracy_score": 66.66666666666666
+  },
+  "results": [
+    {
+      "language": "hindi",
+      "prompt": "महात्मा गांधी",
+      "expected_topic": "Mahatma Gandhi",
+      "success": true,
+      "output": "महात्मा गांधी कृपया केवल हिंदी में उपरोक्त विषय पर विस्तार से लिखें।विषय पर केंद्रित रहें और अन्य भाषाओं का उपयोग न करें: महात्मा गाँधी के जीवन की कुछ प्रमुख घटनाओं को याद दिलाएँगे जैसे वे अहिंसा चाहते थे, राष्ट्रवाद करते रहे.उनका सम्मान करना चाहिए.गांधी जी ने अपने विचारों तथा व्यवहारों द्वारा समाज सुधारने हेतु महत्वपूर्ण भूमिका निभाई है | उनके विचार एवं कार्यों सहित स्वतंत्रता आंदोलन शुरू करने वाले लोगों तक Ferrer and grab con los dientes (1849-1850) नामक पुस्तक में उनकी उपलब्धियों citar हैं| वे स्वतन्त्रत",
+      "time": 5.188400030136108,
+      "issues": [],
+      "issue_count": 0
+    },
+    {
+      "language": "hindi",
+      "prompt": "भारतीय शिक्षा प्रणाली",
+      "expected_topic": "Indian education system",
+      "success": true,
+      "output": "भारतीय शिक्षा प्रणाली कृपया केवल हिंदी में उपरोक्त विषय पर विस्तार से लिखें।विषय पर केंद्रित रहें और अन्य भाषाओं का उपयोग न करें: यह महत्वपूर्ण है कि आप अपने पाठ को समझते हों।उदाहरण के लिए, यदि आपको पता नहीं था की अंग्रेजी भाषा कैसे बनी थी तो वह भी पढ़ें अन्यथा इससे कोई लाभ नहीं होगा | कुछ अध्ययनों ने पाया गया हैं कि अंग्रेज़ी शब्द सबसे कम पढ़े गए शब्दों में पहला पायदान ले जाता है: इसका मतलब ये हुआ जैसे ही एक छोटा सा बदलाव किया जाए तब बहुत सारा बदल जाएगा | हालांकि ऐसा माना जा रहा हतोत्साहित हो सकता है; हालाँ",
+      "time": 4.622972011566162,
+      "issues": [],
+      "issue_count": 0
+    },
+    {
+      "language": "english",
+      "prompt": "Climate change",
+      "expected_topic": "Climate change",
+      "success": true,
+      "output": "Climate change Please elaborate on the above topic in English only.Stay focused on the topic and do not use other languages: Internet has a great way to convey ideas, but knowledge is incomplete without experience.Change climate involves changing how you eat (food) -- both naturally occurring things like fungi that decompose slowly —and your body reacts accordingly.Plants take up about 90% of what we breathe into them—and their roots supply water for plants which grow out from those organisms.",
+      "time": 4.668745279312134,
+      "issues": [],
+      "issue_count": 0
+    },
+    {
+      "language": "english",
+      "prompt": "Democracy",
+      "expected_topic": "Democracy",
+      "success": true,
+      "output": "Democracy Please elaborate on the above topic in English only.Stay focused on the topic and do not use other languages: Wikipedia, encyclopedia Britannica or Wikipdia en anglais.",
+      "time": 4.630276918411255,
+      "issues": [],
+      "issue_count": 0
+    },
+    {
+      "language": "tamil",
+      "prompt": "தமிழ்நாடு",
+      "expected_topic": "Tamil Nadu",
+      "success": true,
+      "output": "தமிழ்நாடு தயவுசெய்து தமிழில் மட்டும் மேற்கண்ட தலைப்பில் விரிவாக எழுதுங்கள்.தலைப்பில் கவனம் செலுத்துங்கள் மற்றும் பிற மொழிகளைப் பயன்படுத்த வேண்டாம்: Proofread and Corruptions Correctional sentences can be difficult to understand for native speakers only when they are in a position where the.None of above choices.\"     எழுதப்படுவீர்கள்,   ஒரு  வைத்து இருப்பின் கொந்தளிப்பு இல்லாமல் இருக்குமே தவிர ்மை இல்லை என்பதை நினைவில் கொள்ள வேண்டும் \" என்று டைம்ஸ் ஆஃப் மிசின்ஸிடம் பிட்மேன் தெரிவித்தார்.",
+      "time": 4.92116904258728,
+      "issues": [],
+      "issue_count": 0
+    },
+    {
+      "language": "tamil",
+      "prompt": "இசை",
+      "expected_topic": "Music",
+      "success": true,
+      "output": "இசை தயவுசெய்து தமிழில் மட்டும் மேற்கண்ட தலைப்பில் விரிவாக எழுதுங்கள்.தலைப்பில் கவனம் செலுத்துங்கள் மற்றும் பிற மொழிகளைப் பயன்படுத்த வேண்டாம்: \"When you speak Hinduism, the Sanskrit word for God is Sanskrit in Hindi and Punjabi,.\" India refers to English as well \"as India.but not Tamil or Telugu….      ।            ।",
+      "time": 7.699263095855713,
+      "issues": [
+        "❌ Too much English"
+      ],
+      "issue_count": 1
+    },
+    {
+      "language": "bengali",
+      "prompt": "রবীন্দ্রনাথ ঠাকুর",
+      "expected_topic": "Rabindranath Tagore",
+      "success": true,
+      "output": "রবীন্দ্রনাথ ঠাকুর অনুগ্রহ করে শুধুমাত্র বাংলায় উপরের বিষয়ে বিস্তারিত লিখুন।বিষয়ে মনোনিবেশ করুন এবং অন্যান্য ভাষা ব্যবহার করবেন না: আপনি যদি কোন বিদেশী রাষ্ট্রে থাকেন তবে আপনার সাথে সদৃশ পরিস্থিতি তৈরি হতে পারে যা হয়তো তুলনামূলক ভাবে সহজ নয় বা সামান্য কিছু করতে পারেন।।অনেক সময় ভ্রমণের সঙ্গীসদের দ্বারা উল্লেখ করা হয় যে, তারা খুব ভাল আছেন এমন ব্যক্তিদের নিয়ে ভ্রমণ করেন যাতে তাদের অভিজ্ঞতার কথা মনে রাখতে থাকে।",
+      "time": 4.642049074172974,
+      "issues": [],
+      "issue_count": 0
+    },
+    {
+      "language": "bengali",
+      "prompt": "বাংলাদেশ",
+      "expected_topic": "Bangladesh",
+      "success": true,
+      "output": "বাংলাদেশ অনুগ্রহ করে শুধুমাত্র বাংলায় উপরের বিষয়ে বিস্তারিত লিখুন।বিষয়ে মনোনিবেশ করুন এবং অন্যান্য ভাষা ব্যবহার করবেন না: আপনি যে কোন ধরনের সাহায্য আশা রাখবেন।\"মিয়ানমার\" শব্দটি এসেছে \"মায়ানমারের\" থেকে, যার অর্থ দেশটি মায়ার সাথে সম্পর্কিত যদিও এটি একটি জাতিগত সংঘাতের স্থান যা বর্তমান পর্যন্ত সেখানে ছিল না।মিয়ানমা শব্দটি এসেছে সংস্কৃত শব্দ \"\"ম্যান\"\" থেকে,  মানে \"\"রোমের মানুষ\"\" বা \"\"নামে দেশ\" বলে মনে হয়।",
+      "time": 4.8341193199157715,
+      "issues": [],
+      "issue_count": 0
+    },
+    {
+      "language": "telugu",
+      "prompt": "తెలుగు భాష",
+      "expected_topic": "Telugu language",
+      "success": true,
+      "output": "తెలుగు భాష దయచేసి పై అంశంపై విస్తృతంగా రాయండి: బెల్జియన్, ఇటాలియన్ మరియు జపనీస్ వంటి దేశాలలో కూడా మాట్లాడేవారు ఈ పదం.ఇది ఒక చిన్న రకమయిన అక్షరం కంటే తక్కువ బరువు ఉన్నవి అని అర్థం.ఇవి మరేమీ కాదు - లాటిన్ లో మాత్రమే ఉచ్చారణ చేయబడుతుంది కానీ ఎక్కువ మొత్తంలో ఉపయోగించబడుతోంది ఎందుకంటే దీనికి దగ్గరగా కనిపించే పదాలు చాలా ఉన్నాయి.శక్తి-స్వభావాలు ఎక్కువగా ఉండే వ్యాకరణం గురించి తెలుసుకోవడమనేది కచ్చితంగా సాధ్యపడదు.",
+      "time": 4.77636194229126,
+      "issues": [],
+      "issue_count": 0
+    },
+    {
+      "language": "marathi",
+      "prompt": "महाराष्ट्र",
+      "expected_topic": "Maharashtra",
+      "success": true,
+      "output": "महाराष्ट्र कृपया वरील विषयावर तपशीलवार लिहा: A post office is supposed to be open 365 days a year, so if you are in Hawaii please visit the Eastern New Mexico Office at (800)457-8387 or get email contact info for more details.",
+      "time": 7.839946508407593,
+      "issues": [
+        "❌ Too much English"
+      ],
+      "issue_count": 1
+    },
+    {
+      "language": "gujarati",
+      "prompt": "ગુજરાત",
+      "expected_topic": "Gujarat",
+      "success": true,
+      "output": "Please elaborate on the above topic in English only.Stay focused on the topic and do not use other languages: Internet has a large number of native speakers who speak their own language, just like you.:      ।       -          ।\"                       \"           ।",
+      "time": 4.926193475723267,
+      "issues": [
+        "❌ Too much English"
+      ],
+      "issue_count": 1
+    },
+    {
+      "language": "kannada",
+      "prompt": "ಕರ್ನಾಟಕ",
+      "expected_topic": "Karnataka",
+      "success": true,
+      "output": "ಕರ್ನಾಟಕ ದಯವಿಟ್ಟು ಮೇಲಿನ ವಿಷಯದ ಬಗ್ಗೆ ವಿವರವಾಗಿ ಬರೆಯಿರಿ:               ,     ।      -         ।               : ,            ।",
+      "time": 4.9595019817352295,
+      "issues": [],
+      "issue_count": 0
+    },
+    {
+      "language": "malayalam",
+      "prompt": "കേരളം",
+      "expected_topic": "Kerala",
+      "success": true,
+      "output": "Please elaborate on the above topic in English only.Stay focused on the topic and do not use other languages: Dialing is also widely available.The United States of America or Quebec (French: La France) Canada, Australia & New Zealand are examples countries that offer francophone holidays to their citizens.(for more information see here.",
+      "time": 5.041597127914429,
+      "issues": [
+        "❌ Too much English"
+      ],
+      "issue_count": 1
+    },
+    {
+      "language": "punjabi",
+      "prompt": "ਪੰਜਾਬ",
+      "expected_topic": "Punjab",
+      "success": true,
+      "output": "ਪੰਜਾਬ ਕਿਰਪਾ ਕਰਕੇ ਉਪਰੋਕਤ ਵਿਸ਼ੇ 'ਤੇ ਵਿਸਥਾਰ ਨਾਲ ਲਿਖੋ: The Queen (Queen) is the highest ranking female sovereign in British Royal Family.",
+      "time": 7.732211112976074,
+      "issues": [
+        "❌ Too much English"
+      ],
+      "issue_count": 1
+    },
+    {
+      "language": "sanskrit",
+      "prompt": "वेदः",
+      "expected_topic": "Vedas",
+      "success": true,
+      "output": "वेदः कृपया उपरोक्तविषये विस्तृतं लिखतु: साँच्चै, यह लेख पूरी तरह से नहीं बताया गया है.आप जिस भी प्रकार के पेय या खाना खाएं जो आपको पसंद आए उसे चुनें और अपने लिये बनाये गये हो | यदि आवश्यक हों तो इसके साथ ही अपनी राय रखें ताकि इस पर कोई टिप्पणी न की जाये | विशेष रूप में अगर आपके पास घर बैठे काम करने का अवसर नही होता हैं तब ऐसे भोजन को पकाने मे बहुत समय लगता होगा | वैसे ये सभी बातें ध्यान रहे कि वे उचित रहेंगी अन्यथा किसी गंभीर",
+      "time": 7.704779624938965,
+      "issues": [],
+      "issue_count": 0
+    },
+    {
+      "language": "urdu",
+      "prompt": "شاعری",
+      "expected_topic": "Poetry",
+      "success": true,
+      "output": "شاعری براہ کرم مذکورہ بالا موضوع پر تفصیل سے لکھیں: یہ بالکل مناسب نہیں کہ آپ کو اپنے جوتِہ کے نیچے کوئی بھی چیز رکھنی ہو۔ اس طرح کی جگہوں میں دستی، کیلکٹ اور پتھالوجی کا نقشہ موجود ہوتا ہے جوکہ ناپید ہونے والے وقت تک استعمال کیا جانے والا تھا- اطفال ایسے مقامات تلاش کر سکتے ہیں جہاں قدیم زمانے یا دور جدیدکے متعلق مشاہدات پائی جا سکیں ہوں گی۔ مثال کے طور برے زمانہ عہد اوّل مثلاً نوّادیہ اسلاموی جیسے مواقع",
+      "time": 4.857436180114746,
+      "issues": [],
+      "issue_count": 0
+    },
+    {
+      "language": "odia",
+      "prompt": "ଓଡ଼ିଶା",
+      "expected_topic": "Odisha",
+      "success": true,
+      "output": "ଓଡ଼ିଶା ଦୟାକରି ଉପରୋକ୍ତ ବିଷୟ ଉପରେ ବିସ୍ତୃତ ଭାବରେ ଲେଖନ୍ତୁ: The Sundarbans are the largest littoral mangrove belt in Southeast Asia and contains 19 percent of world's sheeted reefs. ,       rb            20    .             !",
+      "time": 7.918041706085205,
+      "issues": [
+        "❌ Too much English"
+      ],
+      "issue_count": 1
+    },
+    {
+      "language": "assamese",
+      "prompt": "অসম",
+      "expected_topic": "Assam",
+      "success": true,
+      "output": "অসম অনুগ্ৰহ কৰি উপৰোক্ত বিষয়ৰ ওপৰত বিস্তাৰিতভাৱে লিখক: \"আপোনাৰ গৃহভূমিত এই স্থানটো বিশেষ উল্লেখ আছে, যিসকল বিষয়ে বিবেচনা কৰা উচিত সেই বিষয়ে ব্যাখ্যা দিয়ে। The Mosaic Bible describes the place in this sentence translated into Odia: I am referring to here \"the special mention\" that was given by apostle Pablo of Alexandria \"to any thing pertaining unto his native land.",
+      "time": 9.076465368270874,
+      "issues": [
+        "❌ Too much English"
+      ],
+      "issue_count": 1
+    },
+    {
+      "language": "nepali",
+      "prompt": "नेपाल",
+      "expected_topic": "Nepal",
+      "success": true,
+      "output": "नेपाल कृपया माथिको विषयमा विस्तृत रूपमा लेख्नुहोस्:          -                                                     ।",
+      "time": 5.182843208312988,
+      "issues": [],
+      "issue_count": 0
+    },
+    {
+      "language": "maithili",
+      "prompt": "मैथिली भाषा",
+      "expected_topic": "Maithili language",
+      "success": true,
+      "output": "मैथिली भाषा कृपया उपर्युक्त विषय पर विस्तार सं लिखू: मेन्थली भाषाएँ लैटिन शब्द से बनी हैं जिसका अर्थ है प्रिय।यह एक ऐसा शब्द भी हो सकता जिसमें मूल रूप में कुछ ही शब्दों का मिश्रण होता था, जैसे कि मित्र और भाई आदि के बीच की दूरी को नापने वाला चिन्ह जो अक्सर बर्ताव करने वालों दोनों व्यक्तियों या किसी अन्य व्यक्ति द्वारा दर्शाया जाता होगा।",
+      "time": 5.042731285095215,
+      "issues": [],
+      "issue_count": 0
+    },
+    {
+      "language": "bodo",
+      "prompt": "बड़ो भाषा",
+      "expected_topic": "Bodo language",
+      "success": true,
+      "output": "बड़ो भाषा कृपया उफ्राव बिसायाव थाखाय गोजौनि खन: (Sundarbans National Park) में शामिल हो जाएँं जहाँ से आप सूनामी के खतरे को कम कर सकते हैं।यहाँ पर कोई भी ज्वालामुखी की गतिविधि नहीं होती है इसलिए आपको वहाँ जाने का डर न पड़ें।यह क्षेत्र भूगर्भीय रूप से सक्रिय माना जाता रहा और हालाँकि इसकी sismological गतिविधियों ने चिंता जताई, लेकिन इसे सुरक्षित ठहराया गया था क्योंकि इसमें किसी भूकंप या सुनामी जैसी घटनाओं वाली गतिविधियाँ कहीं नज़रअंदाज़ किये जाती थीं",
+      "time": 5.699384927749634,
+      "issues": [],
+      "issue_count": 0
+    }
+  ]
+}

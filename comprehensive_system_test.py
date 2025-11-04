@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 Comprehensive System Test Suite for BHIV Sovereign AI Platform
 Tests ALL endpoints, components, and features with detailed logging
@@ -10,8 +11,13 @@ import requests
 import json
 import time
 import sys
+import io
 from datetime import datetime
 from pathlib import Path
+
+# Force UTF-8 encoding for console output
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 # Color codes for terminal output (works on most terminals)
 class Colors:
