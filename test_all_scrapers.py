@@ -25,28 +25,31 @@ sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='repla
 from scrapers.scrape_wiki import WikipediaScraper
 from scrapers.scrape_news import NewsScraper
 
-# Test configuration: 17 new languages
+# Test configuration: ALL 17 new languages from task
 TEST_LANGUAGES = {
-    # Indo-Aryan Languages (Hindi Belt Dialects)
-    "Awadhi": {"code": "awa", "wiki_available": False, "news_available": False},
-    "Bhojpuri": {"code": "bho", "wiki_available": False, "news_available": False},
-    "Magahi": {"code": "mag", "wiki_available": False, "news_available": False},
-    "Chhattisgarhi": {"code": "hne", "wiki_available": False, "news_available": False},
-    "Haryanvi": {"code": "bgc", "wiki_available": False, "news_available": False},
+    # Indo-Aryan Languages (Hindi Belt Dialects) - 7 languages
+    "Awadhi": {"code": "awa", "wiki_available": False, "news_available": False, "note": "Very low-resource"},
+    "Bhojpuri": {"code": "bho", "wiki_available": False, "news_available": False, "note": "Very low-resource"},
+    "Magahi": {"code": "mag", "wiki_available": False, "news_available": False, "note": "Very low-resource"},
+    "Chhattisgarhi": {"code": "hne", "wiki_available": False, "news_available": False, "note": "Very low-resource"},
+    "Haryanvi": {"code": "bgc", "wiki_available": False, "news_available": False, "note": "Very low-resource"},
+    "Himachali": {"code": "him", "wiki_available": False, "news_available": False, "note": "Very low-resource"},
+    "Pahadi": {"code": "pah", "wiki_available": False, "news_available": False, "note": "Very low-resource"},
     
-    # South Asian Languages
+    # South Asian Languages - 2 languages
     "Sinhala": {"code": "si", "wiki_available": True, "news_available": True, "news_name": "sinhala"},
+    "Tamil-SriLanka": {"code": "ta_LK", "wiki_available": False, "news_available": False, "note": "Variant of Tamil (already have Tamil)"},
     
-    # Tibeto-Burman Languages
+    # Tibeto-Burman Languages - 3 languages
     "Tibetan": {"code": "bo", "wiki_available": True, "news_available": False},
     "Dzongkha": {"code": "dz", "wiki_available": True, "news_available": False},
-    "Mizo": {"code": "lus", "wiki_available": False, "news_available": False},
+    "Mizo": {"code": "lus", "wiki_available": False, "news_available": False, "note": "Very low-resource"},
     
-    # Iranian Languages
+    # Iranian Languages - 2 languages
     "Pashto": {"code": "ps", "wiki_available": True, "news_available": True, "news_name": "pashto"},
     "Dari": {"code": "prs", "wiki_available": False, "news_available": True, "news_name": "dari"},
     
-    # Southeast Asian Languages
+    # Southeast Asian Languages - 3 languages
     "Vietnamese": {"code": "vi", "wiki_available": True, "news_available": True, "news_name": "vietnamese"},
     "Thai": {"code": "th", "wiki_available": True, "news_available": True, "news_name": "thai"},
     "Burmese": {"code": "my", "wiki_available": True, "news_available": True, "news_name": "burmese"},
@@ -188,7 +191,7 @@ def test_language(language_name: str, config: dict, output_dir: Path) -> dict:
         result['wiki_error'] = 'No dedicated Wikipedia'
         print(f"  ⚠️  No Wikipedia available for {language_name}")
     
-    # Test 2: News Scraper
+    # Test 2: News Scraper (ALWAYS test, even if Wikipedia doesn't exist!)
     news_result = test_news_scraper(language_name, config, output_dir)
     result['news_success'] = news_result['success']
     result['news_samples'] = news_result['samples_scraped']
@@ -208,11 +211,12 @@ def test_language(language_name: str, config: dict, output_dir: Path) -> dict:
     
     if result['news_success']:
         print(f"     ✅ News: {result['news_samples']} articles ({result['news_avg_length']} chars avg)")
-    elif result['news_error']:
+    elif result['news_error'] and config.get('news_available'):
         print(f"     ⚠️  News: {result['news_error']}")
     
     if not result['overall_success']:
-        print(f"     ❌ No data sources available")
+        note = config.get('note', '')
+        print(f"     ❌ No data sources available ({note})" if note else "     ❌ No data sources available")
     
     return result
 

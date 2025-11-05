@@ -9,6 +9,9 @@ pyyaml>=6.0
 # HuggingFace datasets (for streaming)
 datasets>=2.14.0
 
+# YouTube scraping
+yt-dlp>=2023.10.0
+
 # Optional but recommended
 lxml>=4.9.0  # Faster HTML parsing
 urllib3>=1.26.0
