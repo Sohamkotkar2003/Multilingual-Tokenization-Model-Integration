@@ -46,7 +46,19 @@ WIKI_LANGUAGES = {
 class WikipediaScraper:
     """Scraper for Wikipedia articles in various languages"""
     
-    def __init__(self, language_code: str, base_url: Optional[str] = None, delay: float = 1.0):
+    # Quality filters - skip stub articles and low-quality pages
+    STUB_KEYWORDS = {
+        'vi': ['loài', 'genus', 'species', 'xã thuộc', 'huyện', 'tiểu hành tinh', 
+               'là một loài', 'được mô tả khoa học', 'Wikispecies'],
+        'th': ['สกุล', 'ชนิด', 'species', 'ตำบล', 'อำเภอ'],
+        'my': ['မျိုးစု', 'species', 'မြို့နယ်'],
+        'default': ['species', 'genus', 'stub', 'disambiguation']
+    }
+    
+    MIN_QUALITY_LENGTH = 500  # Minimum characters for quality content
+    
+    def __init__(self, language_code: str, base_url: Optional[str] = None, delay: float = 1.0, 
+                 enable_quality_filter: bool = True):
         """
         Initialize Wikipedia scraper
         
@@ -54,10 +66,12 @@ class WikipediaScraper:
             language_code: Wikipedia language code (e.g., 'si' for Sinhala)
             base_url: Optional custom base URL (default: https://{lang}.wikipedia.org)
             delay: Delay between requests in seconds (be respectful!)
+            enable_quality_filter: Enable quality filtering to skip stubs (default: True)
         """
         self.language_code = language_code
         self.base_url = base_url or f"https://{language_code}.wikipedia.org"
         self.delay = delay
+        self.enable_quality_filter = enable_quality_filter
         self.session = requests.Session()
         self.session.headers.update({
             'User-Agent': 'Mozilla/5.0 (Educational Research Bot for Low-Resource Languages) Gurukul/1.0'
@@ -94,6 +108,47 @@ class WikipediaScraper:
         except Exception as e:
             logger.error(f"Failed to fetch random pages: {e}")
             return []
+    
+    def _is_stub_article(self, title: str, text: str) -> bool:
+        """
+        Check if article is a stub/low-quality page
+        
+        Args:
+            title: Article title
+            text: Article text
+            
+        Returns:
+            True if article is a stub, False otherwise
+        """
+        if not self.enable_quality_filter:
+            return False
+        
+        # Get language-specific stub keywords
+        keywords = self.STUB_KEYWORDS.get(self.language_code, self.STUB_KEYWORDS['default'])
+        
+        # Check title for stub indicators
+        title_lower = title.lower()
+        for keyword in keywords:
+            if keyword.lower() in title_lower:
+                logger.debug(f"Stub keyword in title: '{keyword}' in '{title}'")
+                return True
+        
+        # Check text for stub indicators
+        text_lower = text.lower()
+        stub_count = sum(1 for keyword in keywords if keyword.lower() in text_lower)
+        
+        # If article has multiple stub indicators, it's probably a stub
+        if stub_count >= 3:
+            logger.debug(f"Multiple stub keywords ({stub_count}) in text: '{title}'")
+            return True
+        
+        # Check for scientific name pattern (genus + species)
+        # Example: "Xylocopa combinata là một loài..."
+        if re.search(r'^[A-Z][a-z]+ [a-z]+ (là|is|sind)', text[:100]):
+            logger.debug(f"Scientific name pattern detected: '{title}'")
+            return True
+        
+        return False
     
     def fetch_page_content(self, title: str) -> Optional[Dict[str, str]]:
         """
@@ -135,12 +190,22 @@ class WikipediaScraper:
             
             extract = page.get('extract', '').strip()
             
-            # Quality filters
+            # Basic quality filters
             if len(extract) < 100:  # Too short
                 logger.debug(f"Page '{title}' too short ({len(extract)} chars), skipping")
                 return None
             
             if not extract:
+                return None
+            
+            # Advanced quality filter - skip stub articles
+            if self._is_stub_article(title, extract):
+                logger.debug(f"Skipping stub article: '{title}'")
+                return None
+            
+            # Enhanced length check for quality
+            if self.enable_quality_filter and len(extract) < self.MIN_QUALITY_LENGTH:
+                logger.debug(f"Page '{title}' below quality threshold ({len(extract)} < {self.MIN_QUALITY_LENGTH} chars), skipping")
                 return None
             
             page_url = f"{self.base_url}/wiki/{quote(title)}"
@@ -239,6 +304,8 @@ def main():
                        help='Delay between requests in seconds (default: 1.0)')
     parser.add_argument('--base_url', '-u', type=str, default=None,
                        help='Custom Wikipedia base URL (optional)')
+    parser.add_argument('--no-filter', action='store_true',
+                       help='Disable quality filtering (allow stubs)')
     
     args = parser.parse_args()
     
@@ -250,7 +317,8 @@ def main():
     scraper = WikipediaScraper(
         language_code=args.language,
         base_url=args.base_url,
-        delay=args.delay
+        delay=args.delay,
+        enable_quality_filter=not args.no_filter
     )
     
     # Scrape and save

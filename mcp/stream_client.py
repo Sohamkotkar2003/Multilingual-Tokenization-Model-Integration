@@ -191,9 +191,9 @@ class MCPStreamClient:
             sys.path.insert(0, str(Path(__file__).parent.parent))
             from scrapers.scrape_wiki import WikipediaScraper
             
-            logger.info(f"Scraping Wikipedia for language: {language_code}")
+            logger.info(f"Scraping Wikipedia for language: {language_code} (quality filter: ON)")
             
-            scraper = WikipediaScraper(language_code=language_code, delay=1.0)
+            scraper = WikipediaScraper(language_code=language_code, delay=1.0, enable_quality_filter=True)
             
             for page in scraper.scrape_pages(max_pages=max_pages):
                 # Split text into sentences (simple split for now)
