@@ -56,6 +56,11 @@ LANGUAGE_SCRIPTS = {
     'th': 'Thai',
     'ur': 'Arabic',
     'vi': 'Latin',  # Vietnamese
+    'gom': 'Devanagari',  # Konkani
+    'tcy': 'Kannada',  # Tulu
+    'raj': 'Devanagari',  # Rajasthani
+    'doi': 'Devanagari',  # Dogri
+    'kha': 'Latin',  # Khasi
 }
 
 def get_script_name(char):
