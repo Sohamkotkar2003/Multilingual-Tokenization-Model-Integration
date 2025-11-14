@@ -1,0 +1,15 @@
+{
+  "base_model": "bigscience/bloomz-560m",
+  "output_dir": "adapters/gurukul_lite_local_trained",
+  "training_samples": 299593,
+  "validation_samples": 59999,
+  "num_epochs": 3,
+  "learning_rate": 0.0002,
+  "batch_size": 2,
+  "gradient_accumulation_steps": 8,
+  "max_length": 512,
+  "lora_r": 16,
+  "lora_alpha": 32,
+  "started_at": "2025-11-12T10:20:29.392010",
+  "gpu": "NVIDIA GeForce RTX 3060"
+}
