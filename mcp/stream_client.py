@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-MCP Stream Client - Unified Data Streaming for Language Expansion
+MCP Corpus Stream Client - Unified Data Streaming for Language Expansion
 
-Purpose:
-- Stream data from multiple sources (HuggingFace, Wikipedia, News)
-- Coordinate scraping and dataset loading
-- Yield clean, tokenizable sentences for adapter training
+High-level role (to disambiguate from sovereign_core.mcp.stream_client):
+- This file streams **corpus / training text** for many languages
+- It pulls from HuggingFace, Wikipedia, news, etc. using `mcp_connectors.yml`
+- Output is used for **adapter/tokenizer training**, not user feedback
 
 Usage:
     from mcp.stream_client import stream_language_data
@@ -53,7 +53,7 @@ class MCPStreamClient:
     - S3/cloud storage
     """
     
-    def __init__(self, config_path: str = "mcp_connectors.yml"):
+    def __init__(self, config_path: str = "config/mcp_connectors.yml"):
         """
         Initialize MCP stream client
         
@@ -318,7 +318,7 @@ class MCPStreamClient:
 
 
 # Convenience function
-def stream_language_data(language: str, max_samples: int = 1000, config_path: str = "mcp_connectors.yml") -> Generator[Dict[str, str], None, None]:
+def stream_language_data(language: str, max_samples: int = 1000, config_path: str = "config/mcp_connectors.yml") -> Generator[Dict[str, str], None, None]:
     """
     Convenience function to stream language data
     

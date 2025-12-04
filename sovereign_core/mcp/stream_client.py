@@ -1,3 +1,15 @@
+"""
+MCP Feedback Stream Client - KSML / RL Feedback Ingestion
+
+High-level role (to disambiguate from top-level mcp/stream_client.py):
+- This file streams **feedback items** (trace_id, prompt, response, correction, reward)
+- It pulls from one or more HTTP feedback APIs using `sovereign_core/mcp/config.yml`
+- Output is appended to **sovereign_core/data/feedback_stream.jsonl** and logged to
+  `sovereign_core/logs/ksml_bridge.jsonl` for KSML + RL.
+
+It does NOT stream raw corpus text for training; that is handled by `mcp/stream_client.py`.
+"""
+
 import asyncio
 import json
 import os

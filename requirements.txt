@@ -9,9 +9,9 @@
 # ----------------------------------------------------------------------------
 # CORE ML FRAMEWORKS
 # ----------------------------------------------------------------------------
-torch==2.8.0+cu126           # PyTorch with CUDA 12.6 support
-torchvision==0.23.0+cu126    # Vision utilities (included with torch)
-torchaudio                   # Audio processing for BHIV Core
+torch==2.4.1                 # Compatible with CUDA 12.x base image
+torchvision==0.19.1          # Vision utilities (included with torch)
+torchaudio==2.4.1            # Audio processing for BHIV Core
 transformers==4.56.2         # HuggingFace Transformers (BLOOMZ, NLLB-200)
 peft==0.17.1                 # Parameter-Efficient Fine-Tuning (LoRA adapters)
 accelerate==1.10.1           # Training acceleration and device management

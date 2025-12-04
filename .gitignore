@@ -9,6 +9,7 @@ __pycache__/
 venv/
 env/
 ENV/
+venv_wsl/
 build/
 develop-eggs/
 dist/
@@ -53,6 +54,7 @@ Thumbs.db
 # ============================================================================
 /model/
 /data/
+/sovereign_data/
 /cache/
 
 # Trained adapters (large files)
@@ -89,6 +91,8 @@ runs/
 wandb/
 mlruns/
 outputs/
+lora_model/
+unsloth_compiled_cache/
 
 # ============================================================================
 # Large Model Files (optional - uncomment if needed)
